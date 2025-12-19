@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import styles from "./Navbar.module.css";
 
 export default function Navbar() {
@@ -225,7 +226,7 @@ export default function Navbar() {
           </nav>
           
           <div className={styles.navButtons}>
-            <button className={styles.btnSignIn} aria-label="Sign in to your account">SIGN IN</button>
+            <a href="/auth/signin" target="_blank" rel="noopener noreferrer" className={styles.btnSignIn} aria-label="Sign in to your account">SIGN IN</a>
           </div>
           
           <button className={styles.hamburger} onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile menu">
@@ -278,7 +279,7 @@ export default function Navbar() {
               </div>
             )}
             
-            <button className={styles.mobileSignIn}>SIGN IN</button>
+            <a href="/auth/signin" target="_blank" rel="noopener noreferrer" className={styles.mobileSignIn}>SIGN IN</a>
           </nav>
         </div>
       )}
