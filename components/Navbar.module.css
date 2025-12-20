@@ -1,3 +1,53 @@
+@media (max-width: 600px) {
+  .container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem;
+  }
+  .navbar {
+    height: 56px;
+    padding: 0 0.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+  .leftSection {
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 0.5rem;
+  }
+  .logo {
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
+    white-space: nowrap;
+  }
+  .signinWrapper {
+    margin-left: auto;
+    margin-right: 0.5rem;
+    height: 40px;
+  }
+  .signInDropdownBtn {
+    font-size: 12px;
+    padding: 0.4rem 0.8rem;
+    height: 32px;
+    min-width: 70px;
+    border-radius: 6px;
+    box-shadow: none;
+  }
+  .hamburger {
+    width: 28px;
+    height: 24px;
+    margin-left: 0;
+    margin-right: 0;
+    align-self: center;
+  }
+  .banner {
+    top: 56px;
+    padding: 0.5rem 0;
+  }
+  .bannerContent {
+    padding: 0 0.5rem;
+  }
+}
 /* --- Universal Responsive Enhancements --- */
 @media (max-width: 600px) {
   .navbar {
