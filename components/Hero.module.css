@@ -33,7 +33,7 @@
   animation: fadeInUp 0.8s ease;
   letter-spacing: -0.02em;
   text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
   text-align: left;
   max-width: 680px;
   color: #FFFFFF;
@@ -48,7 +48,7 @@
   max-width: 600px;
   text-align: left;
   font-weight: 400;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 .ctaSection {
@@ -78,7 +78,7 @@
   box-shadow: 0 8px 20px rgba(225, 6, 0, 0.3);
   text-align: center;
   display: inline-block;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
   align-self: flex-start;
 }
 
@@ -120,7 +120,7 @@
   font-weight: 600;
   font-size: 0.9rem;
   transition: all 0.3s ease;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 .downloadLink:hover {
