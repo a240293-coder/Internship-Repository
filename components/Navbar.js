@@ -231,13 +231,17 @@ export default function Navbar() {
             </div>
           </div>
           
-          <nav
-            className={styles.navLinks}
-            onMouseEnter={enableBlur}
-            onMouseLeave={disableBlur}
-          >
-            <a href="#placements">Placements</a>
-            <a href="#masterclass">Masterclass</a>
+          <nav className={styles.navLinks}>
+            <a
+              href="#placements"
+              onMouseEnter={enableBlur}
+              onMouseLeave={disableBlur}
+            >Placements</a>
+            <a
+              href="#masterclass"
+              onMouseEnter={enableBlur}
+              onMouseLeave={disableBlur}
+            >Masterclass</a>
             <div
               className={styles.practiceDropdown}
               onMouseEnter={() => {
@@ -273,7 +277,11 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-            <a href="#hire">Hire From Us</a>
+            <a
+              href="#hire"
+              onMouseEnter={enableBlur}
+              onMouseLeave={disableBlur}
+            >Hire From Us</a>
             <div
               className={styles.moreDropdown}
               onMouseEnter={() => {
