@@ -335,6 +335,13 @@
   height: 100%;
   position: relative;
   padding-bottom: 2px;
+  transition: color 0.2s ease;
+}
+
+.logoButton:hover .logo,
+.logoButton:focus-visible .logo,
+.logoButton:active .logo {
+  color: white;
 }
 
 .navLinks {
@@ -989,6 +996,7 @@
 .logoHighlight {
   position: relative;
   margin-left: 2px;
+  transition: color 0.2s ease;
 }
 
 .logoHighlight::after {
@@ -999,6 +1007,19 @@
   width: 100%;
   height: 4px;
   background-color: #e10600; /* AlmaBetter red underline */
+  transition: background-color 0.2s ease;
+}
+
+.logoButton:hover .logoHighlight,
+.logoButton:focus-visible .logoHighlight,
+.logoButton:active .logoHighlight {
+  color: white;
+}
+
+.logoButton:hover .logoHighlight::after,
+.logoButton:focus-visible .logoHighlight::after,
+.logoButton:active .logoHighlight::after {
+  background-color: #e10600;
 }
 
 .moreMenu {

@@ -32,10 +32,10 @@ body.apply-theme {
   background: #0b0c10;
 }
 
-/* Blur page content when navbar hover toggles nav-blur */
+/* Nav blur disabled per request */
 body.nav-blur main > *:not(.navbar-global) {
-  filter: blur(4px);
-  transition: filter 0.2s ease;
+  filter: none;
+  transition: none;
 }
 
 body.nav-blur .navbar-global {

@@ -107,7 +107,8 @@ export default function Navbar() {
 
   const enableBlur = useCallback(() => {
     if (typeof document !== "undefined") {
-      document.body.classList.add("nav-blur");
+      // Keep the page sharp by removing any lingering blur class
+      document.body.classList.remove("nav-blur");
     }
   }, []);
 
@@ -118,6 +119,8 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    // Ensure blur is cleared on mount and teardown
+    disableBlur();
     return () => {
       disableBlur();
     };
