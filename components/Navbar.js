@@ -136,6 +136,8 @@ export default function Navbar() {
               type="button"
               className={styles.logoButton}
               onClick={handleLogoClick}
+              onMouseEnter={disableBlur}
+              onMouseLeave={enableBlur}
               aria-label="Refresh LearnBetter homepage"
             >
               <span className={styles.logo}>Learn<span className={styles.logoHighlight}>Better</span></span>
@@ -302,6 +304,10 @@ export default function Navbar() {
             onMouseEnter={() => setShowSignInDropdown(true)}
             onMouseLeave={() => setShowSignInDropdown(false)}
             style={{ position: 'relative', height: '100%' }}
+            onFocus={disableBlur}
+            onBlur={enableBlur}
+            onMouseOver={disableBlur}
+            onMouseOut={enableBlur}
           >
             <button
               className={styles.signInDropdownBtn}

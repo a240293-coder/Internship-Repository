@@ -860,6 +860,12 @@
   text-transform: uppercase;
 }
 
+.practiceBtn:hover .practiceLabel,
+.practiceBtn:focus-visible .practiceLabel,
+.practiceBtn:active .practiceLabel {
+  color: #e10600;
+}
+
 .btnSignIn {
   padding: 0.7rem 2rem;
   background: #cc0000;

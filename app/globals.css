@@ -34,7 +34,7 @@ body.apply-theme {
 
 /* Blur page content when navbar hover toggles nav-blur */
 body.nav-blur main > *:not(.navbar-global) {
-  filter: blur(8px);
+  filter: blur(4px);
   transition: filter 0.2s ease;
 }
 
