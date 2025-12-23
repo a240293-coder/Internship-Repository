@@ -407,7 +407,6 @@ export default function Navbar() {
               <a href="#placements" className={styles.mobileMenuItem}>Placements</a>
               <a href="#masterclass" className={styles.mobileMenuItem}>Masterclass</a>
               <a href="#practice" className={styles.mobileMenuItem}>FREE Practice</a>
-              <a href="#hire" className={styles.mobileMenuItem}>Hire From Us</a>
               <button
                 className={styles.mobileMenuItem}
                 onClick={e => {
