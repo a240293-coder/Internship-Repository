@@ -6,7 +6,9 @@ export default function Footer() {
       <div className={styles.container}>
         <div className={styles.footerContent}>
           <div className={styles.footerBrand}>
-            <h2 className={styles.brandName}>learnBetter</h2>
+            <div className={styles.brandName} aria-label="LearnBetter">
+              <span className={styles.brandLogo}>Learn<span className={styles.brandLogoHighlight}>Better</span></span>
+            </div>
             <p className={styles.brandTagline}>Empowering careers through world-class education</p>
           </div>
 
@@ -32,7 +34,7 @@ export default function Footer() {
         </div>
 
         <div className={styles.footerBottom}>
-          <p className={styles.copyright}>© 2025 learnBetter. All rights reserved.</p>
+          <p className={styles.copyright}>© 2025 LearnBetter. All rights reserved.</p>
           
           <div className={styles.socialIcons}>
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={styles.socialIcon} aria-label="Instagram">
