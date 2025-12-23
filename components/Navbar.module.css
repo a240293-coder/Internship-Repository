@@ -315,9 +315,11 @@
   color: inherit;
 }
 
-.logoButton:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.6);
-  border-radius: 8px;
+.logoButton:focus,
+.logoButton:focus-visible,
+.logoButton:active {
+  outline: none;
+  box-shadow: none;
 }
 
 .logo {
