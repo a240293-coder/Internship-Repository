@@ -104,11 +104,20 @@
   }
 
   .card {
-    padding: 16px;
-    border-radius: 11px;
+    /* Mobile-only: compact box-style cards
+       - Reduce padding and enforce a consistent near-square min-height
+       - Smooth curved edges (12-16px) while keeping existing colors/shadows
+       - Use flex layout to vertically center content without changing typography */
+    padding: 12px;
+    border-radius: 14px;
     border: 1px solid #e5e7eb;
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
     transition: transform 0.18s ease-out, box-shadow 0.18s ease-out;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
   }
 
   .icon {
