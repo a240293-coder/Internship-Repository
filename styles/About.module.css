@@ -103,6 +103,16 @@
   width: 100%;
 }
 
+/* Slight vertical shift for navigation arrows inside these carousels
+   Keeps existing horizontal centering and any transform-based centering
+   by nudging the absolute `top` value downward by 0.5rem (about 8px).
+   Targets common arrow/button classnames used by carousel libraries
+   when they are placed inside the carousel containers. */
+.statCarousel :is(.swiper-button-prev, .swiper-button-next, .slick-prev, .slick-next, .carousel-control-prev, .carousel-control-next, .prev, .next, .arrow-prev, .arrow-next, .btn-prev, .btn-next) {
+  top: calc(50% + 0.5rem) !important;
+  z-index: 20; /* ensure arrows remain on top and clickable */
+}
+
 .statTrack {
   display: flex;
   transition: transform 0.45s ease-in-out;
@@ -184,6 +194,12 @@
   overflow: hidden;
   width: 100%;
   position: relative;
+}
+
+/* Apply same small downward nudge for card carousels */
+.cardCarousel :is(.swiper-button-prev, .swiper-button-next, .slick-prev, .slick-next, .carousel-control-prev, .carousel-control-next, .prev, .next, .arrow-prev, .arrow-next, .btn-prev, .btn-next) {
+  top: calc(50% + 0.5rem) !important;
+  z-index: 20;
 }
 
 .cardTrack {
