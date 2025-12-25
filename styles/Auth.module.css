@@ -19,6 +19,15 @@
   line-height: 1;
   color: white; /* Desktop default */
   letter-spacing: -0.02em;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.logoWrapper:focus {
+  outline: 2px solid rgba(255,255,255,0.12);
+  outline-offset: 2px;
 }
 
 .logoTextMain {

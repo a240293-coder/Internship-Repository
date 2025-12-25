@@ -379,7 +379,7 @@ export default function Navbar() {
               )}
               <a href="#placements" className={styles.mobileMenuItem}>Placements</a>
               <a href="#masterclass" className={styles.mobileMenuItem}>Masterclass</a>
-              <a href="#practice" className={styles.mobileMenuItem}>FREE Practice</a>
+              <a href="#practice" className={styles.mobileMenuItem}><span className={styles.practiceLabel}>Practice</span><span className={styles.freeText}>FREE</span></a>
               <a href="#contact" className={styles.mobileMenuItem}>Contact Us</a>
               <a
                 href="/about"

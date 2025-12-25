@@ -11,11 +11,25 @@ const AuthLayout = ({ children, title }) => {
       </Head>
       
       <div className={styles.container}>
-        {/* Logo - Fixed Position */}
-        <div className={styles.logoWrapper}>
+        {/* Logo - Fixed Position (click to reload) */}
+        <button
+          type="button"
+          className={styles.logoWrapper}
+          aria-label="Reload page"
+          onClick={() => {
+            if (typeof window !== 'undefined') {
+              try {
+                window.location.reload();
+              } catch (e) {
+                // fallback: navigate to same path
+                window.location.href = window.location.href;
+              }
+            }
+          }}
+        >
           <span className={styles.logoTextMain}>Learn</span>
           <span className={styles.logoTextHighlight}>Better</span>
-        </div>
+        </button>
 
         {/* Left Side - Testimonial */}
         <TestimonialCard />
