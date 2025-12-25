@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -65,7 +66,7 @@ export default function About() {
                 LearnBetter is a practice-led learning platform built to make students confident with real projects, mentorship, and industry exposure — so you can show tangible skills, not just grades.
               </p>
               <div className={styles.heroActions}>
-                <a className={`${styles.btn} ${styles.btnPrimary}`} href="/apply">Explore programs</a>
+                <Link href="/apply" className={`${styles.btn} ${styles.btnPrimary}`}>Explore programs</Link>
               </div>
               <div className={styles.quickStats}>
                 {isMobile ? (
@@ -120,7 +121,7 @@ export default function About() {
                           </div>
                           <h3 className={styles.featureTitle}>{card.title}</h3>
                           <p className={styles.featureText}>{card.text}</p>
-                          <a className={styles.featureLink} href="/apply">Read more</a>
+                          <Link href="/apply" className={styles.featureLink}>Read more</Link>
                         </div>
                       </div>
                     ))}
@@ -139,7 +140,7 @@ export default function About() {
                       </div>
                       <h3 className={styles.featureTitle}>{card.title}</h3>
                       <p className={styles.featureText}>{card.text}</p>
-                      <a className={styles.featureLink} href="/apply">Read more</a>
+                      <Link href="/apply" className={styles.featureLink}>Read more</Link>
                     </div>
                   </div>
                 ))
@@ -246,8 +247,8 @@ export default function About() {
               <h2 className={styles.sectionTitle}>Ready to get internship-ready?</h2>
               <p className={styles.sectionSubtitle}>Take the next step with a program designed to mirror the way real teams work.</p>
             </div>
-            <div className={styles.ctaRow}>
-              <a className={`${styles.btn} ${styles.btnPrimary}`} href="/apply">Start your application</a>
+              <div className={styles.ctaRow}>
+              <Link href="/apply" className={`${styles.btn} ${styles.btnPrimary}`}>Start your application</Link>
               <a className={`${styles.btn} ${styles.btnGhost}`} href="/auth/signin/student" target="_blank" rel="noopener noreferrer">Already a student? Sign in</a>
             </div>
           </div>
