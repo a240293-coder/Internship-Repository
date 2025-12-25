@@ -57,6 +57,9 @@
   margin: 0.25rem 0;
   object-fit: contain;
   border-radius: 16px;
+  /* nudge the illustration slightly upward for better visual balance */
+  transform: translateY(-0.5rem);
+  transition: transform 220ms ease;
 }
 
 
@@ -147,6 +150,7 @@
     max-width: 260px;
     margin: 0.15rem 0;
     border-radius: 14px;
+    transform: translateY(-0.3rem);
   }
 
 
