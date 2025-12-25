@@ -236,15 +236,17 @@
 /* Hide dots on tablet/desktop to declutter pagination there and add extra breathing room */
 @media (min-width: 769px) {
   .testimonialWrapper {
-    padding-bottom: 5rem;
+    /* reduce bottom padding on larger screens for tighter layout */
+    padding-bottom: 3rem;
   }
 
   .cardContent {
-    padding: 1.6rem;
-    border-radius: 15px;
+    /* slightly smaller desktop card padding */
+    padding: 1.2rem;
+    border-radius: 13px;
   }
 
   .arrows {
-    margin-top: 2.75rem;
+    margin-top: 1.6rem;
   }
 }

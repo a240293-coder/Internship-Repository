@@ -791,3 +791,37 @@
     gap: 1rem;
   }
 }
+
+/* Reduce paddings for laptop+ (keep mobile as-is) */
+@media (min-width: 641px) {
+  .container {
+    padding: 0 0.9rem;
+  }
+
+  .section {
+    /* tighter vertical rhythm on larger screens */
+    padding: 1.25rem 0;
+  }
+
+  .hero {
+    padding: 3.5rem 0 2.5rem;
+  }
+
+  .card,
+  .featureCard,
+  .highlightCard,
+  .listItem,
+  .statCard {
+    padding: 0.6rem 0.7rem;
+  }
+
+  .quickStats {
+    gap: 0.45rem;
+  }
+
+  .cardGrid,
+  .cardGridWide,
+  .trustGrid {
+    gap: 0.8rem;
+  }
+}
