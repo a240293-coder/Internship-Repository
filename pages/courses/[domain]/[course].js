@@ -17,10 +17,10 @@ export default function CoursePage() {
   if (!data) {
     return (
       <main style={{ padding: 24 }}>
-        <h1>Course not found</h1>
-        <p>We couldn't find the course you're looking for.</p>
-        <p><Link href="/">Return home</Link></p>
-      </main>
+          <h1>Course not found</h1>
+          <p>We couldn&#39;t find the course you&#39;re looking for.</p>
+          <p><Link href="/">Return home</Link></p>
+        </main>
     );
   }
   const overview = data.overview || data.heroText || data.why || '';

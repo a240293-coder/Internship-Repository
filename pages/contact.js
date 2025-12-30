@@ -52,7 +52,7 @@ export default function Contact() {
         <div className={styles.container}>
           <div className={styles.header}>
             <h1 className={styles.title}>Contact Us</h1>
-            <p className={styles.subtitle}>We'd love to hear from you — questions, partnerships, or feedback.</p>
+            <p className={styles.subtitle}>We&#39;d love to hear from you — questions, partnerships, or feedback.</p>
           </div>
 
           <div className={styles.card}>

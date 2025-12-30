@@ -34,7 +34,7 @@ export default function Navbar() {
       }
     }
     setSelectedDomain('');
-  }, [router.asPath]);
+  }, [router, router.asPath]);
 
   const categories = {
     marketing: {

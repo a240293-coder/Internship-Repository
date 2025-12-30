@@ -144,7 +144,7 @@ export default function Testimonials() {
         if (rafId) cancelAnimationFrame(rafId);
       };
     }
-  }, [wrapperRef.current]);
+  }, []);
 
   const handleTouchEnd = () => {
     if (!isDragging || touchStartX.current == null || touchCurrentX.current == null) {
