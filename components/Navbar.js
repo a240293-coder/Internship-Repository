@@ -231,22 +231,25 @@ export default function Navbar() {
                           </button>
 
                           <div className={styles.practiceListWrapper + (openCategory === key ? ` ${styles.open}` : '')}>
-                            {cat.courses.map((c) => (
-                              <Link
-                                key={c.slug}
-                                href={`/courses/${key}/${c.slug}`}
-                                className={styles.practiceItem}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => {
-                                  setSelectedDomain(key);
-                                  setIsDesktopCoursesOpen(false);
-                                  setOpenCategory('');
-                                }}
-                              >
-                                {c.title}
-                              </Link>
-                            ))}
+                            {cat.courses.map((c) => {
+                              const href = c.slug === 'ecommerce' ? `/courses/ecommerce` : `/courses/${key}/${c.slug}`;
+                              return (
+                                <Link
+                                  key={c.slug}
+                                  href={href}
+                                  className={styles.practiceItem}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={() => {
+                                    setSelectedDomain(key);
+                                    setIsDesktopCoursesOpen(false);
+                                    setOpenCategory('');
+                                  }}
+                                >
+                                  {c.title}
+                                </Link>
+                              );
+                            })}
                           </div>
                         </div>
                       ))}
@@ -278,7 +281,7 @@ export default function Navbar() {
                   <div className={styles.expertiseMenu}>
                     <Link href="/courses/marketing/digital-marketing" className={styles.expertiseItem} target="_blank" rel="noopener noreferrer">Digital Marketing</Link>
                     <div className={styles.expertiseDivider}></div>
-                    <Link href="/courses/marketing/ecommerce" className={styles.expertiseItem} target="_blank" rel="noopener noreferrer">Ecommerce</Link>
+                    <Link href="/courses/ecommerce" className={styles.expertiseItem} target="_blank" rel="noopener noreferrer">Ecommerce</Link>
                     <div className={styles.expertiseDivider}></div>
                     <Link href="/courses/technology/web-development" className={styles.expertiseItem} target="_blank" rel="noopener noreferrer">Web development - Strategic Partner</Link>
                     <div className={styles.expertiseDivider}></div>
@@ -481,7 +484,7 @@ export default function Navbar() {
                 <div className={styles.mobileAccordionWrap}>
                   {[
                     { title: 'Digital Marketing', href: '/courses/marketing/digital-marketing' },
-                    { title: 'Ecommerce', href: '/courses/marketing/ecommerce' },
+                    { title: 'Ecommerce', href: '/courses/ecommerce' },
                     { title: 'Web development - Strategic Partner', href: '/courses/technology/web-development' },
                     { title: 'Logistics and operations', href: '/courses/operations/logistics' },
                     { title: 'Public relation and outreach', href: '/courses/marketing/pr-outreach' },
