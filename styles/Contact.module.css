@@ -109,3 +109,36 @@
   .footerNote { flex-direction: column; align-items:flex-start }
   .title { font-size: 1.5rem }
 }
+
+/* Fixed home icon button (right side, below navbar) */
+.homeIconButton {
+  position: fixed;
+  top: calc(70px + 4px); /* moved closer to navbar */
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #2563eb;
+  border: 1px solid rgba(37,99,235,0.12);
+  box-shadow: 0 8px 26px rgba(37,99,235,0.08);
+  z-index: 1100;
+  text-decoration: none;
+  transition: transform 140ms ease, box-shadow 140ms ease, opacity 120ms ease;
+}
+.homeIconButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(37,99,235,0.14);
+}
+.homeIconButton svg { width: 18px; height: 18px; display: block; }
+
+@media (max-width: 640px) {
+  .homeIconButton { top: calc(56px + 4px); right: 12px; width: 42px; height: 42px; }
+}
+
+@media (max-width: 375px) {
+  .homeIconButton { top: calc(48px + 4px); right: 10px; width: 40px; height: 40px; }
+}
