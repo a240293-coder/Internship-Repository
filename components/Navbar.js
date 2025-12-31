@@ -416,19 +416,19 @@ export default function Navbar() {
                 className={styles.signInDropdown}
                 style={{ pointerEvents: 'auto', zIndex: 2000, position: 'absolute', top: '100%', left: 0 }}
               >
-                <a
+                <Link
                   href="/auth/signin/student"
                   className={styles.signInDropdownItem}
                   target="_blank"
                   rel="noopener noreferrer"
-                >Student Sign In</a>
+                >Student Sign In</Link>
                 <div className={styles.dropdownDivider}></div>
-                <a
+                <Link
                   href="/auth/signin/mentor"
                   className={styles.signInDropdownItem}
                   target="_blank"
                   rel="noopener noreferrer"
-                >Mentor Sign In</a>
+                >Mentor Sign In</Link>
               </div>
             )}
           </div>
@@ -581,7 +581,7 @@ export default function Navbar() {
                 </button>
                 {showMobileSignIn && (
                   <div className={styles.mobileSignInDropdown}>
-                      <a
+                      <Link
                         href="/auth/signin/student"
                         className={styles.mobileSignInDropdownItem}
                         onClick={(ev) => {
@@ -593,9 +593,9 @@ export default function Navbar() {
                         }}
                       >
                         Student Sign In
-                      </a>
+                      </Link>
                       <div className={styles.dropdownDivider} />
-                      <a
+                      <Link
                         href="/auth/signin/mentor"
                         className={styles.mobileSignInDropdownItem}
                         onClick={(ev) => {
@@ -607,7 +607,7 @@ export default function Navbar() {
                         }}
                       >
                         Mentor Sign In
-                      </a>
+                      </Link>
                   </div>
                 )}
               </div>
