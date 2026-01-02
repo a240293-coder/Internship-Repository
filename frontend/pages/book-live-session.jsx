@@ -404,7 +404,7 @@ export default function BookLiveSession() {
             <h2 className={styles.sectionTitle}>Reserve your live slot</h2>
           </div>
           <div className={styles.formCard}>
-            <form className={styles.formGrid} onSubmit={handleFormSubmit} noValidate>
+            <form id="bookingForm" className={styles.formGrid} onSubmit={handleFormSubmit} noValidate>
               <label className={styles.formGroup}>
                 Full name
                 <input
@@ -470,7 +470,7 @@ export default function BookLiveSession() {
               </label>
             </form>
             <div className={styles.formFooter}>
-              <button className={styles.submitButton} type="submit">
+              <button className={styles.submitButton} type="submit" form="bookingForm">
                 Confirm Live Session
               </button>
               {formStatus && (

@@ -98,7 +98,7 @@ const StudentLogin = () => {
               </button>
             </form>
             <div className="auth-link">
-              <p>Don't have an account?</p>
+              <p>Don&apos;t have an account?</p>
               <Link href="/student/register">Register as Student</Link>
             </div>
           </div>

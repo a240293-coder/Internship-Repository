@@ -101,7 +101,7 @@ const MentorLogin = () => {
               </button>
             </form>
             <div className="auth-link">
-              <p>Don't have an account?</p>
+              <p>Don&apos;t have an account?</p>
               <Link href="/mentor/register">Register as Mentor</Link>
             </div>
           </div>
