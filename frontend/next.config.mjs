@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  distDir: '../.next',
   reactStrictMode: true,
   // Disable Webpack's persistent filesystem cache to avoid PackFileCacheStrategy OOM
   webpack: (config) => {
