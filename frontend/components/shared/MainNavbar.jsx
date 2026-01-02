@@ -459,7 +459,7 @@ export default function MainNavbar() {
               >
                 {bannerTexts[currentTextIndex]}
               </span>
-              <button className={styles.btnBookNow} aria-label="Book a live demo session">Book Now</button>
+              <a className={styles.btnBookNow} href="/book-live-session" target="_blank" rel="noopener noreferrer" aria-label="Book a live demo session">Book Live Session</a>
             </div>
             <div className={styles.mobileBannerRow}>
               <div className={styles.mobileBannerLeft}>
@@ -469,7 +469,7 @@ export default function MainNavbar() {
                   <div className={styles.mobileBannerSubtext}>Next cohort starts on 26th Dec, 2025</div>
                 </div>
               </div>
-              <button className={styles.btnMobileBook} aria-label="Book a live demo session">Book Now</button>
+              <a className={styles.btnMobileBook} href="/book-live-session" target="_blank" rel="noopener noreferrer" aria-label="Book a live demo session">Book Live Session</a>
             </div>
           </div>
         </div>

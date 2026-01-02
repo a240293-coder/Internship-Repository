@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import DashboardSidebar from './DashboardSidebar';
 
 export default function DashboardLayout({ children, title, role, onLogout }) {
@@ -70,8 +71,17 @@ export default function DashboardLayout({ children, title, role, onLogout }) {
                 </button>
                 {profileOpen && (
                   <div className="profile-dropdown" role="menu">
-                    <button type="button" onClick={() => setProfileOpen(false)}>Profile</button>
-                    <button type="button" onClick={() => setProfileOpen(false)}>Settings</button>
+                    {role === 'student' && (
+                      <Link href="/student/form" className="mobile-only-menu-item profile-menu-link" onClick={() => setProfileOpen(false)}>
+                        Interest Form
+                      </Link>
+                    )}
+                    {role !== 'student' && (
+                      <>
+                        <button type="button" onClick={() => setProfileOpen(false)}>Profile</button>
+                        <button type="button" onClick={() => setProfileOpen(false)}>Settings</button>
+                      </>
+                    )}
                     <button
                       type="button"
                       onClick={() => {

@@ -6,9 +6,7 @@ export default function DashboardSidebar({ role }) {
   const router = useRouter();
   const roleLinks = {
     student: [
-      { href: '/student/dashboard', label: 'Home' },
-      { href: '/student/form', label: 'Interest Form' },
-      { href: '/student/profile', label: 'Profile' }
+      { href: '/student/form', label: 'Interest Form' }
     ],
     mentor: [
       { href: '/mentor/dashboard', label: 'Home' },

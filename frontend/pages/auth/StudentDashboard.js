@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import api from '../api';
 import './Dashboard.css';
@@ -59,11 +60,6 @@ const StudentDashboard = () => {
 
   const stats = [
     {
-      label: 'Form Status',
-      value: form ? formatStatus(form.status) : 'Not started',
-      helper: form ? 'Auto-synced with your submission' : 'Complete your form to get matched'
-    },
-    {
       label: 'Preferred Domain',
       value: form?.desiredDomain || 'Select a track',
       helper: form ? 'Chosen focus area' : 'Update anytime from your form'
@@ -79,6 +75,12 @@ const StudentDashboard = () => {
       helper: 'Based on your latest submission'
     }
   ];
+
+  const heroStatus = form ? formatStatus(form.status) : 'Not started';
+  const heroNote = form
+    ? `Mentor: ${form.mentorName || 'Pending assignment'}`
+    : 'Complete the interest form to unlock mentoring conversations';
+  const heroActionLabel = form ? 'Update interest form' : 'Start interest form';
 
   if (loading) return <div className="loading">Loading...</div>;
 
@@ -96,54 +98,29 @@ const StudentDashboard = () => {
         ))}
       </section>
 
-      {form && (
-        <section className="content-card">
-          <header className="content-card-header">
-            <div>
-              <p className="eyebrow">Submission overview</p>
-              <h2>Your Interest Form</h2>
-            </div>
-            <span className={`status-badge status-${form.status}`}>
-              {formatStatus(form.status)}
-            </span>
-          </header>
+      <section className="dashboard-hero">
+        <div className="hero-copy">
+          <p className="hero-eyebrow">Student workspace</p>
+          <h2 className="hero-title">Focus on the next milestone</h2>
+          <p className="hero-subtitle">
+            Keep your interests updated so we can match you with the right mentor and
+            opportunities.
+          </p>
+          <p className="hero-note">{heroNote}</p>
+        </div>
+        <div className="hero-cta-card">
+          <p className="hero-cta-label">Interest form status</p>
+          <p className="hero-cta-value">{heroStatus}</p>
+          <p className="hero-cta-helper">
+            {form ? `Updated ${formatDate(form.updatedAt || form.createdAt)}` : 'No submission yet'}
+          </p>
+          <Link href="/student/form" className="btn btn-primary hero-cta-button">
+            {heroActionLabel}
+          </Link>
+        </div>
+      </section>
 
-          <div className="info-grid">
-            <div className="info-row">
-              <p className="info-label">Interests</p>
-              <p className="info-value">{Array.isArray(form.interests) ? form.interests.join(', ') : form.interests}</p>
-            </div>
-            <div className="info-row">
-              <p className="info-label">Desired Domain</p>
-              <p className="info-value">{form.desiredDomain}</p>
-            </div>
-            <div className="info-row">
-              <p className="info-label">Experience</p>
-              <p className="info-value">{form.experience}</p>
-            </div>
-            <div className="info-row">
-              <p className="info-label">Career Goals</p>
-              <p className="info-value">{form.goals}</p>
-            </div>
-          </div>
 
-          {form.mentorName && (
-            <div className="mentor-highlight">
-              <div>
-                <p className="info-label">Assigned Mentor</p>
-                <p className="mentor-name">{form.mentorName}</p>
-                <p className="mentor-email">{form.mentorEmail}</p>
-              </div>
-            </div>
-          )}
-
-          <div className="card-actions">
-            <button className="btn btn-secondary" onClick={() => router.push('/student/form')}>
-              Edit Form
-            </button>
-          </div>
-        </section>
-      )}
     </DashboardLayout>
   );
 };
