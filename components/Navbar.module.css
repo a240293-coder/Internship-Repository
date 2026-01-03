@@ -2152,7 +2152,7 @@
     bottom: -2px;
     height: 2px;
   }
-
+}
   /* Hide desktop banner content on mobile */
   .arrow,
   .bannerTextGroup { display: none; }
@@ -2209,7 +2209,6 @@
     flex-shrink: 0;
   }
   .btnMobileBook:hover { transform: translateY(-1px); }
-}
 
 /* Ensure domain headings and category labels are readable on small screens */
 @media (max-width: 768px) {
