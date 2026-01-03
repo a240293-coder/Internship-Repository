@@ -278,7 +278,7 @@ export default function About() {
             </div>
               <div className={styles.ctaRow}>
               <Link href="/apply" className={`${styles.btn} ${styles.btnPrimary}`}>Start your application</Link>
-              <a className={`${styles.btn} ${styles.btnGhost}`} href="/auth/signin/student" target="_blank" rel="noopener noreferrer">Already a student? Sign in</a>
+              <Link href="/auth/StudentLogin" className={`${styles.btn} ${styles.btnGhost}`} target="_blank" rel="noopener noreferrer">Already a student? Sign in</Link>
             </div>
           </div>
         </section>
