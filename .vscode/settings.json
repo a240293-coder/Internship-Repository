@@ -1,4 +1,13 @@
 {
     "git.ignoreLimitWarning": true,
-    "python.terminal.activateEnvironment": false
+    "python.terminal.activateEnvironment": false,
+    "files.exclude": {
+        "**/.next": true
+    },
+    "search.exclude": {
+        "**/.next": true
+    },
+    "files.watcherExclude": {
+        "**/.next/**": true
+    }
 }

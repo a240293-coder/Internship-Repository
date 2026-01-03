@@ -1,0 +1,18 @@
+{
+  "name": "internhood-backend-stub",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Stub package.json — backend removed. Use external backend and set frontend env vars.",
+  "scripts": {
+    "start": "node server.js",
+    "postinstall": "echo 'Backend code removed — this is a stub.'"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "multer": "^2.0.2",
+    "mysql2": "^3.16.0"
+  }
+}

@@ -1,0 +1,210 @@
+.programValue {
+  background: linear-gradient(180deg, #F8FAFF 0%, #EFF6FF 100%);
+  box-shadow: none;
+  padding: 6rem 0; /* 96px desktop */
+  font-family: Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.title {
+  font-size: clamp(1.6rem, 3.2vw, 2.375rem);
+  font-weight: 700;
+  text-align: center;
+  color: #0F172A;
+  margin-bottom: 2.5rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: clamp(1.5rem, 3vw, 4rem);
+  align-items: center;
+}
+
+.visual {
+  display: flex;
+  justify-content: center;
+}
+
+.visualPlaceholder {
+  background: #FFFFFF;
+  width: 100%;
+  max-width: 360px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.07);
+  border: 1px solid #DBEAFE;
+  transition: transform 0.2s ease;
+}
+
+.visualPlaceholder:hover {
+  transform: translateY(-3px);
+  border: 2px solid rgba(29,78,216,0.9);
+  box-shadow: 0 12px 30px rgba(15,23,42,0.08), 0 0 0 4px rgba(29,78,216,0.04);
+}
+
+.visualImage {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin: 0;
+  object-fit: contain;
+  border-radius: 10px;
+  transition: transform 180ms ease;
+}
+
+
+.visualIcon {
+  font-size: 4.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.visualText {
+  color: #0F172A;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.description {
+  color: #0F172A;
+}
+
+.descTitle {
+  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1D4ED8;
+  display: inline-block;
+  position: relative;
+}
+
+.descTitle::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 3px;
+  background: #1D4ED8;
+  border-radius: 2px;
+  width: 100%;
+}
+
+.descText {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #475569;
+  margin-bottom: 1rem;
+  max-width: 560px;
+}
+.benefitsList {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.25rem;
+}
+
+.benefitsList li {
+  font-size: 1rem;
+  padding: 0.6rem 0;
+  color: #334155;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.check {
+  color: #2563EB;
+  font-weight: 700;
+  display: inline-block;
+  width: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .programValue {
+    padding: 4rem 0; /* 64px mobile */
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .descTitle {
+    font-size: 1.05rem;
+    display: block;
+  }
+
+  .descText {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0.9rem;
+  }
+
+  .visualIcon {
+    font-size: 3.5rem;
+  }
+
+  .visualText {
+    font-size: 1.05rem;
+  }
+
+  .visualPlaceholder {
+    max-width: 340px;
+    padding: 14px;
+    border-radius: 12px;
+    background: #FFFFFF;
+    margin: 0 auto;
+  }
+
+  .visualImage {
+    width: 100%;
+    max-width: 300px;
+    margin: 0;
+    border-radius: 10px;
+  }
+
+
+  .visualPlaceholder:hover {
+    transform: translateY(-2px);
+    background: #fff;
+  }
+
+  .visualText {
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: #0F172A;
+  }
+
+  .description {
+    padding: 0 0.5rem;
+  }
+
+  .benefitsList {
+    margin-top: 1rem;
+  }
+
+  .benefitsList li {
+    font-size: 0.88rem;
+    padding: 0.45rem 0;
+    line-height: 1.45;
+  }
+}
