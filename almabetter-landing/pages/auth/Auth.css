@@ -1017,7 +1017,7 @@ select:focus {
     padding: 20px;
   }
   .auth-page.auth-page-with-nav {
-    padding-top: 7rem;
+    padding-top: 9rem !important;
   }
   .auth-container {
     min-height: auto;
@@ -1107,7 +1107,7 @@ select:focus {
     padding: 14px;
   }
   .auth-page.auth-page-with-nav {
-    padding-top: 7rem;
+    padding-top: 9rem !important;
   }
   .auth-visual {
     padding: 24px 20px 32px;
