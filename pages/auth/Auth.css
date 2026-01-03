@@ -1038,3 +1038,46 @@ select:focus {
     padding: 24px 18px;
   }
 }
+
+@media (max-width: 768px) {
+  /* Reduce visual-testimonial size for mobile */
+  .visual-testimonial {
+    padding: 12px;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .visual-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .visual-testimonial blockquote {
+    font-size: 12px;
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .visual-author {
+    font-size: 12px;
+  }
+
+  .visual-author-role {
+    font-size: 10px;
+  }
+
+  /* Reduce visual-logos size for mobile */
+  .visual-logos {
+    gap: 6px;
+    margin-top: 12px;
+    padding-bottom: 2px;
+  }
+
+  .visual-logos span {
+    padding: 4px 8px;
+    font-size: 10px;
+    line-height: 1;
+  }
+}
+
