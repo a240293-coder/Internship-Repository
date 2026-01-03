@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import api from '../api';
+import api from '../../lib/api';
 import './Dashboard.css';
 import DashboardLayout from '../../components/DashboardLayout';
 

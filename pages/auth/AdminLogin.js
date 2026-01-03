@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // Navbar is provided globally via _app.js (MainNavbar). Removed local import to avoid duplication.
 import { useRouter } from 'next/router';
-import api from '../api';
+import api from '../../lib/api';
 import './Auth.css';
 import AuthVisualPanel from '../../components/auth/AuthVisualPanel';
 

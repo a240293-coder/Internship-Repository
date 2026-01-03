@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import styles from "./book-live-session.module.css";
+import api from "../lib/api";
 
 const features = [
   {
@@ -182,13 +183,18 @@ export default function BookLiveSession() {
     setFormErrors((prev) => ({ ...prev, [name]: validateField(name, value) }));
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
     const errors = validateForm();
     setFormErrors(errors);
     if (Object.keys(errors).length === 0) {
-      setFormStatus("Thanks! We'll confirm your slot by email shortly.");
-      setFormData(initialFormState);
+      try {
+        await api.post('/live-session/book', formData);
+        setFormStatus("Thanks! We'll confirm your slot by email shortly.");
+        setFormData(initialFormState);
+      } catch (err) {
+        setFormStatus("Something went wrong. Please try again.");
+      }
     } else {
       setFormStatus("");
     }
@@ -273,7 +279,16 @@ export default function BookLiveSession() {
               Have a focused, 1:1 mentor conversation that maps your next steps, whether you are planning to join a cohort, switch fields, or strengthen your placement story.
             </p>
             <div className={styles.heroActions}>
-              <button className={styles.heroButton} type="button">
+              <button 
+                className={styles.heroButton} 
+                type="button"
+                onClick={() => {
+                  const element = document.getElementById('book-live-session-formcard');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+              >
                 Book Your Live Session
               </button>
               <span className={styles.heroHint}>Slots go quickly—lock in a time today to receive the prep kit.</span>
@@ -403,7 +418,7 @@ export default function BookLiveSession() {
             <p className={styles.sectionEyebrow}>Booking form</p>
             <h2 className={styles.sectionTitle}>Reserve your live slot</h2>
           </div>
-          <div className={styles.formCard}>
+          <div id="book-live-session-formcard" className={styles.formCard}>
             <form id="bookingForm" className={styles.formGrid} onSubmit={handleFormSubmit} noValidate>
               <label className={styles.formGroup}>
                 Full name

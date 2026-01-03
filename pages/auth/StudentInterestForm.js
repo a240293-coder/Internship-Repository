@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import api from '../api';
+import api from '../../lib/api';
 import './Auth.css';
 
 const StudentInterestForm = () => {
@@ -38,19 +38,31 @@ const StudentInterestForm = () => {
     setLoading(true);
 
     try {
-      // Send JSON payload (backend supports JSON); skip resume upload for now
-      const payload = {
-        interests: formData.interests.split(',').map(i => i.trim()),
-        desiredDomain: formData.desiredDomain,
-        experience: formData.experience,
-        goals: formData.goals,
-        // include student email if available in localStorage
-        studentEmail: typeof window !== 'undefined' ? localStorage.getItem('userEmail') || null : null,
-        studentName: typeof window !== 'undefined' ? localStorage.getItem('userName') || null : null,
-        studentId: typeof window !== 'undefined' ? localStorage.getItem('userId') || null : null,
-      };
+      const formDataToSend = new FormData();
+      
+      // Append text fields
+      formDataToSend.append('interests', JSON.stringify(formData.interests.split(',').map(i => i.trim())));
+      formDataToSend.append('desiredDomain', formData.desiredDomain);
+      formDataToSend.append('experience', formData.experience);
+      formDataToSend.append('goals', formData.goals);
+      
+      // Append user info
+      if (typeof window !== 'undefined') {
+        const email = localStorage.getItem('userEmail');
+        const name = localStorage.getItem('userName');
+        const id = localStorage.getItem('userId');
+        if (email) formDataToSend.append('studentEmail', email);
+        if (name) formDataToSend.append('studentName', name);
+        if (id) formDataToSend.append('studentId', id);
+      }
 
-      await api.post('/forms/submit', payload);
+      // Append file
+      if (formData.resume) {
+        formDataToSend.append('resume', formData.resume);
+      }
+
+      // Send FormData (browser sets Content-Type to multipart/form-data automatically)
+      await api.post('/forms/submit', formDataToSend);
 
       setSuccess('Form submitted successfully! Admin will review and assign a mentor.');
       setTimeout(() => {

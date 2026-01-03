@@ -1255,8 +1255,8 @@
 
 .btnBookNow {
   padding: 0.6rem 1.5rem;
-  background: #0056b3;
-  color: white;
+  background: #FFFFFF;
+  color: #2563EB;
   border: none;
   border-radius: 8px;
   font-weight: 600;
@@ -1264,16 +1264,17 @@
   cursor: pointer;
   transition: all 0.18s ease;
   font-family: Arial, sans-serif;
-  box-shadow: 0 6px 18px rgba(0,86,179,0.18);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
 /* Hide mobile-only banner row by default to protect desktop layout */
 .mobileBannerRow { display: none; }
 
 .btnBookNow:hover {
-  background: #004a99;
+  background: #F0F7FF;
+  color: #1D4ED8;
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(0,86,179,0.22);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
 }
 
 .hamburger {
@@ -2195,8 +2196,8 @@
   }
   .btnMobileBook {
     padding: 0.4rem 0.9rem;
-    background: #0056b3;
-    color: white;
+    background: #FFFFFF;
+    color: #2563EB;
     border: none;
     border-radius: 8px;
     font-weight: 600;
@@ -2204,7 +2205,7 @@
     cursor: pointer;
     transition: all 0.18s ease;
     font-family: Arial, sans-serif;
-    box-shadow: 0 6px 18px rgba(0,86,179,0.18);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     min-height: 36px;
     flex-shrink: 0;
   }
