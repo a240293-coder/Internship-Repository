@@ -574,20 +574,15 @@
 
 .btnGhost {
   background-color: transparent;
-  color: #2563eb; /* blue-600 */
+  color: #475569; /* slate-600 */
   font-weight: 600;
   padding: 0 1.5rem;
   height: 3rem;
   border-radius: 0.75rem;
-  border: 2px solid #e2e8f0; /* slate-200 */
-  transition: all 0.2s ease;
 }
 
 .btnGhost:hover {
-  background-color: #eff6ff; /* blue-50 */
-  border-color: #2563eb; /* blue-600 */
-  color: #1d4ed8; /* blue-700 */
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
+  background-color: #f1f5f9; /* slate-100 */
+  color: #0f172a; /* slate-900 */
 }
 
