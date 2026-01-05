@@ -1,0 +1,323 @@
+.mentors {
+  background: linear-gradient(180deg, #F8FAFF 0%, #EFF6FF 100%);
+  padding: 6rem 0;
+  font-family: Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.title {
+  font-size: 2.375rem;
+  font-weight: 700;
+  text-align: center;
+  color: #0F172A;
+  margin-bottom: 1rem;
+}
+
+.titleHighlight {
+  position: relative;
+  display: inline-block;
+}
+
+.titleHighlight::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 3px;
+  background: #1D4ED8;
+  border-radius: 2px;
+  width: 60%;
+}
+
+.subtitle {
+  font-size: 1.05rem;
+  text-align: center;
+  color: #475569;
+  margin-bottom: 3rem;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 1.8vw, 2.5rem);
+  align-items: stretch;
+}
+
+/* Allow vertical scrolling while preventing page horizontal scroll during card swipes */
+.grid {
+  touch-action: pan-y;
+}
+
+.mentorCard {
+  background: #FFFFFF;
+  padding: 28px;
+  border-radius: 20px;
+  position: relative;
+  text-align: center;
+  border: 1px solid #DBEAFE;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.mentorCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.12);
+}
+
+.mentorCard:active {
+  transform: translateY(0) scale(0.995);
+}
+
+.mentorImage {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarWrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #EFF6FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(37,99,235,0.06);
+  transition: box-shadow 160ms ease, transform 160ms ease;
+}
+
+.mentorAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.mentorCard:focus-visible {
+  outline: none;
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.12), 0 0 0 6px rgba(37,99,235,0.08);
+  border-color: #1D4ED8;
+}
+
+.mentorName {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0F172A;
+  margin-bottom: 0.35rem;
+}
+
+.mentorRole {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #2563EB;
+  margin-bottom: 0.25rem;
+}
+
+.mentorCompany {
+  font-size: 0.95rem;
+  color: #334155;
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+}
+
+.mentorBio {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.mentorDots {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .mentors {
+    padding: 3rem 0;
+  }
+
+  .title {
+    text-align: left;
+  }
+
+  .titleHighlight::after {
+    left: 0;
+    width: 40%;
+    bottom: -5px;
+  }
+
+  .subtitle {
+    text-align: left;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* grid layout replaced by horizontal track on mobile */
+
+  .grid {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
+  .mentorTrack {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    min-height: clamp(160px, 24vh, 260px);
+    will-change: transform;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .mentorSlide {
+    flex: 0 0 85vw;
+    min-width: 0;
+    max-width: 300px;
+    box-sizing: border-box;
+    padding: 0 0.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mentorCard {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    min-height: auto;
+    border: 1px solid #DBEAFE;
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .avatarWrapper {
+    width: 40px;
+    height: 40px;
+  }
+
+  .mentorAvatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .mentorName {
+    font-size: 1rem;
+  }
+
+  .mentorRole {
+    font-size: 0.92rem;
+  }
+
+  .mentorCompany {
+    font-size: 0.9rem;
+  }
+
+  .mentorBio {
+    font-size: 0.88rem;
+    line-height: 1.35;
+  }
+
+  .mentorDots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    z-index: 50;
+    pointer-events: auto;
+  }
+
+  .mentorDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d1d5db;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 220ms ease;
+    outline: none;
+  }
+
+  .mentorDot:hover {
+    background: #9ca3af;
+  }
+
+  .activeDot {
+    background: #2563eb;
+    width: 28px;
+    border-radius: 8px;
+  }
+
+  .mentorTrackMobile {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    width: 100%;
+    align-items: stretch;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f8faff;
+    scroll-snap-type: x mandatory;
+  }
+
+  .mentorCard {
+    min-width: 240px;
+    max-width: 320px;
+    flex: 0 0 80vw;
+    margin: 0;
+    scroll-snap-align: center;
+  }
+}
+
+@media (min-width: 769px) {
+  .mentorTrack {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 2rem;
+    width: 100%;
+    align-items: stretch;
+    justify-content: center;
+  }
+  .mentorCard {
+    min-width: 320px;
+    max-width: 340px;
+    flex: 1 1 0;
+    margin: 0;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}

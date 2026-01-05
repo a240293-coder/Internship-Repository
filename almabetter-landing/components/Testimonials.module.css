@@ -1,0 +1,400 @@
+.testimonials {
+  background: linear-gradient(180deg, #F8FAFF 0%, #EFF6FF 100%);
+  padding: 6rem 0;
+  font-family: Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.title {
+  font-size: 2.375rem;
+  font-weight: 700;
+  text-align: center;
+  color: #0F172A;
+  margin-bottom: 1rem;
+}
+
+.titleHighlight {
+  position: relative;
+  display: inline-block;
+}
+
+.titleHighlight::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -6px;
+  height: 3px;
+  background: #2563EB;
+  border-radius: 2px;
+  width: 100px;
+}
+
+.subtitle {
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: center;
+  color: #475569;
+  margin-bottom: 3rem;
+}
+
+.testimonialWrapper {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  /* responsive min-height to avoid overflow on small screens */
+  min-height: clamp(160px, 24vh, 260px);
+  padding-bottom: 2.5rem;
+}
+
+/* ensure only one slide is visible at a time */
+.testimonialWrapper {
+  overflow: hidden;
+}
+
+/* allow vertical touch scrolling while we handle horizontal swipe in JS */
+.testimonialWrapper {
+  touch-action: pan-y;
+}
+
+.track {
+  display: flex;
+  width: 100%;
+  will-change: transform;
+  flex-wrap: nowrap;
+}
+
+/* minor performance hint for mobile */
+.track {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.arrows {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  /* increase vertical gap so arrows sit further below testimonial cards */
+  margin-top: 2rem;
+  position: relative;
+  z-index: 3;
+}
+.arrow {
+  background: transparent;
+  color: #2563EB;
+  border: 1.5px solid #2563EB;
+  border-radius: 999px;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: none;
+  transition: transform 0.18s ease-out, box-shadow 0.18s ease-out, background 0.18s ease;
+}
+
+.testimonialCard {
+  position: relative;
+  width: 100%;
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  opacity: 1;
+  transform: none;
+  transition: transform 0.35s ease;
+  pointer-events: auto;
+}
+
+.cardContent {
+  background: #FFFFFF;
+  /* centered uniform card */
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid #DBEAFE;
+  box-shadow: 0 12px 32px rgba(37, 99, 235, 0.08);
+  text-align: center;
+  transition: transform 160ms ease-out, box-shadow 200ms ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: auto;
+  width: min(560px, 96%);
+  margin: 0 auto;
+}
+
+.cardContent:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.12);
+  border-color: #DBEAFE;
+}
+
+.cardContent:active {
+  transform: translateY(0) scale(0.995);
+}
+
+.cardContent:focus-visible {
+  outline: none;
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.12), 0 0 0 6px rgba(37,99,235,0.08);
+  border-color: #1D4ED8;
+}
+
+.testimonialImage {
+  /* scale down avatar/icon size for a more compact card */
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.testimonialAvatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.testimonialAvatar {
+  border: 1px solid rgba(29,78,216,0.05);
+}
+
+.testimonialText {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #334155;
+  margin: 0;
+  font-style: italic;
+  max-width: 520px;
+  text-align: center;
+}
+
+.testimonialName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0F172A;
+  margin-top: 16px;
+}
+
+.testimonialRole {
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 0.75rem;
+}
+
+.companyLogo {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #2563EB;
+  color: #FFFFFF;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.dots {
+  display: none;
+}
+
+/* show dots on mobile for better paging feedback */
+@media (max-width: 768px) {
+  .dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #d1d5db;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.dot.activeDot {
+  background: #2563eb;
+  width: 40px;
+  border-radius: 6px;
+}
+
+.dot:hover {
+  background: #9ca3af;
+}
+
+/* dragging state to give visual feedback while swiping */
+.dragging {
+  cursor: grabbing;
+}
+
+@media (max-width: 768px) {
+  .testimonials {
+    padding: 4rem 0;
+  }
+
+  .container {
+    padding: 0 1rem;
+    max-width: 720px;
+  }
+
+  .title {
+    font-size: 1.875rem;
+    font-weight: 600;
+  }
+
+  .titleHighlight::after {
+    bottom: -5px;
+    height: 2.5px;
+  }
+
+  .cardContent {
+    padding: 16px;
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.07);
+    width: min(420px, 94%);
+  }
+
+  .testimonialText {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .testimonialImage {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .testimonialAvatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  .testimonialName {
+    font-size: 0.95rem;
+  }
+
+  .testimonialRole {
+    font-size: 0.85rem;
+  }
+
+  .companyLogo {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+  }
+
+  .arrows {
+    display: none;
+    margin-top: 0;
+  }
+
+  .arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 1.05rem;
+  }
+}
+
+/* dragging state to give visual feedback while swiping */
+.dragging {
+  cursor: grabbing;
+}
+
+/* Hide dots on tablet/desktop to declutter pagination there and add extra breathing room */
+@media (min-width: 769px) {
+  .testimonialWrapper {
+    /* reduce bottom padding on larger screens for tighter layout */
+    padding-bottom: 3rem;
+  }
+
+  .cardContent {
+    /* slightly smaller desktop card padding */
+    padding: 32px;
+    border-radius: 20px;
+  }
+
+  .arrows {
+    margin-top: 2.4rem;
+  }
+  .container {
+    padding: 0 2rem;
+    max-width: 1200px;
+  }
+}
+
+/* Laptop/Desktop Grid View - Show all cards together */
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1100px;
+  }
+
+  .testimonialWrapper {
+    max-width: 1100px;
+    overflow: visible;
+    padding-bottom: 0;
+    min-height: auto;
+  }
+
+  .track {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    transform: none !important; /* Override JS inline style */
+    width: 100%;
+  }
+
+  .testimonialCard {
+    width: calc(33.333% - 1.34rem); /* 3 columns with gap consideration */
+    flex: 0 0 calc(33.333% - 1.34rem);
+    height: auto; /* Allow height to be determined by content/flex stretch */
+    display: flex; /* Make card a flex container so content can stretch */
+  }
+
+  .cardContent {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Reduce internal spacing for tighter height */
+  .testimonialImage {
+    margin-bottom: 0.5rem;
+  }
+  
+  .testimonialName {
+    margin-top: 0.5rem;
+  }
+  
+  .testimonialRole {
+    margin-bottom: 0.25rem;
+  }
+
+  .testimonialText {
+    line-height: 1.5;
+  }
+
+  .arrows, .dots {
+    display: none !important;
+  }
+}
+

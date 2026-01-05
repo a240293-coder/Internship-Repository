@@ -1,0 +1,539 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Arial', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+}
+
+/* RIGHT SECTION */
+.rightSection {
+  width: 60%;
+  display: flex;
+  align-items: flex-start; /* keep form slightly down from top */
+  justify-content: center; /* center form horizontally */
+  padding: 80px 48px;
+  min-height: 100vh;
+}
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1;
+  color: white; /* Desktop default */
+  letter-spacing: -0.02em;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.logoWrapper:focus {
+  outline: 2px solid rgba(255,255,255,0.12);
+  outline-offset: 2px;
+}
+
+.logoTextMain {
+  /* Inherit color */
+}
+
+.logoTextHighlight {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+}
+
+.logoTextHighlight::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 4px;
+  background-color: #cc0000;
+}
+
+/* LEFT SECTION */
+.leftSection {
+  width: 40%;
+  background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonialCard {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 40px;
+  margin-top: 60px; /* Space for logo */
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.profileImage {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #374151;
+  margin-right: 1rem;
+  object-fit: cover;
+}
+
+.profileInfo h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #10b981;
+}
+
+.profileInfo p {
+  font-size: 0.875rem;
+  color: #a0aec0;
+  margin: 0.25rem 0 0;
+}
+
+.companyBadge {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  color: #E5E7EB;
+  margin-top: 0.5rem;
+  display: inline-block;
+}
+
+.quote {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+.bottomSection {
+  margin-bottom: 2rem;
+}
+
+.motivatingLine {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  background: linear-gradient(90deg, #FFFFFF 0%, #9CA3AF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logoGrid {
+  display: flex;
+  gap: 24px;
+  opacity: 0.7;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Logo group container (logo + small icons) */
+.logoGroup {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  right: 24px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+/* Small Home icon next to the logo */
+.homeButtonLogo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  color: white;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  text-decoration: none;
+  transition: transform 0.12s ease, opacity 0.12s ease, box-shadow 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+  box-shadow: 0 4px 12px rgba(2,6,23,0.08);
+}
+
+.homeButtonLogo:hover {
+  transform: scale(1.05);
+  opacity: 0.95;
+  background-color: #ffeef4; /* light pink */
+  color: #ef4444; /* pink icon */
+  border-color: rgba(239,68,68,0.12);
+  box-shadow: 0 12px 32px rgba(239,68,68,0.12);
+}
+
+.homeButtonLogo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; /* tap target */
+  height: 44px; /* tap target */
+  border-radius: 50%; /* round */
+  color: #0f1724; /* dark icon color */
+  background: white; /* white circular background */
+  border: 1px solid rgba(2,6,23,0.08);
+  text-decoration: none;
+  transition: transform 0.12s ease, opacity 0.12s ease, box-shadow 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+  box-shadow: 0 4px 12px rgba(2,6,23,0.08);
+}
+
+.homeButtonLogo:hover {
+  transform: scale(1.03);
+  opacity: 0.98;
+  background-color: #ffeef4; /* light pink */
+  color: #ef4444; /* pink icon */
+  border-color: rgba(239,68,68,0.12);
+  box-shadow: 0 12px 32px rgba(239,68,68,0.12);
+}
+
+.homeButtonLogo:active {
+  transform: scale(0.98);
+}
+
+.homeButtonLogo:focus {
+  outline: 2px solid rgba(15,23,36,0.12);
+  outline-offset: 2px;
+}
+.formContainer {
+  width: 100%;
+  max-width: 420px;
+  position: relative; /* allow absolutely-positioned home icon inside */
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  color: #1a202c;
+  margin: 0 0 8px;
+  text-align: center;
+}
+
+.subtitle {
+  font-size: 20px;
+  color: #4b5563;
+  line-height: 1.4;
+  margin: 0 0 28px;
+  text-align: center;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* GOOGLE BUTTON */
+.googleButton {
+  width: 100%;
+  max-width: 420px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  background-color: #4285f4;
+  border: none;
+  padding: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.googleButton:hover {
+  background-color: #357ae8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.googleIconWrapper {
+  width: 52px;
+  height: 52px;
+  background-color: white;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.googleButtonText {
+  flex-grow: 1;
+  text-align: center;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* DIVIDER */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 24px 0;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.divider::before {
+  margin-right: 1rem;
+}
+
+.divider::after {
+  margin-left: 1rem;
+}
+
+/* FORM INPUTS */
+.inputGroup {
+  margin-bottom: 16px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #1a202c;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.input::placeholder {
+  color: #9ca3af;
+}
+
+/* PRIMARY BUTTON */
+.primaryButton {
+  width: 100%;
+  background-color: #ef4444;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+.primaryButton:hover {
+  background-color: #dc2626;
+}
+
+/* LINKS & HELPERS */
+.forgotPassword {
+  display: block;
+  text-align: center;
+  color: #ef4444;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  margin-bottom: 24px;
+  margin-top: -8px;
+}
+
+.forgotPassword:hover {
+  text-decoration: underline;
+}
+
+.termsText {
+  text-align: center;
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: -8px 0 18px;
+}
+
+.termsLink {
+  color: #ef4444;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.termsLink:hover {
+  text-decoration: underline;
+}
+
+.bottomText {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 0;
+  padding-top: 24px;
+  border-top: 1px solid #f3f4f6;
+  width: 100%;
+}
+
+.bottomText span {
+  font-size: 15px;
+  color: #1a202c;
+}
+
+.bottomText strong {
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.link {
+  color: #ef4444;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.emailSignupLinkWrapper {
+  text-align: center;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.emailSignupLink {
+  color: #1a202c;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.emailSignupLink strong {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.emailSignupLink:hover strong {
+  color: #ef4444;
+}
+
+/* Animation for form appearance */
+.fadeDown {
+  animation: fadeInDown 0.3s ease-out forwards;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.outlineButtonRedText {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+}
+
+.outlineButtonRedText:hover {
+  text-decoration: underline;
+}
+
+/* Override existing outlineButton for the new design if needed, 
+   or keep it for the "Sign In" button in Sign Up mode which is an outline button 
+*/
+.outlineButton {
+  padding: 8px 16px;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  display: inline-block; /* Ensure anchor tag behaves like a button block */
+}
+
+.outlineButton:hover {
+  background-color: #fee2e2;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .logoWrapper {
+    top: 20px;
+    left: 20px;
+    color: #1a202c; /* Dark text on white background */
+  }
+
+  .logoGroup {
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    justify-content: space-between;
+  }
+
+  .homeButtonLogo {
+    color: #1a202c;
+    border: 1px solid rgba(15,23,36,0.06);
+  }
+
+  /* Right Section (Form) comes FIRST */
+  .rightSection {
+    width: 100%;
+    order: 1;
+    padding: 80px 24px 40px; /* Top padding for logo */
+    min-height: auto;
+  }
+
+  /* Left Section (Testimonial) comes SECOND */
+  .leftSection {
+    width: 100%;
+    order: 2;
+    padding: 40px 24px;
+  }
+  
+  .testimonialCard {
+    margin-top: 0;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+}

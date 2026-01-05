@@ -1,0 +1,55 @@
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.36);display:flex;align-items:flex-end;justify-content:center;z-index:1200}
+.sheet{width:100%;max-width:840px;background:#F9FAFB;border-top-left-radius:18px;border-top-right-radius:18px;padding:0;box-shadow:0 -6px 18px rgba(8,15,25,0.06);max-height:60vh;display:flex;flex-direction:column;overflow:hidden;animation:sheetUp .25s cubic-bezier(.22,.9,.36,1)}
+@keyframes sheetUp{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+.handle{width:48px;height:4px;background:#e6e6e6;border-radius:999px;margin:8px auto}
+.header{display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid rgba(15,23,42,0.04);position:sticky;top:0;background:transparent;backdrop-filter:blur(2px);z-index:5;height:48px}
+.title{font-size:1rem;font-weight:700;color:#0b1220;margin:0}
+.closeBtn{background:transparent;border:none;color:var(--lb-muted,#6b7280);font-weight:600;padding:8px;border-radius:8px;font-size:20px;line-height:1}
+.list{display:flex;flex-direction:column;padding:6px 0;overflow:auto;flex:1;scroll-behavior:smooth}
+.row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:transparent;border:none;border-top:1px solid #f3f3f3;cursor:pointer;text-align:left;min-height:44px}
+.row:first-of-type{border-top:0}
+.rowLabel{font-size:15px;color:#0b1220;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.radioWrap{display:flex;align-items:center;justify-content:center;width:28px;height:28px}
+.radio{width:14px;height:14px;border-radius:999px;border:2px solid #cfcfcf;display:inline-block}
+.radioDot{width:12px;height:12px;border-radius:999px;background:var(--lb-blue,#002147);display:inline-block}
+.selected{background:rgba(0,33,71,0.06)}
+
+.anchored{width:auto;max-width:calc(100% - 16px);border-radius:12px;box-shadow:0 8px 20px rgba(8,15,25,0.08);overflow:hidden}
+.anchored .list{overflow:auto}
+
+/* Anchored (attached to input) visual tweaks - compact */
+.anchored{background:#fff;border-radius:10px}
+.anchored{padding:6px 0}
+.anchored .header{border-bottom:none;height:36px;padding:4px 8px}
+.anchored .anchoredTitle{font-size:14px;font-weight:600;color:#0b1220}
+.anchored .anchoredClose{font-size:16px;padding:6px}
+.anchored .list{max-height:260px;overflow-y:auto;-webkit-overflow-scrolling:touch;border-top:0}
+.anchored .row{padding:10px 14px;min-height:40px;border-top:1px solid #f3f3f3}
+.anchored .rowLabel{font-size:14px}
+.anchored .radioWrap{width:22px;height:22px}
+.anchored .radio{width:10px;height:10px}
+.anchored .radioDot{width:10px;height:10px}
+.anchored{box-shadow:0 6px 14px rgba(8,15,25,0.06)}
+.anchored{border:1px solid rgba(15,23,42,0.04)}
+
+/* Removed large-screen upscale so compact anchored/list styles remain consistent on all devices */
+
+@media(max-width:720px){
+	/* Mobile/tablet */
+	.sheet{max-height:58vh;border-top-left-radius:18px;border-top-right-radius:18px}
+	.header{height:48px}
+	.row{padding:12px 16px}
+	.rowLabel{font-size:14px}
+}
+
+/* Scrollbar visible on desktop */
+.list::-webkit-scrollbar{width:10px}
+.list::-webkit-scrollbar-thumb{background:rgba(15,23,42,0.08);border-radius:10px}
+.list::-webkit-scrollbar-track{background:transparent}
+
+/* subtle focus styles for accessibility */
+.row:focus{outline:none;background:rgba(15,23,42,0.03)}
+.row:focus-visible{box-shadow:inset 0 0 0 2px rgba(0,33,71,0.08)}
+
+@keyframes sheetUp{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+
