@@ -15,7 +15,7 @@ async function fetchData() {
     console.table(forms);
 
     console.log('\n--- Live Sessions ---');
-    const [sessions] = await db.execute('SELECT * FROM live_sessions');
+    const [sessions] = await db.execute('SELECT * FROM live_session_bookings');
     console.table(sessions);
 
     console.log('\n--- Admins ---');

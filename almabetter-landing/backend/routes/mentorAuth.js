@@ -17,24 +17,16 @@ router.post('/register', async (req, res) => {
 
     // Create new mentor
     const mentor = await Mentor.create({
-      name,
+      full_name: name,
       email,
       password
     });
 
-    // Create JWT token
-    const token = jwt.sign(
-      { id: mentor.id, email: mentor.email, role: 'mentor' },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
     res.status(201).json({
-      message: 'Mentor registered successfully',
-      token,
+      message: 'Mentor registered successfully. Please log in to continue.',
       mentor: {
         id: mentor.id,
-        name: mentor.name,
+        name: mentor.full_name,
         email: mentor.email
       }
     });
@@ -72,7 +64,7 @@ router.post('/login', async (req, res) => {
       token,
       mentor: {
         id: mentor.id,
-        name: mentor.name,
+        name: mentor.full_name,
         email: mentor.email
       }
     });

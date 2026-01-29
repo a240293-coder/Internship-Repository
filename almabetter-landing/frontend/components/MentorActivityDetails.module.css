@@ -1,0 +1,97 @@
+/* Responsive styles for MentorActivityDetails */
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.headerCard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 6px 18px rgba(20,30,70,0.05);
+  margin-bottom: 12px;
+}
+.headerTitle {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.05;
+  letter-spacing: -0.5px;
+  color: #1e40af; /* blue */
+}
+
+.headerEmail {
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 4px;
+}
+.number {
+  color: #1e40af;
+  font-weight: 700;
+}
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 4px 18px rgba(12,30,60,0.04);
+}
+.chartsRow {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+.chartCard {
+  flex: 1;
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(12,30,60,0.04);
+}
+.donutCard {
+  width: 280px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(12,30,60,0.04);
+}
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 18px;
+}
+.tableCard {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(12,30,60,0.04);
+}
+.tableWrapper {
+  max-height: 320px;
+  overflow: auto;
+}
+/* Make SVGs responsive */
+.chartCard svg,
+.donutCard svg {
+  width: 100%;
+  height: auto;
+}
+/* Mobile adjustments */
+@media (max-width: 900px) {
+  .cardsGrid { grid-template-columns: repeat(2,1fr); }
+  .donutCard { width: 220px; }
+  .bottomGrid { grid-template-columns: 1fr; }
+  .chartsRow { flex-direction: column; }
+}
+@media (max-width: 600px) {
+  .cardsGrid { grid-template-columns: 1fr; }
+  .donutCard { width: 100%; }
+  .chartCard { width: 100%; }
+  .headerCard { padding: 14px; }
+  .container { padding: 12px; }
+}

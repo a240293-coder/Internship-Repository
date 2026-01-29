@@ -1,0 +1,2487 @@
+@media (min-width: 900px) {
+  .admin-form-card,
+  .form-card {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    overflow-y: visible !important;
+    max-height: none !important;
+  }
+}
+
+/* Table layout for mentor assignment list */
+.forms-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem; /* compact base font size for history table */
+  background: var(--white);
+  box-shadow: 0 6px 20px rgba(15,23,42,0.06);
+  border-radius: 8px;
+  overflow: hidden;
+  table-layout: auto;
+}
+.forms-table thead th {
+  text-align: left;
+  padding: 0.4rem 0.6rem;
+  background: #f3f4f6; /* light gray header */
+  color: #374151; /* gray-700 text */
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+.forms-table tbody td {
+  padding: 0.28rem 0.5rem;
+  border-top: 1px solid rgba(0,0,0,0.04);
+  vertical-align: middle;
+  font-size: 0.78rem;
+}
+
+/* Keep student name on one line on larger screens */
+@media (min-width: 900px) {
+  .forms-table td.td-name {
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.forms-table .select-control {
+  min-width: 110px;
+  max-width: 150px;
+  padding: 0.18rem 0.32rem;
+  font-size: 0.75rem;
+  border-radius: 6px;
+  height: 30px;
+  line-height: 1.05;
+}
+.forms-table .assign-btn {
+  padding: 0.18rem 0.34rem;
+  font-size: 0.75rem;
+  height: 30px;
+  border-radius: 6px;
+}
+
+/* Keep table controls using theme colors and not browser defaults */
+.forms-table .select-control,
+.forms-table .select-control select,
+.forms-table .select-control option {
+  background: var(--white);
+  color: var(--slate-800);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+.forms-table .select-control:focus {
+  outline: none;
+  border-color: var(--blue-500);
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.08);
+}
+.forms-table .assign-btn {
+  background: var(--white);
+  color: var(--slate-700);
+  border: 1px solid var(--border);
+}
+.forms-table .assign-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+}
+.forms-table .assign-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.forms-table svg, .forms-table i {
+  color: var(--slate-700);
+}
+
+/* Compact assign cell layout */
+.forms-table td.td-assign {
+  white-space: nowrap;
+}
+.forms-table td.td-assign .select-control {
+  display: inline-block;
+  vertical-align: middle;
+}
+.forms-table td.td-assign .assign-btn {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+/* New table-specific control classes to avoid conflicting with other components */
+.forms-table .forms-table-select,
+.forms-table .forms-table-select select,
+.forms-table .forms-table-select option {
+  background: var(--white);
+  color: var(--slate-800);
+  border: 1px solid var(--border);
+  box-shadow: none;
+  min-width: 100px;
+  max-width: 140px;
+  padding: 0.12rem 0.3rem;
+  font-size: 0.72rem;
+  border-radius: 6px;
+  height: 30px;
+}
+.forms-table .forms-table-select:focus {
+  outline: none;
+  border-color: var(--blue-500);
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.08);
+}
+.forms-table td.td-assign .forms-table-select { display: inline-block; vertical-align: middle; }
+
+.forms-table .forms-table-assign-btn {
+  background: var(--white);
+  color: var(--slate-700);
+  border: 1px solid var(--border);
+  padding: 0.12rem 0.32rem; /* tighter */
+  font-size: 0.72rem;
+  height: 28px;
+  border-radius: 6px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.36rem;
+}
+.forms-table td.td-assign .forms-table-assign-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+}
+.forms-table td.td-assign .forms-table-assign-btn:disabled { opacity: 0.6; cursor: default; }
+
+/* Universal edit/delete color rules inside tables */
+.forms-table button.assign-btn,
+.forms-table .assign-btn {
+  background: transparent !important;
+  border: none !important;
+  color: var(--blue-600, #2563eb) !important;
+  font-weight: 700 !important;
+  padding: 0 !important;
+}
+.forms-table button.assign-btn:hover,
+.forms-table .assign-btn:hover {
+  text-decoration: underline !important;
+}
+.forms-table button.danger-btn,
+.forms-table .danger-btn {
+  background: transparent !important;
+  border: none !important;
+  color: var(--red-600, #ef4444) !important;
+  font-weight: 700 !important;
+  padding: 0 !important;
+}
+.forms-table button.danger-btn:hover,
+.forms-table .danger-btn:hover {
+  text-decoration: underline !important;
+}
+
+/* Smaller badge specifically in table rows */
+.forms-table .status-badge {
+  padding: 0.22rem 0.5rem;
+  font-size: 0.72rem;
+  gap: 0.3rem;
+}
+@media (max-width: 900px) {
+  /* Mobile: stacked rows for readability */
+  .forms-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto; /* fallback for very small screens */
+  }
+  .forms-table thead { display: none; }
+  .forms-table, .forms-table tbody, .forms-table tr, .forms-table td { display: block; width: 100%; }
+  .forms-table tr { margin-bottom: 0.75rem; border-radius: 8px; }
+
+  /* Make each cell a block with space for the label (td:before) */
+  .forms-table td {
+    display: block;
+    width: 100%;
+    padding: 1.2rem 1rem; /* vertical space to separate rows */
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    position: relative;
+    box-sizing: border-box;
+    line-height: 1.35;
+  }
+
+  .forms-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0.9rem;
+    top: 0.5rem;
+    font-weight: 700;
+    color: var(--muted-700, #4b5563);
+    font-size: 0.9rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .td-name:before { content: "Student"; }
+  .td-email:before { content: "Email"; }
+  .td-domain:before { content: "Domain"; }
+  .td-interests:before { content: "Interests"; }
+  .td-submitted:before { content: "Submitted"; }
+  .td-status:before { content: "Status"; }
+  .td-assign:before { content: "Assign"; }
+
+  /* Hide redundant labels and headers inside table cells on mobile to avoid duplicate text */
+  .forms-table td .info-label,
+  .forms-table td .card-header,
+  .forms-table td .card-header h3,
+  .forms-table td .card-subtitle,
+  .forms-table td .assign-panel .info-label { display: none !important; }
+
+  /* Ensure inner values sit below the td:before label */
+  .forms-table td > * { display: block !important; margin-top: 1.15rem !important; }
+
+  /* Make assign controls stack nicely on mobile */
+  .forms-table td.td-assign { display: flex; gap: 0.5rem; align-items: center; padding-right: 1rem; }
+  .forms-table td.td-assign .forms-table-select { width: 66%; min-width: 0; }
+  .forms-table td.td-assign .forms-table-assign-btn { width: 30%; }
+
+  /* Make action cell compact and readable on mobile */
+  .forms-table td.td-actions {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    padding-right: 1rem;
+  }
+  .forms-table td.td-actions button {
+    background: transparent !important;
+    border: none !important;
+    padding: 0.12rem 0.4rem !important;
+    color: var(--blue-600, #2563eb) !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+    box-shadow: none !important;
+  }
+  .forms-table td.td-actions button.danger-btn {
+    color: var(--red-600, #ef4444) !important;
+  }
+
+  /* Ensure badges and controls respect block layout */
+  .forms-table .status-badge,
+  .forms-table .forms-table-select,
+  .forms-table .forms-table-assign-btn { display: inline-block; margin-top: 0.5rem; vertical-align: middle; }
+}
+@media (max-width: 600px) {
+  .forms-table .select-control {
+    min-width: 140px;
+    max-width: 100%;
+    width: 70%;
+  }
+  .forms-table .assign-btn {
+    width: 24%;
+    padding: 0.35rem 0.4rem;
+  }
+}
+
+/* Strong overrides for table assign controls to avoid being overridden by other selectors */
+.forms-table td.td-assign .select-control,
+.forms-table td.td-assign .assign-btn {
+  background: var(--white) !important;
+  color: var(--slate-800) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: none !important;
+}
+.forms-table td.td-assign .select-control {
+  padding: 0.2rem 0.36rem !important;
+  font-size: 0.78rem !important;
+  height: 32px !important;
+}
+.forms-table td.td-assign .assign-btn {
+  padding: 0.2rem 0.4rem !important;
+  height: 32px !important;
+}
+.forms-table td.td-assign .assign-btn:hover:not(:disabled) {
+  background: #f1f5ff !important;
+  border-color: var(--blue-500) !important;
+  color: var(--blue-600) !important;
+}
+@media (max-width: 1100px) {
+  .hero-copy, .hero-cta-card {
+    padding: 1rem 0.8rem 1rem 0.8rem;
+    border-radius: 12px;
+    font-size: 1rem;
+  }
+}
+@media (max-width: 700px) {
+  .hero-copy, .hero-cta-card {
+    padding: 0.7rem 0.5rem 0.7rem 0.5rem;
+    border-radius: 8px;
+    font-size: 0.97rem;
+  }
+}
+/* Student stats card style to match admin stats card */
+
+.student-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.2rem;
+  margin-bottom: 2.2rem;
+  width: 100%;
+  align-items: stretch;
+}
+
+@media (max-width: 1100px) {
+  .student-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .student-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .student-stat-card {
+    min-width: 0;
+    padding: 0.7rem 0.5rem 0.5rem 0.5rem;
+  }
+  .student-stat-label {
+    font-size: 0.72rem;
+  }
+  .student-stat-value {
+    font-size: 1.05rem;
+  }
+  .student-stat-helper {
+    font-size: 0.75rem;
+  }
+}
+
+
+.student-stat-card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1.2px solid #e5e7eb;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  padding: 1.3rem 1.2rem 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: 110px;
+  width: 100%;
+  transition: box-shadow 0.18s, border 0.18s;
+}
+
+.student-stat-card:hover {
+  /* Keep visual appearance identical on hover (no color change) */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  border-color: #e5e7eb;
+  background: #fff;
+}
+
+.student-stat-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #334155;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  margin-bottom: 0.16rem;
+  margin-top: 0.07rem;
+}
+
+
+.student-stat-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #2563eb;
+  margin-bottom: 0.11rem;
+  margin-top: 0.07rem;
+  letter-spacing: -0.01em;
+  text-align: left;
+}
+
+/* Improve list presentation inside stat value area */
+.student-stat-value ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.student-stat-value li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.06rem;
+  font-weight: 700;
+  color: #1e40af; /* deep blue for items */
+  line-height: 1.1;
+}
+.student-stat-value li::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #1e40af;
+  border-radius: 50%;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+.student-stat-value li.small {
+  font-weight: 600;
+  color: #334155;
+  font-size: 0.98rem;
+}
+
+/* Make helper text slightly smaller and lighter */
+.student-stat-helper {
+  font-size: 0.92rem;
+  color: #64748b;
+}
+
+/* Make cards more compact and balanced */
+.student-stat-card {
+  padding: 1.2rem 1rem;
+  min-height: 130px;
+}
+
+
+.student-stat-helper {
+  font-size: 0.98rem;
+  color: #64748b;
+  font-weight: 400;
+  margin-top: 0.06rem;
+  text-align: left;
+}
+
+/* Ensure student stat values are always blue across dashboard contexts */
+.dashboard-bg .student-stats-grid .student-stat-value,
+.student-stat-value {
+  color: var(--blue-600, #2563eb) !important;
+}
+/* Action buttons group for admin history table (laptop/desktop) */
+/* Action buttons group for admin history table (all screens) */
+/* Professional action buttons group for admin history table */
+.action-buttons {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 0.4rem !important;
+  justify-content: center;
+  align-items: center;
+  background: none !important;
+  border: none !important;
+  padding: 0;
+  min-width: 120px;
+  flex-wrap: nowrap !important;
+}
+.action-buttons .assign-btn,
+.action-buttons .danger-btn {
+  min-width: 64px;
+  padding: 0.22rem 0.6rem;
+  font-size: 0.85rem;
+  border-radius: 5px;
+  box-shadow: none;
+  margin: 0;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  font-weight: 600;
+  color: #1e293b;
+  transition: background 0.15s, border 0.15s, color 0.15s;
+  outline: none;
+}
+.action-buttons .assign-btn:hover {
+  background: #e0edff;
+  border-color: #2563eb;
+  color: #2563eb;
+}
+.action-buttons .danger-btn {
+  border-color: #fee2e2;
+  color: #b91c1c;
+  background: #fff;
+}
+.action-buttons .danger-btn:hover {
+  background: #fee2e2;
+  border-color: #b91c1c;
+  color: #fff;
+}
+@media (max-width: 900px) {
+  .dashboard-hero {
+    display: none !important;
+  }
+}
+
+/* Submissions table on student dashboard */
+.student-submissions { margin-top: 2rem; }
+.submissions-wrap {
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 0.75rem 0.5rem;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+}
+
+/* Ensure the submissions wrapper is the only horizontal scroller
+   and allow it to shrink inside flexible layout containers */
+.submissions-wrap {
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  min-width: 0;
+  overflow-y: visible;
+}
+.submissions-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  font-size: 0.95rem;
+  table-layout: auto;
+}
+.submissions-table thead th {
+  text-align: left;
+  padding: 12px 14px;
+  background: #f8fafc;
+  font-weight: 800;
+  color: var(--slate-600);
+  border-bottom: 2px solid var(--border);
+}
+.submissions-table tbody td {
+  padding: 12px 14px;
+  border-top: 1px solid rgba(0,0,0,0.04);
+  vertical-align: middle;
+  background: transparent;
+}
+.submissions-table tbody tr { background: var(--card); border-radius: 8px; }
+.submissions-table tbody tr td:last-child { white-space: nowrap; display: flex; gap: 0.6rem; align-items: center; }
+
+/* Make content wrap when needed instead of forcing wide columns */
+.submissions-table td, .submissions-table th { white-space: normal; word-break: break-word; }
+
+@media (max-width: 900px) {
+  .submissions-table thead { display: none; }
+  .submissions-table, .submissions-table tbody, .submissions-table tr, .submissions-table td { display: block; width: 100%; }
+  .submissions-table tr { margin-bottom: 0.75rem; }
+  .submissions-table td { padding: 10px 12px; }
+  .submissions-table td:before { content: attr(data-label); font-weight: 700; display: block; margin-bottom: 6px; color: var(--muted); }
+}
+
+/* Global action button base styles (applies across tables and action groups) */
+.assign-btn,
+.danger-btn {
+  display: inline-block;
+  padding: 0.36rem 0.62rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--slate-700);
+  cursor: pointer;
+  transition: background 0.12s, transform 0.08s, box-shadow 0.12s, color 0.12s;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+}
+
+/* Ensure buttons placed next to each other have spacing */
+.assign-btn + .danger-btn,
+.action-buttons .assign-btn + .action-buttons .danger-btn {
+  margin-left: 0.5rem;
+}
+
+.assign-btn:hover {
+  background: #e6f0ff;
+  border-color: var(--blue-500);
+  color: var(--blue-600);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(37,99,235,0.06);
+}
+
+.danger-btn {
+  border-color: #fee2e2;
+  color: #b91c1c;
+  background: var(--white);
+}
+.danger-btn:hover {
+  background: #fee2e2;
+  border-color: #b91c1c;
+  color: #b91c1c;
+}
+
+/* Make action cell wrap on small screens and stack buttons vertically if needed */
+@media (max-width: 700px) {
+  .submissions-table tbody tr td:last-child { white-space: normal; display: flex; gap: 0.5rem; flex-wrap: nowrap; align-items: center; justify-content: flex-end; }
+  .submissions-table tbody tr td:last-child .assign-btn,
+  .submissions-table tbody tr td:last-child .danger-btn { margin-left: 0; padding: 0.45rem 0.7rem; font-size: 0.9rem; min-width: auto; }
+  .action-buttons { flex-direction: column !important; gap: 0.6rem !important; }
+}
+
+/* Smaller, uniform action buttons for very small phones */
+@media (max-width: 420px) {
+  .submissions-table tbody tr td:last-child { gap: 0.35rem; }
+  .submissions-table tbody tr td:last-child .assign-btn,
+  .submissions-table tbody tr td:last-child .danger-btn {
+    padding: 0.24rem 0.5rem;
+    font-size: 0.8rem;
+    border-radius: 8px;
+
+/* Responsive rules for mentor assigned students table */
+.simple-table-wrapper { -webkit-overflow-scrolling: touch; }
+.mentor-table-scroll { overflow-x: auto; overflow-y: visible; width: 100%; -webkit-overflow-scrolling: touch; }
+.mentor-students-table { width: 100%; border-collapse: separate; border-spacing: 0 12px; font-size: 15px; table-layout: auto; min-width: 760px; }
+
+/* Reserve space for the scrollbar to avoid content clipping and layout shift */
+.mentor-table-scroll {
+  padding-bottom: 10px; /* give breathing room for horizontal scrollbar */
+  scrollbar-gutter: stable both-edges;
+  -ms-overflow-style: auto;
+}
+
+/* Strong overrides: some parent rules set overflow-x: hidden !important;
+   ensure the mentor table can scroll horizontally on small screens */
+.mentor-table-scroll {
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+}
+
+/* Allow the immediate dashboard content containers to show horizontal overflow for this area */
+.dashboard-content-wrapper, .dashboard-main, .dashboard-shell {
+  overflow-x: visible !important;
+}
+
+/* Ensure mentor table remains a normal table on small screens and does not turn into stacked blocks. */
+@media (max-width: 900px) {
+  .mentor-students-table, .mentor-students-table thead, .mentor-students-table tbody, .mentor-students-table tr, .mentor-students-table th, .mentor-students-table td {
+    display: table !important;
+    table-layout: auto !important;
+  }
+  .mentor-students-table thead { display: table-header-group !important; }
+  /* Prevent wrapping of column content so horizontal scroll shows complete columns */
+  .mentor-students-table th, .mentor-students-table td { white-space: nowrap !important; }
+  /* Reduce select width on very small screens */
+  .mentor-students-table select { min-width: 90px !important; }
+  /* Ensure wrapper can scroll horizontally even if parents try to hide overflow */
+  .mentor-table-scroll { overflow-x: auto !important; }
+}
+.mentor-students-table thead th { text-align: left; padding: 12px 14px; background: #f8fafc; font-weight: 800; color: var(--slate-600); border-bottom: 2px solid var(--border); }
+.mentor-students-table tbody td { padding: 12px 14px; border-top: 1px solid rgba(0,0,0,0.04); vertical-align: middle; background: transparent; }
+
+@media (max-width: 900px) {
+  .mentor-students-table thead { display: none; }
+  .mentor-students-table, .mentor-students-table tbody, .mentor-students-table tr, .mentor-students-table td { display: block; width: 100%; }
+  .mentor-students-table tr { margin-bottom: 0.75rem; }
+  .mentor-students-table td { padding: 10px 12px; }
+  .mentor-students-table td:before { content: attr(data-label); font-weight: 700; display: block; margin-bottom: 6px; color: var(--muted); }
+  .mentor-students-table td[data-label="Actions"] { display: flex; gap: 8px; align-items: center; }
+}
+    min-width: 72px;
+    width: 72px;
+    height: 36px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  .action-buttons { flex-direction: row !important; gap: 0.4rem !important; }
+  .submissions-table tbody tr td:last-child { justify-content: flex-end; }
+}
+
+/* Edit modal */
+.edit-modal { position: fixed; inset: 0; display:flex; align-items:center; justify-content:center; background: rgba(2,6,23,0.45); z-index: 60; }
+.edit-modal-panel { width: 720px; max-width: 96%; background:#fff; border-radius: 12px; box-shadow: 0 12px 40px rgba(2,6,23,0.35); padding: 1rem; }
+.edit-modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.4rem; }
+.edit-modal-header h4 { margin:0; font-size:1.1rem; }
+.edit-modal-header button { background:none; border:none; font-size:1.4rem; line-height:1; cursor:pointer; }
+.edit-form label { display:block; margin-top:0.6rem; font-weight:600; color:#334155; }
+.edit-form input[type="text"], .edit-form textarea, .edit-form input[type="file"] { width:100%; padding:0.5rem; border:1px solid var(--border); border-radius:6px; margin-top:0.25rem; }
+.edit-form textarea { min-height:80px; }
+.modal-actions { display:flex; gap:0.6rem; justify-content:flex-end; margin-top:0.8rem; }
+/* Modern card grid for mentors */
+.mentors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.mentor-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(37,99,235,0.08), 0 1.5px 6px rgba(37,99,235,0.04);
+  border: 1px solid #e2e8f0;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: box-shadow 0.2s;
+  min-height: 120px;
+}
+.mentor-card:hover {
+  box-shadow: 0 8px 32px rgba(37,99,235,0.13), 0 2px 8px rgba(37,99,235,0.07);
+  border-color: #2563eb;
+}
+.mentor-card .mentor-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+}
+.mentor-card .mentor-email {
+  font-size: 1rem;
+  color: #475569;
+  word-break: break-all;
+}
+/* TaskHub Dashboard Theme - Enhanced Version */
+
+:root {
+  --blue-50: #f8faff;
+  --blue-100: #e0edff;
+  --blue-200: #dbeafe;
+  --blue-500: #2563eb;
+  --blue-600: #1d4ed8;
+  --blue-700: #1e3a8a;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #0f172a;
+  --white: #ffffff;
+  --border: #e2e8f0;
+  --shadow-soft: 0 20px 45px rgba(15, 23, 42, 0.08);
+  --radius-lg: 18px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --hero-gradient: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(226, 232, 240, 0.9));
+  --card-border: rgba(148, 163, 184, 0.4);
+}
+
+/* Responsive universal adjustments */
+@media (max-width: 1200px) {
+  .dashboard-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 1.7rem;
+    background: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    border: none !important;
+    padding: 2.2rem 1.2rem 2.2rem 1.2rem;
+    margin: 0 auto 2rem auto;
+    max-width: 700px;
+    width: 100%;
+    align-items: stretch;
+    position: relative;
+  }
+
+  .hero-copy {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.1rem;
+    padding-right: 1.2rem;
+  }
+
+  .hero-cta-card {
+    flex: 1.2;
+    background: #fff;
+    box-shadow: 0 2px 16px rgba(37,99,235,0.10);
+    border-radius: 18px;
+    padding: 1.2rem 1rem 1.2rem 1rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7rem;
+    min-width: 180px;
+    max-width: 270px;
+    font-size: 1rem;
+  }
+
+  .hero-cta-label {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #334155;
+    margin-bottom: 0.2rem;
+  }
+  .hero-cta-value {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #2563eb;
+    margin-bottom: 0.2rem;
+  }
+  .hero-cta-helper {
+    font-size: 1rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+  }
+  /* hero-cta-button styles removed to avoid large CTA appearance */
+
+  @media (max-width: 900px) {
+    .dashboard-hero {
+      flex-direction: column;
+    }
+
+    /* Universal responsive guard for all dashboard pages */
+    html, body, #__next {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    .dashboard-shell, .dashboard-main, .dashboard-sidebar, .dashboard-content-wrapper {
+      box-sizing: border-box;
+      max-width: 100%;
+    }
+
+    .dashboard-content-wrapper { width: 100%; overflow-x: hidden; }
+
+    /* Ensure commonly wide elements do not force horizontal scroll */
+    .dashboard-shell img, .dashboard-main img, .dashboard-sidebar img,
+    .dashboard-shell table, .dashboard-main table, .dashboard-content-wrapper table {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Tighter layout for medium screens */
+    @media (max-width: 1400px) {
+      .dashboard-shell { gap: 1.5rem; }
+      .dashboard-sidebar { min-width: 200px; max-width: 240px; }
+      .dashboard-main { padding-left: 2rem; padding-right: 2rem; }
+    }
+
+    /* Stack sidebar above content on narrower screens (tablet/phone) */
+    @media (max-width: 1100px) {
+      .dashboard-shell { flex-direction: column; gap: 1rem; }
+      .dashboard-sidebar { width: 100%; min-width: 0; max-width: 100%; position: static; }
+      .dashboard-main { width: 100%; max-width: 100%; padding: 1.25rem; }
+    }
+
+    /* Small devices: ensure compact paddings and readable type */
+    @media (max-width: 600px) {
+      .dashboard-main { padding: 0.75rem 0.6rem; gap: 0.9rem; }
+      .dashboard-shell { padding: 0 0.25rem; }
+      .dashboard-sidebar { padding: 0.6rem 0.5rem; }
+      .dashboard-page-header { padding-bottom: 0.8rem; margin-bottom: 1rem; }
+      .dashboard-title { font-size: 1.25rem; }
+    }
+
+    /* Prevent long words / inline content from forcing width */
+    * { word-break: break-word; overflow-wrap: anywhere; }
+@media (max-width: 900px) {
+  .dashboard-shell {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .dashboard-sidebar {
+    position: static;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin-bottom: 2rem;
+  }
+  .dashboard-main {
+    max-height: none;
+    padding: 1.5rem 1vw;
+  }
+  .dashboard-bg {
+    padding: 2rem 1vw 2rem;
+  }
+
+  /* Make dashboard-hero section stack vertically on mobile */
+  .dashboard-hero {
+    flex-direction: column !important;
+    display: flex !important;
+    gap: 1.5rem !important;
+    align-items: stretch !important;
+  }
+  .dashboard-hero > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .hero-copy, .hero-cta-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-bg {
+    padding: 0.75rem 0.5rem;
+    overflow-x: hidden;
+  }
+  .dashboard-main {
+    padding: 0.75rem 0.5rem;
+    gap: 1rem;
+    overflow-x: hidden;
+  }
+  .dashboard-sidebar {
+    padding: 0.75rem 0.5rem;
+    border-radius: 8px;
+  }
+  .dashboard-hero {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 1rem 0.75rem !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 8px rgba(15,23,42,0.06) !important;
+    margin-bottom: 1rem !important;
+    overflow-x: hidden !important;
+  }
+  .dashboard-hero > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+  .hero-title {
+    font-size: 1.25rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    line-height: 1.3;
+  }
+  .hero-subtitle {
+    font-size: 0.95rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    line-height: 1.5;
+  }
+  .hero-cta-card {
+    width: 100%;
+    margin: 0.5rem 0 0 0;
+    box-sizing: border-box;
+    padding: 0.5rem 0.5rem;
+    border-radius: 6px;
+    gap: 0.3rem;
+    font-size: 0.89rem;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  /* hero-cta-button styles removed for mobile to keep navigation consistent */
+  .stats-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+  .stat-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    padding: 1rem 0.75rem !important;
+  }
+  /* Admin Dashboard mobile styles */
+  .admin-form-card,
+  .form-card {
+    width: 90% !important;
+    min-width: 260px !important;
+    max-width: 420px !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    padding: 0.75rem 0.5rem !important;
+    margin-bottom: 0.75rem !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .cards-grid.forms-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+  }
+  .assign-panel {
+    width: 100% !important;
+    min-width: 0 !important;
+
+
+  /* Reduce space between header and submissions on mobile */
+  .student-submissions { margin-top: 0 !important; }
+  /* Make modal action buttons stack and become full-width on small screens */
+
+@media (max-width: 900px) {
+  /* Slightly tighter spacing on small tablets and phones */
+  .student-submissions { margin-top: 0.1rem !important; }
+}
+  .modal-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+  }
+  .modal-actions .assign-btn,
+  .modal-actions .danger-btn {
+
+    /* keep default button styles for modal actions (overrides applied elsewhere) */
+  }
+
+  .submissions-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px; /* separate rows like cards */
+    font-size: 15px;
+    table-layout: fixed;
+  }
+
+  .submissions-table thead th {
+    text-align: left;
+    padding: 14px 18px;
+    background: #f3f4f6; /* light gray band */
+    font-weight: 800;
+    color: #4b5563;
+    border-bottom: none;
+  }
+
+  .submissions-table tbody td {
+    padding: 14px 16px;
+    vertical-align: middle;
+    background: #fff; /* cell stays white so row looks like card */
+    border: 1px solid rgba(14,30,37,0.04);
+  }
+
+  .submissions-table tbody tr {
+    background: transparent; /* cells provide card surface */
+  }
+
+  /* Actions cell: inline text buttons like screenshot */
+  .submissions-table tbody tr td:last-child { white-space: nowrap; display:flex; gap:0.6rem; align-items:center; justify-content:flex-end; }
+  .submissions-table tbody tr td:last-child .assign-btn,
+  .submissions-table tbody tr td:last-child .danger-btn {
+    background: none !important;
+    border: none !important;
+    padding: 0.15rem 0.35rem !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+  }
+
+  /* Make content wrap when needed instead of forcing wide columns */
+  .submissions-table td, .submissions-table th { white-space: normal; word-break: break-word; overflow-wrap:anywhere; }
+    align-items: flex-start !important;
+  }
+  .info-grid {
+    gap: 0.75rem !important;
+  }
+  .info-row {
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+    align-items: flex-start !important;
+  }
+  .info-value {
+    text-align: left !important;
+  }
+  .action-buttons {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  .btn {
+    width: 100% !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.95rem !important;
+  }
+  .filters-row {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+  .filter-group {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .tabs-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem !important;
+  }
+  .tabs-nav button {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+/* ...existing code... */
+
+.dashboard-bg {
+  min-height: 100vh;
+  background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.15), transparent 50%),
+    radial-gradient(circle at bottom left, rgba(14, 165, 233, 0.18), transparent 45%),
+    var(--blue-50);
+  padding: 4.5rem clamp(24px, 5vw, 64px) 4.5rem;
+}
+
+.dashboard-shell {
+  max-width: 1600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  position: relative;
+  min-height: 100vh;
+}
+
+.dashboard-main {
+  flex: 1;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 251, 255, 0.95));
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 4rem 4.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5.5rem;
+  backdrop-filter: blur(12px);
+  overflow-y: auto;
+  max-height: 100vh;
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 900px) {
+  .dashboard-main {
+    padding: 2rem 1.2rem !important;
+    gap: 2rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-main {
+    padding: 1rem 0.75rem !important;
+    gap: 1rem !important;
+  }
+  .dashboard-page-header { margin-bottom: 1rem; padding-bottom: 1rem; }
+}
+
+.dashboard-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 3rem;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 4.5rem;
+  gap: 2rem;
+  position: sticky;
+  top: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 251, 255, 0.95));
+  z-index: 15;
+  padding-top: 0.5rem;
+  backdrop-filter: blur(12px);
+}
+
+.dashboard-hero {
+  background: rgba(255,255,255,0.75);
+  border-radius: 22px;
+  border: 1.5px solid rgba(37, 99, 235, 0.13);
+  padding: 2.5rem 2.2rem 2.2rem 2.2rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(37,99,235,0.10), 0 1.5px 6px rgba(37,99,235,0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 900px;
+  width: 100%;
+  transition: box-shadow 0.18s, border 0.18s;
+}
+
+@media (max-width: 900px) {
+  .dashboard-hero {
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1.5rem 1rem 1.2rem 1rem;
+    max-width: 98vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-hero {
+    margin-bottom: 0.12rem !important;
+    padding: 0.7rem 0.3rem 0.7rem 0.3rem !important;
+    border-radius: 10px !important;
+    min-height: 70px;
+    box-shadow: 0 2px 8px rgba(15,23,42,0.06) !important;
+    gap: 0.7rem !important;
+  }
+  .hero-title {
+    font-size: 1.1rem !important;
+    line-height: 1.18 !important;
+    margin-bottom: 0.13rem !important;
+  }
+  .hero-eyebrow {
+    font-size: 0.65rem !important;
+    margin-bottom: 0.08rem !important;
+  }
+  .hero-subtitle {
+    font-size: 0.82rem !important;
+    line-height: 1.18 !important;
+    margin-bottom: 0.08rem !important;
+  }
+}
+
+/* Compact styles for mentor students table to reduce overall footprint */
+.mentor-students-table {
+  width: 100% !important;
+  min-width: 0 !important; /* override inline minWidth */
+  border-collapse: separate;
+  border-spacing: 0 12px; /* row separation like cards */
+  table-layout: fixed; /* wrapper handles overflow */
+  font-size: 15px;
+}
+
+/* Header style: light gray band with bold labels */
+.mentor-students-table thead th {
+  background: #f3f4f6;
+  padding: 14px 18px;
+  font-weight: 800;
+  color: #4b5563;
+  text-align: left;
+  border-bottom: none;
+}
+
+/* Rows appear as white cards with subtle border and spacing */
+.mentor-students-table tbody tr {
+  background: #fff; /* card background */
+  border: 1px solid rgba(14,30,37,0.04);
+  box-shadow: 0 10px 24px rgba(2,6,23,0.04);
+  border-radius: 10px;
+}
+
+.mentor-students-table tbody td {
+  padding: 14px 16px;
+  vertical-align: middle;
+  color: var(--body-color);
+  background: transparent;
+}
+
+/* Allow content like domain and interests to wrap instead of forcing wide columns */
+.mentor-students-table td { white-space: normal; overflow-wrap:anywhere; }
+.mentor-students-table td:nth-child(1) { width: 4%; }
+.mentor-students-table td:nth-child(2) { width: 10%; }
+.mentor-students-table td:nth-child(3) { width: 18%; }
+.mentor-students-table td:nth-child(4) { width: 18%; }
+.mentor-students-table td:nth-child(5) { width: 14%; }
+.mentor-students-table td:nth-child(6) { width: 14%; }
+.mentor-students-table td:nth-child(7) { width: 10%; }
+.mentor-students-table td:nth-child(8) { width: 6%; }
+.mentor-students-table td:nth-child(9) { width: 6%; }
+.mentor-students-table td:nth-child(10) { width: 10%; }
+
+/* Status badge look used in inline Assigned badge */
+.mentor-students-table .status-badge,
+.mentor-students-table span[style*="borderRadius: 18"] {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 18px;
+  font-weight: 700;
+  background: rgba(37,99,235,0.08);
+  color: var(--primary);
+}
+
+/* Rounded select styling for actions */
+.mentor-students-table .mentor-status-select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e6edf8;
+  background: #fff;
+  min-width: 140px;
+}
+
+.mentor-resume-link { font-weight: 700; color: var(--link-color); background:none; border:none; cursor:pointer; }
+
+/* Make action buttons inside tables appear as plain inline text (remove boxed look) */
+table .assign-btn,
+table .danger-btn,
+.simple-table-wrapper table .assign-btn,
+.simple-table-wrapper table .danger-btn {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-weight: 700 !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  min-width: auto !important;
+  vertical-align: baseline !important;
+}
+
+/* Keep hover affordance subtle */
+table .assign-btn:hover,
+table .danger-btn:hover {
+  text-decoration: underline;
+}
+
+/* High-specificity override to ensure no boxed styles remain on the student submissions page */
+.dashboard-bg .dashboard-shell .dashboard-main .dashboard-content-wrapper .student-submissions .submissions-wrap .submissions-table button.assign-btn,
+.dashboard-bg .dashboard-shell .dashboard-main .dashboard-content-wrapper .student-submissions .submissions-wrap .submissions-table button.danger-btn {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  display: inline !important;
+  height: auto !important;
+  min-width: 0 !important;
+}
+
+.dashboard-bg .dashboard-shell .dashboard-main .dashboard-content-wrapper .student-submissions .submissions-wrap .submissions-table button.assign-btn:hover,
+.dashboard-bg .dashboard-shell .dashboard-main .dashboard-content-wrapper .student-submissions .submissions-wrap .submissions-table button.danger-btn:hover {
+  text-decoration: underline !important;
+}
+
+@media (max-width: 900px) {
+  .mentor-students-table thead th,
+  .mentor-students-table tbody td {
+    padding: 8px 6px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Ensure long words wrap inside fixed columns */
+.mentor-students-table th,
+.mentor-students-table td {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Prevent the entire dashboard from introducing a horizontal scrollbar.
+   Allow only explicit table wrappers to scroll horizontally. */
+.dashboard-bg, .dashboard-shell, .dashboard-main {
+  overflow-x: hidden;
+}
+
+/* Table wrappers that should allow horizontal scrolling */
+.simple-table-wrapper,
+.submissions-wrap,
+.mentor-students-container,
+.forms-table-wrapper {
+ .simple-table-wrapper,
+ .submissions-wrap,
+ .forms-table-wrapper {
+   overflow-x: auto !important;
+   -webkit-overflow-scrolling: touch;
+   scrollbar-gutter: stable both-edges;
+ }
+
+ /* Confine scrollbar visually to the wrapper by making it a block with intrinsic width */
+ .simple-table-wrapper { display: block; width: 100%; box-sizing: border-box; }
+
+/* Ensure table elements don't push the layout wider than their wrappers */
+.simple-table-wrapper table,
+.submissions-wrap table,
+.mentor-students-container table,
+.forms-table-wrapper table {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1.2rem 1.5rem 1.2rem 1.5rem;
+  background: rgba(255,255,255,0.85);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(37,99,235,0.06);
+  margin-bottom: 1.2rem;
+  border: 1px solid #e0edff;
+}
+
+.hero-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--slate-700);
+  font-weight: 600;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  color: var(--slate-800);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.18em;
+}
+
+.hero-subtitle {
+  font-size: 0.98rem;
+  color: #475569;
+  max-width: 520px;
+  line-height: 1.45;
+  margin-bottom: 0.18em;
+}
+
+.hero-note {
+  margin-top: 0.7rem;
+  font-size: 1.01rem;
+  color: #334155;
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  .hero-copy {
+    padding: 0.7rem 0.6rem 0.7rem 0.6rem;
+    border-radius: 10px;
+    font-size: 0.97rem;
+  }
+}
+
+.hero-cta-label {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.75rem;
+  color: var(--slate-600);
+  font-weight: 600;
+}
+
+.hero-cta-value {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--blue-700);
+  line-height: 1.2;
+}
+
+.hero-cta-helper {
+  font-size: 0.938rem;
+  color: var(--slate-600);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* hero-cta-button global styles removed to prevent large CTA visuals across dashboards */
+
+/* hero-cta-button hover/active rules removed to avoid large CTA visuals */
+
+/* Sidebar - Enhanced */
+.dashboard-sidebar {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 4rem 3rem;
+  height: fit-content;
+  min-width: 320px;
+  max-width: 340px;
+  border: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.sidebar-section {
+  margin-bottom: 3rem;
+}
+
+.sidebar-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.sidebar-label {
+  font-size: 0.813rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--slate-600);
+  margin-bottom: 1.25rem;
+  font-weight: 700;
+  padding-left: 1.75rem;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 1.375rem 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--slate-700);
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%);
+  transform: translateX(-100%);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 4px 4px 0;
+}
+
+.sidebar-link::before {
+  content: '';
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  margin-right: 1.25rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.sidebar-link:hover {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  color: var(--blue-600);
+  transform: translateX(6px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.sidebar-link:hover::before {
+  background: #3b82f6;
+  transform: scale(1.25);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+}
+
+.sidebar-link.active {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: var(--blue-600);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+}
+
+.sidebar-link.active::after {
+  transform: translateX(0);
+}
+
+.sidebar-link.active::before {
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  transform: scale(1.35);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.8);
+}
+
+/* Profile menu - Enhanced */
+
+.dashboard-profile-menu {
+  position: relative;
+  z-index: 20;
+}
+
+
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--border);
+  background: var(--white);
+  border-radius: 7px;
+  padding: 0.25rem 0.7rem 0.25rem 0.5rem;
+  font-size: 0.89rem;
+  color: var(--slate-700);
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  min-width: 0;
+  height: 48px;
+  min-height: 40px;
+  max-width: 220px;
+}
+
+.profile-trigger:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.10);
+  transform: translateY(-1px);
+}
+
+.profile-trigger:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.12);
+}
+
+
+
+.profile-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 1px 3px rgba(59,130,246,0.13);
+}
+
+
+
+.profile-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  gap: 0.05rem;
+  min-width: 0;
+}
+
+
+
+.profile-name {
+  font-weight: 600;
+  font-size: 0.93rem;
+  color: var(--slate-800);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+.profile-role {
+  font-size: 0.72rem;
+  color: var(--slate-600);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 1rem);
+  right: 0;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  padding: 1rem;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  z-index: 30;
+  animation: dropdown-appear 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dropdown-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.profile-dropdown button,
+.profile-dropdown a {
+  border: none;
+  background: transparent;
+  padding: 1.125rem 1.5rem;
+  text-align: left;
+  border-radius: var(--radius-sm);
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: #334155;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-dropdown button:hover,
+.profile-dropdown a:hover {
+  background: #f1f5f9;
+  color: #1e40af;
+  transform: translateX(4px);
+}
+
+.profile-dropdown button:focus,
+.profile-dropdown a:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+.logout-button {
+  border-top: 1px solid var(--border);
+  margin-top: 0.75rem;
+  padding-top: 1.125rem;
+  color: #dc2626 !important;
+}
+
+.logout-button:hover {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+}
+
+.mobile-only-menu-item {
+  display: none !important;
+}
+
+/* Loading */
+.loading {
+  min-height: 50vh;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  color: var(--blue-600);
+  font-size: 1.125rem;
+}
+
+/* Stats grid - Reduced Size */
+
+.dashboard-main .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+@media (max-width: 600px) {
+  .dashboard-main .stats-grid {
+    margin-bottom: 0.6rem;
+  }
+}
+
+.dashboard-main .stat-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  padding: 1rem 1rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 600px) {
+  .dashboard-main .stat-card {
+    padding: 0.6rem 0.5rem;
+    border-radius: 7px;
+    font-size: 0.95rem;
+  }
+}
+
+.dashboard-main .stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 24px rgba(59, 130, 246, 0.12);
+}
+
+.dashboard-main .stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--slate-600);
+  margin-bottom: 0.625rem;
+  font-weight: 600;
+}
+
+.dashboard-main .stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--blue-700);
+  margin: 0 0 0.375rem 0;
+  line-height: 1.2;
+}
+
+.dashboard-main .stat-helper {
+  font-size: 0.875rem;
+  color: var(--slate-600);
+  margin-top: 0;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Workspace Section */
+.workspace-section {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border-radius: 16px;
+  padding: 3rem 3.5rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid #bfdbfe;
+  margin-top: 5.5rem;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.workspace-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.workspace-label {
+  font-size: 0.75rem;
+  color: var(--slate-600);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.375rem;
+}
+
+.workspace-title {
+  font-size: 1.625rem;
+  font-weight: 700;
+  color: var(--slate-800);
+  margin-bottom: 0.625rem;
+  line-height: 1.3;
+}
+
+.workspace-description {
+  font-size: 0.938rem;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.workspace-meta {
+  font-size: 0.875rem;
+  color: var(--slate-600);
+  font-weight: 500;
+  margin-top: 0.75rem;
+}
+
+.workspace-sidebar {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border);
+}
+
+.status-label {
+  font-size: 0.75rem;
+  color: var(--slate-600);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.875rem;
+}
+
+.status-value {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--blue-700);
+  margin-bottom: 0.625rem;
+}
+
+.status-timestamp {
+  font-size: 0.813rem;
+  color: var(--slate-600);
+  margin-bottom: 1.25rem;
+}
+
+.action-button {
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  color: var(--white);
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* Cards - Enhanced */
+.content-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 2rem 1.75rem;
+  box-shadow: var(--shadow-soft);
+  transition: all 0.3s ease;
+}
+
+.content-card:hover {
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
+}
+
+.content-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.eyebrow {
+  font-size: 0.813rem;
+  color: var(--slate-600);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.625rem;
+  font-weight: 600;
+}
+
+.card-subtitle {
+  font-size: 0.938rem;
+  color: var(--slate-600);
+  line-height: 1.5;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+/* Reduce top spacing between section headers and form/mentor grids */
+  .cards-grid.forms-grid {
+  margin-top: 0 !important;
+}
+
+.students-grid,
+.forms-grid {
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+}
+
+.student-card,
+.form-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: all 0.3s ease;
+}
+
+.student-card:hover,
+.form-card:hover {
+  border-color: var(--blue-200);
+  box-shadow: var(--shadow-soft);
+  transform: translateY(-2px);
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--slate-800);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.card-subtitle {
+  color: var(--slate-600);
+  margin-top: 0.375rem;
+  font-size: 0.938rem;
+}
+
+.info-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.info-label {
+  font-size: 0.813rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--slate-600);
+  font-weight: 600;
+}
+
+.info-value {
+  font-weight: 600;
+  font-size: 0.938rem;
+  color: var(--slate-700);
+  text-align: right;
+}
+
+.mentor-highlight {
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--blue-200);
+  background: var(--blue-50);
+}
+
+.mentor-name {
+  font-weight: 600;
+  color: var(--blue-600);
+  font-size: 1rem;
+  margin-bottom: 0.375rem;
+}
+
+.mentor-email {
+  font-size: 0.875rem;
+  color: var(--slate-600);
+}
+
+.card-actions,
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.status-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.select-control {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.938rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.select-control:focus {
+  outline: 2px solid var(--blue-200);
+  border-color: var(--blue-500);
+}
+
+.assign-panel {
+  padding: 1.25rem;
+  border: 1px dashed var(--blue-200);
+  border-radius: var(--radius-md);
+  background: rgba(239, 246, 255, 0.5);
+}
+
+.assign-controls {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.filter-group {
+  min-width: 240px;
+  flex: 1;
+}
+
+/* Buttons - Enhanced */
+.btn {
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.938rem;
+  font-family: inherit;
+}
+
+.btn-primary {
+  /* Remove width and background for .btn-primary to allow .hero-cta-button to override */
+  background: none;
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 1.08rem;
+  border-radius: 14px;
+  padding: 1.1rem 0;
+  border: none;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+  transition: background 0.18s, box-shadow 0.18s;
+  letter-spacing: 0.01em;
+}
+
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  box-shadow: 0 4px 16px rgba(37,99,235,0.18);
+  transform: translateY(-2px);
+}
+
+
+.btn-primary:active {
+  box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+  filter: brightness(1.05);
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: var(--blue-100);
+  color: var(--blue-600);
+}
+
+.btn-secondary:hover {
+  background: var(--blue-200);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  border: 2px solid var(--blue-200);
+  background: transparent;
+  color: var(--blue-600);
+}
+
+.btn-outline:hover {
+  border-color: var(--blue-500);
+  background: var(--blue-50);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--blue-600);
+}
+
+.btn-ghost:hover {
+  background: var(--blue-50);
+  transform: translateY(-1px);
+}
+
+/* Status badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.813rem;
+  font-weight: 600;
+  background: var(--blue-100);
+  color: var(--blue-600);
+}
+
+.status-in_progress {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-completed {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status-doubt {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  color: var(--slate-800);
+  margin-bottom: 0.625rem;
+}
+
+.empty-state p {
+  font-size: 0.938rem;
+  color: var(--slate-600);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 2100;
+  backdrop-filter: blur(4px);
+}
+
+.modal-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  width: min(480px, 90vw);
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.3);
+}
+
+@media (max-width: 600px) {
+  .card-header h1,
+  .card-header h2,
+  .card-header h3 {
+    font-size: 1.1rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 0.5rem !important;
+    word-break: break-word !important;
+    font-weight: 700 !important;
+  }
+  .admin-form-card,
+  .form-card {
+    padding: 1rem 0.75rem !important;
+  }
+  .admin-form-card,
+  .form-card {
+    min-height: 0 !important;
+    height: auto !important;
+    overflow-y: visible !important;
+  }
+  .admin-form-card > *,
+  .form-card > * {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  .cards-grid.forms-grid {
+    gap: 1rem !important;
+    margin-bottom: 1rem !important;
+    margin-top: 0 !important;
+  }
+  .card-header {
+    margin-bottom: 0.75rem !important;
+  }
+  /* Mobile table styles */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+  thead {
+    display: table-header-group;
+  }
+  tbody {
+    display: table-row-group;
+  }
+  tr {
+    display: table-row;
+  }
+  th, td {
+    display: table-cell;
+    padding: 0.5rem 0.35rem !important;
+    font-size: 0.85rem !important;
+  }
+  th {
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+  }
+  /* Content card mobile */
+  .content-card {
+    padding: 1rem 0.75rem !important;
+    border-radius: 10px !important;
+  }
+  .content-card-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+    margin-bottom: 1rem !important;
+  }
+  .content-card-header h2 {
+    font-size: 1.25rem !important;
+  }
+}
+
+/* Mobile override: ensure dashboard container doesn't clip inner tables on small screens */
+@media (max-width: 900px) {
+  .dashboard-main {
+    overflow-y: visible !important;
+    max-height: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-main {
+    overflow-y: visible !important;
+    max-height: none !important;
+  }
+}
+/* Simple page layout override: remove boxed/dashboard card visuals when applied */
+.dashboard-main.simple-dashboard {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 1rem !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+/* Make inner grid and table span full width when using simple-dashboard */
+.dashboard-main.simple-dashboard .cards-grid.forms-grid {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  grid-template-columns: 1fr !important;
+}
+.dashboard-main.simple-dashboard .cards-grid.forms-grid > div {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+.dashboard-main.simple-dashboard .forms-table {
+  display: inline-table !important;
+  table-layout: auto !important;
+  width: auto !important;
+  min-width: 720px; /* ensure table is wider than viewport so wrapper can scroll */
+  overflow: visible !important;
+}
+/* Simple table wrapper: full width, no card visuals */
+.simple-table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0.5rem 0; /* small vertical breathing room */
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+.simple-table-wrapper .forms-table {
+  margin: 0; /* remove internal card spacing */
+  border-radius: 6px;
+}
+
+/* Visible horizontal scrollbar */
+.table-scroll {
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.table-scroll::-webkit-scrollbar {
+  height: 10px;
+}
+.table-scroll::-webkit-scrollbar-track { background: transparent; }
+.table-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+.table-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+.table-scroll { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
+
+/* chevrons removed: scrolling uses native scrollbar/track */
+
+  /* custom track removed: use native scrollbar/track only */
+
+/* For pages using the simple-dashboard layout (mentor-assign), keep the table layout on small screens
+   and allow horizontal scrolling instead of stacking rows vertically. This overrides the
+   generic stacked-table mobile styles above only for `.dashboard-main.simple-dashboard`. */
+@media (max-width: 900px) {
+  .dashboard-main.simple-dashboard .forms-table {
+    display: table !important;
+    table-layout: auto !important;
+    width: 100% !important;
+    min-width: 720px; /* ensure table is wider than viewport so wrapper can scroll */
+  }
+  .dashboard-main.simple-dashboard .forms-table thead { display: table-header-group !important; }
+  .dashboard-main.simple-dashboard .forms-table tbody { display: table-row-group !important; }
+  .dashboard-main.simple-dashboard .forms-table tr { display: table-row !important; }
+  .dashboard-main.simple-dashboard .forms-table th,
+  .dashboard-main.simple-dashboard .forms-table td {
+    display: table-cell !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
+  }
+  /* Reduce padding and font-size on mobile to fit more columns */
+  .dashboard-main.simple-dashboard .forms-table th,
+  .dashboard-main.simple-dashboard .forms-table td {
+    padding: 8px 10px !important;
+    font-size: 0.86rem !important;
+  }
+  /* Remove the mobile td:before labels for the simple layout */
+  .dashboard-main.simple-dashboard .forms-table td:before { display: none !important; }
+  /* Reset stacked-child forcing for cell children */
+  .dashboard-main.simple-dashboard .forms-table td > * { display: inline-block !important; margin-top: 0 !important; }
+  /* Ensure assign controls keep compact inline layout */
+  .dashboard-main.simple-dashboard .forms-table td.td-assign { display: table-cell !important; }
+  .dashboard-main.simple-dashboard .forms-table td.td-assign .forms-table-select { width: auto !important; min-width: 120px !important; }
+  .dashboard-main.simple-dashboard .forms-table td.td-assign .forms-table-assign-btn { width: auto !important; }
+}
+
+/* Further reduce action button size for typical mobile viewports */
+@media (max-width: 600px) {
+  .submissions-table tbody tr td:last-child .assign-btn,
+  .submissions-table tbody tr td:last-child .danger-btn {
+    padding: 0.18rem 0.42rem !important;
+    font-size: 0.78rem !important;
+    width: 60px !important;
+    height: 32px !important;
+    min-width: 60px !important;
+    border-radius: 6px !important;
+  }
+}
+
+/* Strong page-level guard: hide any accidental horizontal overflow from layout elements.
+   Table wrappers (see .simple-table-wrapper etc.) remain scrollable via their own overflow rules. */
+html, body, #__next {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Ensure main shell doesn't expand beyond viewport due to large children */
+.dashboard-shell {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* Keep full table layout when inside a horizontal-scroll wrapper on small screens.
+   This forces the table to remain a normal table and enables a horizontal scrollbar
+   via the `.simple-table-wrapper` container so users can scroll the full columns on mobile. */
+@media (max-width: 900px) {
+  .simple-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .simple-table-wrapper .forms-table {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+    min-width: 640px; /* force horizontal scrolling on narrow devices */
+  }
+  .simple-table-wrapper .forms-table thead { display: table-header-group !important; }
+  .simple-table-wrapper .forms-table tbody { display: table-row-group !important; }
+  .simple-table-wrapper .forms-table tr { display: table-row !important; }
+  .simple-table-wrapper .forms-table td,
+  .simple-table-wrapper .forms-table th { display: table-cell !important; vertical-align: middle !important; }
+  .simple-table-wrapper .forms-table td { white-space: normal !important; }
+
+  /* Hide mobile stacked labels when forcing table layout */
+  .simple-table-wrapper .forms-table td:before,
+  .simple-table-wrapper .forms-table td .info-label { display: none !important; }
+
+  /* Ensure header cells keep compact padding on small screens */
+  .simple-table-wrapper .forms-table thead th { padding: 0.35rem 0.5rem !important; }
+  .simple-table-wrapper .forms-table tbody td { padding: 0.28rem 0.5rem !important; }
+}

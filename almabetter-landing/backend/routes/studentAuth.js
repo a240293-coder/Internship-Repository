@@ -17,24 +17,16 @@ router.post('/register', async (req, res) => {
 
     // Create new student
     const student = await Student.create({
-      name,
+      full_name: name,
       email,
       password
     });
 
-    // Create JWT token
-    const token = jwt.sign(
-      { id: student.id, email: student.email, role: 'student' },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
     res.status(201).json({
-      message: 'Student registered successfully',
-      token,
+      message: 'Student registered successfully. Please log in to continue.',
       student: {
         id: student.id,
-        name: student.name,
+        name: student.full_name,
         email: student.email
       }
     });
@@ -72,7 +64,7 @@ router.post('/login', async (req, res) => {
       token,
       student: {
         id: student.id,
-        name: student.name,
+        name: student.full_name,
         email: student.email
       }
     });

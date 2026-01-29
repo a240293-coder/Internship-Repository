@@ -2,9 +2,9 @@ const db = require('./database');
 const bcrypt = require('bcrypt');
 
 // --- CONFIGURATION ---
-const NEW_EMAIL = 'abhijeetsoni100@gmail.com';
-const NEW_PASSWORD = 'Abhijeet@1992';
-const NEW_NAME = 'Abhijeet Soni';
+const NEW_EMAIL = 'admin@example.com';
+const NEW_PASSWORD = 'NewStrongPassword@2026';
+const NEW_NAME = 'Admin User';
 // ---------------------
 
 async function resetAdmin() {
@@ -19,8 +19,8 @@ async function resetAdmin() {
     const hashedPassword = await bcrypt.hash(NEW_PASSWORD, 10);
 
     const [result] = await db.execute(
-      'INSERT INTO admins (full_name, email, password, role) VALUES (?, ?, ?, ?)',
-      [NEW_NAME, NEW_EMAIL, hashedPassword, 'admin']
+      'INSERT INTO admins (email, password) VALUES (?, ?)',
+      [NEW_EMAIL, hashedPassword]
     );
     
     console.log("[DB INSERT] admin:", result.insertId);

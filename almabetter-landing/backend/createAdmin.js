@@ -1,4 +1,4 @@
-const db = require('./database');
+const db = require('./config/database');
 const bcrypt = require('bcrypt');
 
 console.log('Starting createAdmin...');

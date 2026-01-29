@@ -1,36 +1,12 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
-const bcrypt = require('bcryptjs');
 
-const Mentor = sequelize.define('Mentor', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-    validate: {
-      isEmail: true
-    }
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false
-  }
-}, {
-  tableName: 'mentors',
-  timestamps: true
-});
+const db = require('../config/database');
 
-// Hash password before creating
+const Mentor = {
+  async findAll() {
+    const [rows] = await db.query('SELECT id, full_name AS name, email FROM mentors');
+    return rows;
+  },
+  // Add more helper functions as needed (findById, create, etc.)
+};
 
-// Mentor model stub — local backend removed.
-module.exports = {};
 module.exports = Mentor;

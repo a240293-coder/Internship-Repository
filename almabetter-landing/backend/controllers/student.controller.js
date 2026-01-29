@@ -1,5 +1,6 @@
-const db = require('../database');
+const db = require('../config/database');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
   try {
@@ -14,21 +15,26 @@ exports.register = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     const [result] = await db.execute(
       'INSERT INTO students (full_name, email, password) VALUES (?, ?, ?)',
       [name, email, hashedPassword]
     );
-    
+
     const id = result.insertId;
     console.log("[DB INSERT] student:", id);
 
-    const token = 'mock-jwt-token'; // In production use jsonwebtoken
-    
+    // Generate proper JWT token
+    const token = jwt.sign(
+      { id, role: 'STUDENT', email: email },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
     // Insert into jwt_sessions
     await db.execute(
       'INSERT INTO jwt_sessions (user_id, role, token) VALUES (?, ?, ?)',
-      [id, 'student', token]
+      [id, 'STUDENT', token]
     );
     console.log("[DB INSERT] jwt_session for student:", id);
 
@@ -61,12 +67,17 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = 'mock-jwt-token';
-    
+    // Generate proper JWT token
+    const token = jwt.sign(
+      { id: student.id, role: 'STUDENT', email: student.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
     // Insert into jwt_sessions
     await db.execute(
       'INSERT INTO jwt_sessions (user_id, role, token) VALUES (?, ?, ?)',
-      [student.id, 'student', token]
+      [student.id, 'STUDENT', token]
     );
     console.log("[DB INSERT] jwt_session for student login:", student.id);
 
@@ -84,8 +95,8 @@ exports.login = async (req, res) => {
 exports.getDashboard = async (req, res) => {
   try {
     const { id } = req.params;
-    const [rows] = await db.execute('SELECT id, full_name, email, interests, domain, previous_experience, career_goals, created_at FROM students WHERE id = ?', [id]);
-    
+    const [rows] = await db.execute('SELECT id, full_name, email, interests, domain, career_goals, created_at FROM students WHERE id = ?', [id]);
+
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Student not found' });
     }
@@ -97,10 +108,30 @@ exports.getDashboard = async (req, res) => {
   }
 };
 
+// Get mentor sessions for the logged-in student
+exports.getSessions = async (req, res) => {
+  try {
+    const studentId = req.user && (req.user.id || req.user.userId);
+    if (!studentId) return res.status(401).json({ message: 'Unauthenticated' });
+    const [rows] = await db.execute(
+      `SELECT ms.*, m.full_name AS mentor_name
+       FROM mentor_sessions ms
+       LEFT JOIN mentors m ON m.id = ms.mentor_id
+       WHERE ms.student_id = ?
+       ORDER BY ms.timing DESC`,
+      [studentId]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('student getSessions error:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
+
 exports.submitInterest = async (req, res) => {
   try {
-    const { interests, desiredDomain, experience, goals, studentId } = req.body;
-    
+    const { interests, desiredDomain, goals, studentId } = req.body;
+
     if (!studentId) {
       return res.status(400).json({ message: 'Student ID is required' });
     }
@@ -108,8 +139,8 @@ exports.submitInterest = async (req, res) => {
     const interestsStr = Array.isArray(interests) ? interests.join(', ') : interests;
 
     await db.execute(
-      'UPDATE students SET interests = ?, domain = ?, previous_experience = ?, career_goals = ? WHERE id = ?',
-      [interestsStr, desiredDomain, experience, goals, studentId]
+      'UPDATE students SET interests = ?, domain = ?, career_goals = ? WHERE id = ?',
+      [interestsStr, desiredDomain, goals, studentId]
     );
 
     res.json({ message: 'Interest form submitted successfully' });
