@@ -4,6 +4,7 @@ import usePopupMessage from '../../components/shared/usePopupMessage';
 // Navbar is provided globally via _app.js (MainNavbar). Removed local import to avoid duplication.
 import { useRouter } from 'next/router';
 import api from '../../lib/api';
+import MultiSelectChips from '../../components/shared/MultiSelectChips';
 import Link from 'next/link';
 // Auth.css is imported globally from pages/_app.js
 import AuthVisualPanel from '../../components/auth/AuthVisualPanel';
@@ -14,7 +15,8 @@ const MentorRegister = () => {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    expertise: []
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -34,6 +36,12 @@ const MentorRegister = () => {
     });
   };
 
+  const handleExpertiseChange = (e) => {
+    // collect selected options into an array
+    const selected = Array.from(e.target.selectedOptions || []).map(o => o.value);
+    setFormData({ ...formData, expertise: selected });
+  };
+
   const handleSubmit = async (e) => {
     console.log("Submit handler started."); // Debug log
     e.preventDefault();
@@ -47,11 +55,13 @@ const MentorRegister = () => {
     setLoading(true);
     try {
       console.log("Attempting to fetch API."); // Debug log
-      const response = await api.post('/mentor/auth/register', {
+      const payload = {
         full_name: formData.name,
         email: formData.email,
-        password: formData.password
-      });
+        password: formData.password,
+        expertise: Array.isArray(formData.expertise) ? formData.expertise : []
+      };
+      const response = await api.post('/mentor/auth/register', payload);
 
       showPopup('Registration successful! Please log in.');
       setTimeout(() => router.push('/mentor/login'), 1200);
@@ -127,6 +137,25 @@ const MentorRegister = () => {
                   onChange={handleChange}
                   required
                 />
+              </div>
+              <div className="form-group">
+                <label>Select Domains of Expertise</label>
+                <MultiSelectChips
+                  options={[
+                    'Web Development',
+                    'Mobile Development',
+                    'Data Science',
+                    'Machine Learning',
+                    'Cloud Computing',
+                    'DevOps',
+                    'Blockchain',
+                    'Other'
+                  ]}
+                  value={formData.expertise}
+                  onChange={(next) => setFormData({ ...formData, expertise: next })}
+                  placeholder="Select a domain"
+                />
+                <small className="muted">Search and pick one or more domains.</small>
               </div>
               <button type="submit" disabled={loading}>
                 {loading ? 'Creating Account...' : 'Create Account'}

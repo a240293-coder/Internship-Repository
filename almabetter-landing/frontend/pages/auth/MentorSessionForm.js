@@ -17,11 +17,23 @@ const MentorSessionForm = () => {
       try {
         const res = await api.get('/mentor-dashboard/students');
         const list = Array.isArray(res?.data) ? res.data : [];
-        setStudents(list.map((s, i) => ({
-          uid: `${s.student_id || s.studentId || s.id || 'student'}-${i}`,
-          id: s.student_id || s.studentId || s.id || null,
-          name: s.student_name || s.studentName || s.name || `Student ${i + 1}`
-        })));
+        // Support grouped response (one per unique email with assignments array)
+        const mapped = list.map((s, i) => {
+          if (s && s.assignments) {
+            const first = s.assignments[0] || {};
+            return {
+              uid: `${first.student_id || first.studentId || first.id || 'student'}-${i}`,
+              id: first.student_id || first.studentId || first.id || null,
+              name: s.student_name || first.student_name || first.studentName || `Student ${i + 1}`
+            };
+          }
+          return {
+            uid: `${s.student_id || s.studentId || s.id || 'student'}-${i}`,
+            id: s.student_id || s.studentId || s.id || null,
+            name: s.student_name || s.studentName || s.name || `Student ${i + 1}`
+          };
+        });
+        setStudents(mapped);
       } catch (err) {
         // fallback to mentor/students
         try {
@@ -81,7 +93,7 @@ const MentorSessionForm = () => {
   };
 
   return (
-    <DashboardLayout title="Schedule Session" role="mentor">
+    <DashboardLayout title="Schedule a Session" role="mentor">
       <div className="mentor-session-card">
         <h2>Schedule a Session</h2>
         <p className="mentor-subtext">Pick an assigned student, set agenda, timing and a meeting link.</p>

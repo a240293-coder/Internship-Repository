@@ -96,8 +96,15 @@ export default function MentorActivityDetails({ mentorId }) {
       <div className={styles.headerCard}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h2 className={styles.headerTitle}>{mentor.name}</h2>
+            <h2 className={styles.headerTitle}>{mentor.name || mentor.full_name || mentor.email}</h2>
             <div className={styles.headerEmail}>{mentor.email}</div>
+            {mentor.expertise && (
+              <div style={{ marginTop: 8, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                {(Array.isArray(mentor.expertise) ? mentor.expertise : String(mentor.expertise || '').split(',')).filter(Boolean).map((e, i) => (
+                  <span key={i} style={{ display: 'inline-block', background: '#eef2ff', color: '#07204a', padding: '6px 10px', borderRadius: 14, marginRight: 6, fontSize: 13 }}>{e.trim()}</span>
+                ))}
+              </div>
+            )}
           </div>
           <div style={{ textAlign: 'right', color: '#777' }}>
             <div style={{ fontSize: 12 }}>Joined</div>
@@ -126,21 +133,40 @@ export default function MentorActivityDetails({ mentorId }) {
 
       <div className={styles.chartsRow}>
         <div className={styles.chartCard}>
-          <div style={{ fontSize: 14, color: '#444', marginBottom: 8 }}>Sessions (last 6 months)</div>
-          <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} width="100%" height={chartHeight}>
-            {sessionsByMonth.map((d, i) => {
-              const barW = (chartWidth - 40) / sessionsByMonth.length;
-              const x = 20 + i * barW + 6;
-              const h = (d.count / maxCount) * (chartHeight - 40);
-              const y = chartHeight - 20 - h;
+          <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
+            {(() => {
+              const rawCompleted = sessions.filter(s => {
+                const st = String(s.status || s.state || '').toLowerCase();
+                return st === 'completed' || st === 'done' || st === 'finished';
+              }).length;
+              const hasStatusField = sessions.some(s => s.status !== undefined && s.status !== null);
+              const completedSessions = hasStatusField ? rawCompleted : sessions.length;
+              const studentsCompleted = studentsWithSessions.filter(s => s.hasSession).length;
+              const completionRate = Math.round((completedSessions / Math.max(sessions.length, 1)) * 100);
+
               return (
-                <g key={d.month}>
-                  <rect x={x} y={y} width={barW - 12} height={h} fill="#3b82f6" rx={4} />
-                  <text x={x + (barW - 12)/2} y={chartHeight - 4} fontSize="10" fill="#666" textAnchor="middle">{d.month.split('-')[1]}</text>
-                </g>
+                <>
+                  <div className={styles.card} style={{ flex: 1 }}>
+                    <div style={{ color: '#888', fontSize: 13 }}>Completed Sessions</div>
+                    <div style={{ fontSize: 24, fontWeight: 700 }}><span className={styles.number}>{completedSessions}</span></div>
+                    <div style={{ color: '#999', fontSize: 12 }}>{hasStatusField ? 'Based on session status' : 'No status field — showing total'}</div>
+                  </div>
+
+                  <div className={styles.card} style={{ flex: 1 }}>
+                    <div style={{ color: '#888', fontSize: 13 }}>Students Completed</div>
+                    <div style={{ fontSize: 24, fontWeight: 700 }}><span className={styles.number}>{studentsCompleted}</span></div>
+                    <div style={{ color: '#999', fontSize: 12 }}>{studentsWithSessions.length} students assigned</div>
+                  </div>
+
+                  <div className={styles.card} style={{ flex: 1 }}>
+                    <div style={{ color: '#888', fontSize: 13 }}>Completion Rate</div>
+                    <div style={{ fontSize: 24, fontWeight: 700 }}><span className={styles.number}>{isNaN(completionRate) ? 0 : completionRate}%</span></div>
+                    <div style={{ color: '#999', fontSize: 12 }}>Of all sessions</div>
+                  </div>
+                </>
               );
-            })}
-          </svg>
+            })()}
+          </div>
         </div>
 
         <div className={styles.donutCard}>

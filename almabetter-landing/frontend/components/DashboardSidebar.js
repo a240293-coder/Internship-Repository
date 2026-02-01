@@ -15,7 +15,8 @@ export default function DashboardSidebar({ role }) {
     mentor: [
       { href: '/mentor/dashboard', label: 'Dashboard' },
       { href: '/mentor/students', label: 'My Students' },
-      { href: '/mentor/session', label: 'Schedule Session' },
+      { href: '/mentor/session', label: 'Schedule a Session' },
+      { href: '/mentor/sessions', label: 'Scheduled Sessions' },
     ],
     admin: [
       { href: '/admin/dashboard', label: 'Overview' },

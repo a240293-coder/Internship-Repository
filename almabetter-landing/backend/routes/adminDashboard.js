@@ -144,10 +144,15 @@ router.get('/students', requireAdmin, async (req, res) => {
 // Admin: Get all mentors and their assigned students
 router.get('/mentors', requireAdmin, async (req, res) => {
   try {
-    const [rows] = await db.execute(
-      `SELECT m.*, f.studentId, f.studentName FROM mentors m
-        LEFT JOIN interest_forms f ON m.id = f.mentorId`
-    );
+    const { expertise } = req.query;
+    let sql = `SELECT m.*, f.student_id AS studentId, f.student_name AS studentName FROM mentors m LEFT JOIN interest_forms f ON m.id = f.mentor_id`;
+    const params = [];
+    if (expertise) {
+      // simple match: find mentors whose expertise CSV contains the provided term
+      sql += ' WHERE FIND_IN_SET(?, m.expertise) OR m.expertise LIKE ?';
+      params.push(expertise, `%${expertise}%`);
+    }
+    const [rows] = await db.execute(sql, params);
     res.json({ success: true, data: rows });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });

@@ -1,0 +1,21 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: nowrap;
+}
+.meta {
+  min-width: 0;
+}
+.name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0b3a8a;
+  margin-bottom: 2px;
+}
+.sub {
+  color: #556;
+  font-size: 13px;
+}
+/* avatar and expertise removed for dashboard header: only name + sub shown */

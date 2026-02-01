@@ -59,6 +59,20 @@
     gap: 0.7rem;
     width: 100%;
   }
+
+  /* Ensure header title and profile sit on a single row on wide screens */
+  .dashboard-header-row {
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+  .dashboard-header-title {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .dashboard-profile-menu {
+    flex: 0 0 auto;
+    margin-left: 1rem;
+  }
   .dashboard-header-hamburger {
     display: flex;
     flex-direction: column;
@@ -856,7 +870,7 @@
 .dashboard-content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 5.5rem;
+  gap: 1.25rem; /* reduced vertical gap between header/profile and page content */
 }
 
 /* Prevent flex children from forcing page-level horizontal scroll

@@ -8,10 +8,10 @@
 .kpiDesc { font-size: 11px; color: #64748b; margin-top: 6px; }
 .row { display: flex; gap: 12px; }
 .left { flex: 2; }
-.right { flex: 1; }
-.card { background: #fff; border-radius: 8px; padding: 10px; box-shadow: 0 4px 14px rgba(12,30,60,0.03); }
-.table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.table th, .table td { padding: 8px 6px; text-align: left; border-top: 1px solid #f1f5f9; }
+.right { flex: 0.9; max-width: 360px; }
+.card { background: #fff; border-radius: 8px; padding: 8px; box-shadow: 0 4px 14px rgba(12,30,60,0.03); }
+.table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.table th, .table td { padding: 6px 8px; text-align: left; border-top: 1px solid #f1f5f9; }
 @media (max-width: 900px) {
   .kpis { grid-template-columns: repeat(2,1fr); }
   .row { flex-direction: column; }
