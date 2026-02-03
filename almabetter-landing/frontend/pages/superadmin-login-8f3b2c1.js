@@ -6,7 +6,7 @@ import api from '../lib/api';
 import './auth/Auth.css';
 import AuthVisualPanel from '../components/auth/AuthVisualPanel';
 
-const AdminLogin = () => {
+const SuperAdminLogin = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
@@ -21,12 +21,11 @@ const AdminLogin = () => {
     e.preventDefault();
     setError('');
     setLoading(true);
-    console.log('[ADMIN LOGIN DEBUG] Submitting credentials:', formData);
     try {
       const response = await api.post('/api/admin/auth/login', formData);
-      console.log('[ADMIN LOGIN DEBUG] API response:', response);
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userRole', 'admin');
+      // set role to super_admin for Super Admin users
+      localStorage.setItem('userRole', 'super_admin');
       localStorage.setItem('userId_admin', response.data.admin.id);
       if (response.data.admin.email) localStorage.setItem('userEmail_admin', response.data.admin.email);
       if (response.data.admin.name) localStorage.setItem('userName_admin', response.data.admin.name);
@@ -34,7 +33,6 @@ const AdminLogin = () => {
       showPopup('Login successful!');
       setTimeout(() => router.push('/admin/dashboard'), 1200);
     } catch (err) {
-      console.log('[ADMIN LOGIN DEBUG] API error:', err);
       setError(err.response?.data?.message || 'Incorrect email or password');
     } finally {
       setLoading(false);
@@ -58,8 +56,8 @@ const AdminLogin = () => {
         />
         <section className="auth-form-wrap">
           <div className="auth-box">
-            <h2><span className="auth-heading-accent">Admin</span> Portal</h2>
-            <p className="admin-note">Administrator Login</p>
+            <h2><span className="auth-heading-accent">Super Admin</span> Portal</h2>
+            <p className="admin-note">Super Administrator Login</p>
             {error && <div className="error-message">{error}</div>}
             <PopupMessage message={popup} onClose={closePopup} />
             <form onSubmit={handleSubmit}>
@@ -86,11 +84,11 @@ const AdminLogin = () => {
                 />
               </div>
               <button type="submit" disabled={loading}>
-                {loading ? 'Authenticating...' : 'Admin Login'}
+                {loading ? 'Authenticating...' : 'Super Admin Login'}
               </button>
             </form>
             <div className="auth-link">
-              <p>This portal is restricted to administrators only</p>
+              <p>This portal is restricted to super administrators only</p>
             </div>
           </div>
         </section>
@@ -99,4 +97,4 @@ const AdminLogin = () => {
   );
 };
 
-export default AdminLogin;
+export default SuperAdminLogin;

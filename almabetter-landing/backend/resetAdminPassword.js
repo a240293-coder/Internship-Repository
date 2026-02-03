@@ -9,7 +9,7 @@ async function resetPassword(email, newPassword) {
   }
   try {
     const hash = await bcrypt.hash(newPassword, 10);
-    const [result] = await db.execute('UPDATE admins SET password = ? WHERE email = ?', [hash, email]);
+    const [result] = await db.execute('UPDATE super_admins SET password = ? WHERE email = ?', [hash, email]);
     if (result && result.affectedRows && result.affectedRows > 0) {
       console.log(`Password updated for ${email}`);
     } else {

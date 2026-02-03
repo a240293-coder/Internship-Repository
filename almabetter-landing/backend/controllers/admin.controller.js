@@ -285,8 +285,8 @@ exports.login = async (req, res) => {
     console.log('[ADMIN LOGIN DEBUG] Email from request:', email);
     console.log('[ADMIN LOGIN DEBUG] Password from request:', password);
     // Extra debug: log query and columns
-    console.log('[ADMIN LOGIN DEBUG] Executing query: SELECT * FROM admins WHERE email = ?', email);
-    const [rows] = await db.execute('SELECT * FROM admins WHERE email = ?', [email]);
+    console.log('[ADMIN LOGIN DEBUG] Executing query: SELECT * FROM super_admins WHERE email = ?', email);
+    const [rows] = await db.execute('SELECT * FROM super_admins WHERE email = ?', [email]);
     if (rows.length > 0) {
       console.log('[ADMIN LOGIN DEBUG] DB row columns:', Object.keys(rows[0]));
       console.log('[ADMIN LOGIN DEBUG] DB row values:', rows[0]);

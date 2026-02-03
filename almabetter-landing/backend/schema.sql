@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS interest_forms;
 DROP TABLE IF EXISTS jwt_sessions;
 DROP TABLE IF EXISTS dashboards;
 DROP TABLE IF EXISTS assignments;
-DROP TABLE IF EXISTS admins;
+DROP TABLE IF EXISTS super_admins;
 DROP TABLE IF EXISTS mentors;
 DROP TABLE IF EXISTS students;
 
@@ -33,13 +33,16 @@ CREATE TABLE mentors (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE admins (
+CREATE TABLE super_admins (
     id INT AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(100),
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(50) DEFAULT 'admin',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    -- generated flag: 1 for the single super admin, NULL otherwise
+    super_admin_flag TINYINT(1) GENERATED ALWAYS AS (CASE WHEN role = 'super_admin' THEN 1 ELSE NULL END) STORED,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_super_admin_flag (super_admin_flag)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -127,7 +130,7 @@ CREATE TABLE admin_activity_logs (
     reference_id INT,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (admin_id) REFERENCES admins(id) ON DELETE SET NULL
+    FOREIGN KEY (admin_id) REFERENCES super_admins(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Live Sessions table (for scheduled sessions, different from bookings)

@@ -12,7 +12,11 @@ module.exports = function adminAuth(req, res, next) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'changeme');
     // Accept any case for the role claim (e.g. 'admin' or 'ADMIN')
-    if (!decoded || typeof decoded.role !== 'string' || decoded.role.toLowerCase() !== 'admin') {
+    if (!decoded || typeof decoded.role !== 'string') {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+    const roleLower = decoded.role.toLowerCase();
+    if (roleLower !== 'admin' && roleLower !== 'super_admin') {
       return res.status(403).json({ message: 'Forbidden' });
     }
     req.user = decoded;

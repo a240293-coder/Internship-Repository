@@ -114,10 +114,7 @@ export default function AdminKPIDashboard() {
     <div>
       {fetchError && <div style={{color:'#b91c1c', padding:'8px 12px', margin:'0 0 12px 0', background:'#fff5f5', borderRadius:6}}>{fetchError}</div>}
       <div className={styles.container}>
-      <div className={styles.header}>
-        <h2 style={{margin:0}}>Admin KPI Dashboard</h2>
-        <p style={{margin:0,color:'#6b7280'}}>Overview of platform activity</p>
-      </div>
+      {/* Header removed as requested */}
 
       <div className={styles.kpis}>
         <div className={styles.kpiCard}>

@@ -75,7 +75,7 @@ export default function DashboardLayout({ children, title, role, onLogout }) {
     };
   }, [profileOpen, isMobile]);
 
-  const roleLabel = normalizedRole ? normalizedRole.charAt(0).toUpperCase() + normalizedRole.slice(1) : 'Member';
+  const roleLabel = normalizedRole ? (normalizedRole === 'super_admin' ? 'Super Admin' : normalizedRole.charAt(0).toUpperCase() + normalizedRole.slice(1)) : 'Member';
   
   const initials = userName
     .split(' ')
@@ -89,7 +89,7 @@ export default function DashboardLayout({ children, title, role, onLogout }) {
     setProfileOpen(false);
     if (normalizedRole === 'mentor') {
       router.push('/mentor/profile');
-    } else if (normalizedRole === 'admin') {
+    } else if (normalizedRole === 'admin' || normalizedRole === 'super_admin') {
       router.push('/admin/profile');
     }
   };
@@ -182,7 +182,7 @@ export default function DashboardLayout({ children, title, role, onLogout }) {
                    </div>
                    <div className={styles['mobile-divider-blue']} />
                    <div className={styles['mobile-nav-links']} style={{ display: 'block' }}>
-                    {(normalizedRole === 'student' || normalizedRole === 'mentor' || normalizedRole === 'admin') && (
+                    {(normalizedRole === 'student' || normalizedRole === 'mentor' || normalizedRole === 'admin' || normalizedRole === 'super_admin') && (
                       <>
                         {normalizedRole === 'student' && (
                           <>
@@ -197,7 +197,7 @@ export default function DashboardLayout({ children, title, role, onLogout }) {
                             <a href="/mentor/students" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/mentor/students', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>My Students</a>
                           </>
                         )}
-                         {normalizedRole === 'admin' && (
+                         {(normalizedRole === 'admin' || normalizedRole === 'super_admin') && (
                            <>
                              <a href="/admin/dashboard" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/admin/dashboard', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Overview</a>
                              {/* Student Forms page removed; link intentionally omitted */}

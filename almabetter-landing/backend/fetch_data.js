@@ -1,4 +1,4 @@
-const db = require('./database');
+const db = require('./config/database');
 
 async function fetchData() {
   try {
@@ -18,8 +18,8 @@ async function fetchData() {
     const [sessions] = await db.execute('SELECT * FROM live_session_bookings');
     console.table(sessions);
 
-    console.log('\n--- Admins ---');
-    const [admins] = await db.execute('SELECT * FROM admins');
+    console.log('\n--- Super Admins ---');
+    const [admins] = await db.execute('SELECT * FROM super_admins');
     console.table(admins);
 
   } catch (error) {

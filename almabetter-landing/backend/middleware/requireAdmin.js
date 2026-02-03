@@ -9,7 +9,9 @@ function requireAdmin(req, res, next) {
   const token = authHeader.split(' ')[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (decoded.role !== 'admin') {
+    // allow both 'admin' and 'super_admin' roles (case-insensitive)
+    const role = typeof decoded.role === 'string' ? decoded.role.toLowerCase() : '';
+    if (role !== 'admin' && role !== 'super_admin') {
       return res.status(403).json({ message: 'Admins only' });
     }
     req.user = decoded;

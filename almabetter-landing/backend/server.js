@@ -40,6 +40,12 @@ app.get('/auth/signup/mentor', (req, res) => {
   res.send('Mentor Signup Page Route is Active');
 });
 
+// Redirect old admin-login path to new superadmin-login path
+app.get(['/admin-login-8f3b2c1a', '/admin-login-8f3b2c1a/'], (req, res) => {
+  // Use a 301 permanent redirect so clients update bookmarks
+  return res.redirect(301, '/superadmin-login-8f3b2c1');
+});
+
 const studentRoutes = require('./routes/student.routes');
 const mentorRoutes = require('./routes/mentor.routes');
 const mentorDashboardRoutes = require('./routes/mentorDashboard');

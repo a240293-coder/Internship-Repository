@@ -14,7 +14,7 @@ async function createAdmin() {
     };
 
     const [result] = await db.execute(
-      'INSERT INTO admins (full_name, email, password, role) VALUES (?, ?, ?, ?)',
+      'INSERT INTO super_admins (full_name, email, password, role) VALUES (?, ?, ?, ?)',
       [admin.full_name, admin.email, admin.password, admin.role]
     );
 
