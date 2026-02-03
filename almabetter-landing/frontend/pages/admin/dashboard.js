@@ -7,7 +7,6 @@ import AdminStatsCards from '../../components/AdminStatsCards';
 import AdminKPIDashboard from '../../components/AdminKPIDashboard';
 import { useEffect, useState } from 'react';
 import api from '../../lib/api';
-import ProfileHeader from '../../components/shared/ProfileHeader';
 
 
 export default function AdminDashboard() {
@@ -23,8 +22,8 @@ export default function AdminDashboard() {
 			try {
 				// Get main stats
 				const { data } = await api.get('/admin/dashboard');
-				// Get student forms count with unique emails
-				const { data: formsData } = await api.get('/admin/forms?unique=true');
+				// Get student forms count
+				const { data: formsData } = await api.get('/admin/forms');
 				if (mounted) {
 					setStats({
 						mentors: data.mentors || 0,
@@ -45,7 +44,6 @@ export default function AdminDashboard() {
 	return (
 		<RoleGuard allowedRole="admin">
 			<DashboardLayout title="Admin Dashboard" role="admin">
-				<ProfileHeader name={typeof window !== 'undefined' ? (localStorage.getItem('userName_admin') || localStorage.getItem('userName')) : 'Admin'} sub={typeof window !== 'undefined' ? (localStorage.getItem('userEmail_admin') || localStorage.getItem('userEmail')) : ''} />
 				{/* Admin KPI Dashboard */}
 				<AdminKPIDashboard />
 			</DashboardLayout>

@@ -39,7 +39,7 @@ const AdminMentorsList = () => {
           <div>Loading mentors...</div>
         ) : (
           <>
-            
+            <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0', marginTop: '0.5rem', paddingBottom: '0' }}>All Mentors</h3>
             {mentors.length === 0 ? (
               <div>No mentors found.</div>
             ) : (
@@ -50,7 +50,8 @@ const AdminMentorsList = () => {
                   background: '#fff',
                   fontSize: '0.97rem',
                   marginBottom: '1rem',
-                  width: '100%',
+                  width: '700px',
+                  minWidth: '350px',
                   maxWidth: '100%',
                   height: 'auto',
                   tableLayout: 'fixed',
@@ -58,43 +59,33 @@ const AdminMentorsList = () => {
               >
                 <thead>
                   <tr style={{ background: '#f1f5f9' }}>
-                    <th style={{ padding: '8px 6px', border: '1px solid #e2e8f0', textAlign: 'left', fontSize: '0.97rem', width: '6%' }}>#</th>
-                    <th style={{ padding: '8px 6px', border: '1px solid #e2e8f0', textAlign: 'left', fontSize: '0.97rem', width: '24%' }}>Name</th>
-                    <th style={{ padding: '8px 6px', border: '1px solid #e2e8f0', textAlign: 'left', fontSize: '0.97rem', width: '30%' }}>Email</th>
-                    <th style={{ padding: '8px 6px', border: '1px solid #e2e8f0', textAlign: 'left', fontSize: '0.97rem', width: '40%' }}>Expertise</th>
+                    <th style={{ padding: '8px 4px', border: '1px solid #e2e8f0', textAlign: 'left', fontSize: '0.97rem', width: '8%' }}>#</th>
+                    <th style={{ padding: '8px 4px', border: '1px solid #e2e8f0', textAlign: 'left', fontSize: '0.97rem', width: '46%' }}>Name</th>
+                    <th style={{ padding: '8px 4px', border: '1px solid #e2e8f0', textAlign: 'left', fontSize: '0.97rem', width: '46%' }}>Email</th>
                   </tr>
                 </thead>
                 <tbody>
                   {mentors.map((mentor, idx) => (
                     <tr key={mentor.id} style={{borderBottom:'1px solid #e2e8f0'}}>
-                      <td style={{ padding: '8px 6px', border: '1px solid #e2e8f0', fontSize: '0.9rem', width: '6%' }}>{idx + 1}</td>
+                      <td style={{ padding: '10px 8px', border: '1px solid #e2e8f0', fontSize: '0.9rem', width: '8%' }}>{idx + 1}</td>
                       <td style={{
-                        padding: '8px 6px',
+                        padding: '10px 8px',
                         border: '1px solid #e2e8f0',
                         fontSize: '0.9rem',
-                        width: '24%',
+                        width: '46%',
                         overflowWrap: 'break-word',
                         wordBreak: 'break-word',
-                        whiteSpace: 'normal'
                       }}>
-                        <Link href={`/admin/mentor/${mentor.id || mentor._id || mentor.email}`} style={{ color: '#0b63e6', fontWeight: 700, textDecoration: 'none' }}>{mentor.name || mentor.full_name || mentor.email}</Link>
+                        <Link href={`/admin/mentor/${mentor.id || mentor._id || mentor.email}`} style={{ color: '#0b63e6', fontWeight: 700, textDecoration: 'none' }}>{mentor.name}</Link>
                       </td>
                       <td style={{
-                        padding: '8px 6px',
+                        padding: '10px 8px',
                         border: '1px solid #e2e8f0',
                         fontSize: '0.9rem',
-                        width: '30%',
+                        width: '46%',
                         overflowWrap: 'break-word',
                         wordBreak: 'break-word',
-                        whiteSpace: 'normal'
                       }}>{mentor.email}</td>
-                      <td style={{ padding: '8px 6px', border: '1px solid #e2e8f0', width: '40%' }}>
-                        {mentor.expertise ? (
-                          (String(mentor.expertise).split(',').filter(Boolean).map((e, i) => (
-                            <span key={i} style={{ display: 'inline-block', background: '#eef2ff', color: '#07204a', padding: '4px 8px', borderRadius: 12, marginRight: 6, fontSize: 12, maxWidth: '100%', wordBreak: 'break-word' }}>{e}</span>
-                          )))
-                        ) : <span style={{ color: '#888' }}>—</span>}
-                      </td>
                       {/* Mobile-specific styles for table size and text size */}
                       <style jsx global>{`
                         @media (max-width: 768px) {

@@ -148,7 +148,7 @@ const MentorAssignSystem = () => {
                                   >
                                     <option value="">Select mentor</option>
                                     {mentors.map((mentor) => (
-                                      <option key={mentor.id} value={mentor.id}>{mentor.name} ({mentor.email}) — {mentor.expertise ? String(mentor.expertise).split(',').slice(0,2).join(', ') : '—'}</option>
+                                      <option key={mentor.id} value={mentor.id}>{mentor.name} ({mentor.email})</option>
                                     ))}
                                   </select>
                                   <button
@@ -156,7 +156,7 @@ const MentorAssignSystem = () => {
                                     onClick={() => handleAssignMentor(form)}
                                     disabled={!assignmentValue}
                                   >
-                                    Confirm
+                                    Assign
                                   </button>
                                 </div>
                               </td>

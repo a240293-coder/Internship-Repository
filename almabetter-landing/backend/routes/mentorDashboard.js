@@ -30,42 +30,17 @@ router.get('/students', verifyToken, async (req, res) => {
       return res.status(403).json({ message: 'Only mentors can access this' });
     }
 
-    // InterestForm.findAll returns forms assigned to this mentor
+    // InterestForm.findAll expects a plain where object (e.g. { mentorId: 123 })
     const forms = await InterestForm.findAll({ mentorId: req.user.id });
-    // Normalize and group by unique student email (case-insensitive)
-    const grouped = new Map();
-    forms.forEach((f) => {
-      const email = (f.student_email || f.studentEmail || '').toString().trim().toLowerCase();
-      const normalized = {
-        id: f.id || f.form_id || f._id,
-        raw: f,
-        student_name: f.student_name || f.studentName,
-        student_email: f.student_email || f.studentEmail,
-        desired_domain: f.desired_domain || f.desiredDomain,
-        interests: (typeof f.interests === 'string') ? (JSON.parse(f.interests || '[]') || []) : (Array.isArray(f.interests) ? f.interests : f.interests),
-        status: f.status,
-        mentor_id: f.mentor_id || f.mentorId || f.mentor_id,
-        resume_url: f.resume_url || f.resumeUrl || f.resume_url
-      };
-      if (!email) {
-        // fallback: if no email, push under special key with unique id
-        const key = `__noemail__${normalized.id}`;
-        grouped.set(key, grouped.get(key) || { student_email: null, student_name: normalized.student_name || 'Unknown', assignments: [] });
-        grouped.get(key).assignments.push(normalized);
-      } else {
-        if (!grouped.has(email)) {
-          grouped.set(email, { student_email: normalized.student_email, student_name: normalized.student_name || 'Unknown', assignments: [] });
-        }
-        grouped.get(email).assignments.push(normalized);
-      }
-    });
-    // Convert grouped map to array
-    const result = Array.from(grouped.values()).map(g => ({
-      student_email: g.student_email,
-      student_name: g.student_name,
-      assignments: g.assignments
+    // Ensure returned rows have normalized keys (snake_case from DB)
+    const normalized = forms.map(f => ({
+      ...f,
+      student_name: f.student_name || f.studentName,
+      student_email: f.student_email || f.studentEmail,
+      desired_domain: f.desired_domain || f.desiredDomain,
+      interests: (typeof f.interests === 'string') ? (JSON.parse(f.interests || '[]') || []) : (Array.isArray(f.interests) ? f.interests : f.interests)
     }));
-    res.json(result);
+    res.json(normalized);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
@@ -77,35 +52,14 @@ router.get('/students/by-mentor/:mentorId', verifyToken, requireAdmin, async (re
     const { mentorId } = req.params;
     if (!mentorId) return res.status(400).json({ message: 'mentorId is required' });
     const forms = await InterestForm.findAll({ mentorId });
-    const grouped = new Map();
-    forms.forEach((f) => {
-      const email = (f.student_email || f.studentEmail || '').toString().trim().toLowerCase();
-      const normalized = {
-        id: f.id || f.form_id || f._id,
-        raw: f,
-        student_name: f.student_name || f.studentName,
-        student_email: f.student_email || f.studentEmail,
-        desired_domain: f.desired_domain || f.desiredDomain,
-        interests: (typeof f.interests === 'string') ? (JSON.parse(f.interests || '[]') || []) : (Array.isArray(f.interests) ? f.interests : f.interests),
-        status: f.status,
-        mentor_id: f.mentor_id || f.mentorId || f.mentor_id,
-        resume_url: f.resume_url || f.resumeUrl || f.resume_url
-      };
-      if (!email) {
-        const key = `__noemail__${normalized.id}`;
-        grouped.set(key, grouped.get(key) || { student_email: null, student_name: normalized.student_name || 'Unknown', assignments: [] });
-        grouped.get(key).assignments.push(normalized);
-      } else {
-        if (!grouped.has(email)) grouped.set(email, { student_email: normalized.student_email, student_name: normalized.student_name || 'Unknown', assignments: [] });
-        grouped.get(email).assignments.push(normalized);
-      }
-    });
-    const result = Array.from(grouped.values()).map(g => ({
-      student_email: g.student_email,
-      student_name: g.student_name,
-      assignments: g.assignments
+    const normalized = forms.map(f => ({
+      ...f,
+      student_name: f.student_name || f.studentName,
+      student_email: f.student_email || f.studentEmail,
+      desired_domain: f.desired_domain || f.desiredDomain,
+      interests: (typeof f.interests === 'string') ? (JSON.parse(f.interests || '[]') || []) : (Array.isArray(f.interests) ? f.interests : f.interests)
     }));
-    res.json(result);
+    res.json(normalized);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }

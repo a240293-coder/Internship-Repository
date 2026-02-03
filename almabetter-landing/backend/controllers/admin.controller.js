@@ -226,26 +226,6 @@ exports.getMentorAssignments = async (req, res) => {
       console.log('[getMentorAssignments] Params:', params);
       try {
         const [rows] = await db.execute(sql, params);
-        // If caller requested unique grouping by student email, collapse rows
-        const unique = String(req.query.unique || '').toLowerCase() === 'true';
-        if (unique) {
-          const grouped = new Map();
-          (rows || []).forEach(r => {
-            const email = (r.student_email || r.form_student_name || '').toString().trim().toLowerCase();
-            // fallback to student name if email missing
-            const key = email || `__noemail__${r.student_id || r.studentId || r.student_id || r.id}`;
-            if (!grouped.has(key)) grouped.set(key, { student_name: r.student_name || r.form_student_name || '', student_email: r.student_email || '', assignments: [] });
-            grouped.get(key).assignments.push(r);
-          });
-          const uniqueRows = Array.from(grouped.values()).map(g => ({ student_name: g.student_name, student_email: g.student_email, assignments_count: g.assignments.length }));
-          if (exportType === 'csv') {
-            const csv = [Object.keys(uniqueRows[0] || {}).join(',')].concat(uniqueRows.map(r => Object.values(r).join(','))).join('\n');
-            res.setHeader('Content-Type', 'text/csv');
-            res.setHeader('Content-Disposition', 'attachment; filename="mentor_assignments_unique.csv"');
-            return res.send(csv);
-          }
-          return res.json({ data: uniqueRows });
-        }
         if (exportType === 'csv') {
           const csv = [Object.keys(rows[0] || {}).join(',')].concat(rows.map(r => Object.values(r).join(','))).join('\n');
           res.setHeader('Content-Type', 'text/csv');
@@ -375,11 +355,9 @@ exports.getDashboard = async (req, res) => {
 exports.getLiveSessions = async (req, res) => {
   try {
     // Select all required fields for admin to contact student and conduct session
-    // For admin KPIs we prefer sessions that are tied to mentors (scheduled/completed sessions).
-    // Use `mentor_sessions` (exists in schema and contains `mentor_id`) to compute trends and top mentors.
     const [rows] = await db.execute(
-      `SELECT id, mentor_id, student_id, agenda as sessionTopic, timing as timing, created_at
-       FROM mentor_sessions
+      `SELECT id, studentName, studentEmail, phone, preferredDate, preferredTime, sessionTopic, adminId, status, created_at
+       FROM live_session_bookings
        ORDER BY created_at DESC`
     );
     res.json(rows);
@@ -481,58 +459,24 @@ exports.updateLiveSessionStatus = async (req, res) => {
 exports.getForms = async (req, res) => {
   try {
     // Return interest forms and resolve student name/email from students table when available
-    // If caller requests unique grouping (by email) via ?unique=true, return one record per unique email with aggregated info
-    const unique = String(req.query.unique || '').toLowerCase() === 'true';
-    const baseSql = `SELECT f.*, COALESCE(f.student_name, s.full_name) AS resolved_student_name, COALESCE(f.student_email, s.email) AS resolved_student_email
+    // Try to resolve student by id OR by email so anonymous or duplicate submissions still show a name
+    const sql = `SELECT f.*, COALESCE(f.student_name, s.full_name) AS resolved_student_name, COALESCE(f.student_email, s.email) AS resolved_student_email
            FROM interest_forms f
            LEFT JOIN students s ON (f.student_id = s.id OR (f.student_email IS NOT NULL AND f.student_email = s.email))
            ORDER BY f.created_at DESC`;
-    const [rows] = await db.execute(baseSql);
-    if (!unique) {
-      // Normalize and attach fallback fields expected by frontend
-      const forms = (rows || []).map(row => ({
-        ...row,
-        student_name: row.student_name || row.resolved_student_name || null,
-        studentEmail: row.student_email || row.resolved_student_email || null,
-        studentName: row.student_name || row.resolved_student_name || null,
-        student_email: row.student_email || row.resolved_student_email || null,
-        interests: (typeof row.interests === 'string') ? (JSON.parse(row.interests || '[]') || []) : (Array.isArray(row.interests) ? row.interests : row.interests),
-        desiredDomain: row.desired_domain || row.desiredDomain || null,
-        created_at: row.created_at || row.createdAt || null,
-      }));
-      return res.json(forms);
-    }
-
-    // Group by resolved email (case-insensitive). Keep the most recent form's name and collect domains/count
-    const grouped = new Map();
-    (rows || []).forEach(r => {
-      const email = (r.resolved_student_email || r.student_email || '').toString().trim().toLowerCase();
-      const domain = r.desired_domain || r.desiredDomain || null;
-      const name = r.resolved_student_name || r.student_name || null;
-      if (!email) {
-        // Use form id fallback key
-        const key = `__noemail__${r.id}`;
-        if (!grouped.has(key)) grouped.set(key, { student_email: null, student_name: name, forms_count: 0, domains: new Set(), latest: r.created_at });
-        const g = grouped.get(key);
-        g.forms_count++;
-        if (domain) g.domains.add(domain);
-        if (!g.latest || new Date(r.created_at) > new Date(g.latest)) g.latest = r.created_at;
-      } else {
-        if (!grouped.has(email)) grouped.set(email, { student_email: email, student_name: name, forms_count: 0, domains: new Set(), latest: r.created_at });
-        const g = grouped.get(email);
-        g.forms_count++;
-        if (domain) g.domains.add(domain);
-        if (!g.latest || new Date(r.created_at) > new Date(g.latest)) g.latest = r.created_at;
-      }
-    });
-    const result = Array.from(grouped.values()).map(g => ({
-      student_email: g.student_email,
-      student_name: g.student_name,
-      forms_count: g.forms_count,
-      domains: Array.from(g.domains),
-      latest: g.latest
-    })).sort((a,b)=> new Date(b.latest) - new Date(a.latest));
-    return res.json(result);
+    const [rows] = await db.execute(sql);
+    // Normalize and attach fallback fields expected by frontend
+    const forms = (rows || []).map(row => ({
+      ...row,
+      student_name: row.student_name || row.resolved_student_name || null,
+      studentEmail: row.student_email || row.resolved_student_email || null,
+      studentName: row.student_name || row.resolved_student_name || null,
+      student_email: row.student_email || row.resolved_student_email || null,
+      interests: (typeof row.interests === 'string') ? (JSON.parse(row.interests || '[]') || []) : (Array.isArray(row.interests) ? row.interests : row.interests),
+      desiredDomain: row.desired_domain || row.desiredDomain || null,
+      created_at: row.created_at || row.createdAt || null,
+    }));
+    res.json(forms);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });

@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import api from '../../lib/api';
 import './Dashboard.css';
 import DashboardLayout from '../../components/DashboardLayout';
-import ProfileHeader from '../../components/shared/ProfileHeader';
 
 const StudentDashboard = () => {
   const router = useRouter();
@@ -125,7 +124,7 @@ const StudentDashboard = () => {
   return (
     <DashboardLayout title="Student Dashboard" role="student" onLogout={handleLogout}>
       {error && <div className="alert alert-error">{error}</div>}
-      <ProfileHeader name={typeof window !== 'undefined' ? (localStorage.getItem('userName_student') || localStorage.getItem('userName')) : 'Student'} sub={typeof window !== 'undefined' ? (localStorage.getItem('userEmail_student') || localStorage.getItem('userEmail')) : ''} />
+
 
       <section className="student-stats-grid">
         {/* Preferred Domain Card (shows domains from all submissions) */}

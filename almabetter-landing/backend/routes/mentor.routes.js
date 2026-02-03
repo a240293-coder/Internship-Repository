@@ -15,9 +15,5 @@ router.get('/all', verifyToken, controller.getAllMentors);
 // Mentor sessions: create and list
 router.post('/sessions', verifyToken, roleAuth('mentor'), controller.createSession);
 router.get('/sessions', verifyToken, roleAuth('mentor'), controller.getMentorSessions);
-// Mark a mentor session as completed
-router.post('/sessions/:id/complete', verifyToken, roleAuth('mentor'), controller.markSessionComplete);
-// Update status (completed/canceled)
-router.post('/sessions/:id/status', verifyToken, roleAuth('mentor'), controller.updateSessionStatus);
 
 module.exports = router;

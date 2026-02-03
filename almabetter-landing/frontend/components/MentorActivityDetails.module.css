@@ -6,10 +6,10 @@
 }
 .headerCard {
   background: #fff;
-  border-radius: 10px;
-  padding: 10px 12px;
-  box-shadow: 0 6px 18px rgba(20,30,70,0.04);
-  margin-bottom: 8px;
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 6px 18px rgba(20,30,70,0.05);
+  margin-bottom: 12px;
 }
 .headerTitle {
   margin: 0;
@@ -31,48 +31,48 @@
 .cardsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  margin-bottom: 8px;
+  gap: 16px;
+  margin-bottom: 18px;
 }
 .card {
   background: #fff;
-  border-radius: 6px;
-  padding: 8px;
-  box-shadow: 0 3px 8px rgba(12,30,60,0.03);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 4px 18px rgba(12,30,60,0.04);
 }
 .chartsRow {
   display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 18px;
+  margin-bottom: 20px;
   align-items: flex-start;
 }
 .chartCard {
   flex: 1;
   background: #fff;
-  border-radius: 6px;
-  padding: 8px;
-  box-shadow: 0 4px 10px rgba(12,30,60,0.03);
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(12,30,60,0.04);
 }
 .donutCard {
-  width: 220px;
+  width: 280px;
   background: #fff;
-  border-radius: 6px;
-  padding: 8px;
-  box-shadow: 0 4px 10px rgba(12,30,60,0.03);
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(12,30,60,0.04);
 }
 .bottomGrid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 8px;
+  gap: 18px;
 }
 .tableCard {
   background: #fff;
-  border-radius: 6px;
-  padding: 8px;
-  box-shadow: 0 4px 10px rgba(12,30,60,0.03);
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(12,30,60,0.04);
 }
 .tableWrapper {
-  max-height: 220px;
+  max-height: 320px;
   overflow: auto;
 }
 /* Make SVGs responsive */
@@ -92,6 +92,6 @@
   .cardsGrid { grid-template-columns: 1fr; }
   .donutCard { width: 100%; }
   .chartCard { width: 100%; }
-  .headerCard { padding: 10px; }
-  .container { padding: 8px; }
+  .headerCard { padding: 14px; }
+  .container { padding: 12px; }
 }

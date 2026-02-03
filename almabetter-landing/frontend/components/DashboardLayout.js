@@ -195,8 +195,6 @@ export default function DashboardLayout({ children, title, role, onLogout }) {
                           <>
                             <a href="/mentor/dashboard" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/mentor/dashboard', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Dashboard</a>
                             <a href="/mentor/students" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/mentor/students', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>My Students</a>
-                            <a href="/mentor/session" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/mentor/session', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Schedule a Session</a>
-                            <a href="/mentor/sessions" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/mentor/sessions', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Scheduled Sessions</a>
                           </>
                         )}
                          {normalizedRole === 'admin' && (

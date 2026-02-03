@@ -26,7 +26,7 @@ export default function AdminKPIDashboard() {
       let localError = false;
       try {
         const dashboardData = await safeGet('/admin/dashboard');
-        const formsData = await safeGet('/admin/forms?unique=true');
+        const formsData = await safeGet('/admin/forms');
         const completedSessions = await safeGet('/admin/history/completed-sessions');
 
         // Try live-sessions with small retry if rate-limited
@@ -114,6 +114,10 @@ export default function AdminKPIDashboard() {
     <div>
       {fetchError && <div style={{color:'#b91c1c', padding:'8px 12px', margin:'0 0 12px 0', background:'#fff5f5', borderRadius:6}}>{fetchError}</div>}
       <div className={styles.container}>
+      <div className={styles.header}>
+        <h2 style={{margin:0}}>Admin KPI Dashboard</h2>
+        <p style={{margin:0,color:'#6b7280'}}>Overview of platform activity</p>
+      </div>
 
       <div className={styles.kpis}>
         <div className={styles.kpiCard}>
