@@ -35,9 +35,7 @@ export default function RoleGuard({ allowedRole, children }) {
       setStatus('unauth');
       return;
     }
-    // allow `allowedRole` to be a string or an array of strings
-    const allowed = Array.isArray(allowedRole) ? allowedRole.map(r => String(r).toLowerCase()) : [String(allowedRole).toLowerCase()];
-    if (!allowed.includes(role)) {
+    if (role !== String(allowedRole).toLowerCase()) {
       setStatus('forbidden');
       return;
     }

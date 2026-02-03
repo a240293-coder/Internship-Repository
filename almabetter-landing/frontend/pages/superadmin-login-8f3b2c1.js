@@ -24,8 +24,8 @@ const SuperAdminLogin = () => {
     try {
       const response = await api.post('/api/admin/auth/login', formData);
       localStorage.setItem('token', response.data.token);
-      // set role to super_admin for Super Admin users
-      localStorage.setItem('userRole', 'super_admin');
+      // keep compatibility: client expects 'admin' role for UI flows
+      localStorage.setItem('userRole', 'admin');
       localStorage.setItem('userId_admin', response.data.admin.id);
       if (response.data.admin.email) localStorage.setItem('userEmail_admin', response.data.admin.email);
       if (response.data.admin.name) localStorage.setItem('userName_admin', response.data.admin.name);
