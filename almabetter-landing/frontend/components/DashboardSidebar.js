@@ -15,15 +15,17 @@ export default function DashboardSidebar({ role }) {
     mentor: [
       { href: '/mentor/dashboard', label: 'Dashboard' },
       { href: '/mentor/students', label: 'My Students' },
-      { href: '/mentor/session', label: 'Schedule Session' },
+      { href: '/mentor/session', label: 'Schedule a Session' },
+      { href: '/mentor/scheduled-sessions', label: 'Scheduled Sessions' },
     ],
     admin: [
       { href: '/admin/dashboard', label: 'Overview' },
       { href: '/admin/live-sessions', label: 'Live Sessions' },
       { href: '/admin/history', label: 'Admin History' },
       { href: '/admin/mentors', label: 'Mentors' },
-      { href: '/admin/mentor-assign', label: 'Mentor Assignment' }
-      // 'Reports' removed universally
+      { href: '/admin/mentor-assign', label: 'Mentor Assignment' },
+      { href: '/admin/add-admin', label: 'Add Admin' },
+      { href: '/admin/manage-admins', label: 'Manage Admins' }
     ]
   };
 

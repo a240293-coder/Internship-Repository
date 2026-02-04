@@ -36,7 +36,7 @@ exports.updateStudentProgress = async (req, res) => {
 exports.register = async (req, res) => {
   console.log('Mentor registration endpoint hit:', req.body);
   try {
-    const { full_name, email, password } = req.body;
+    const { full_name, email, password, expertise } = req.body;
     if (!full_name || !email || !password) {
       return res.status(400).json({ message: 'All fields are required' });
     }
@@ -48,13 +48,21 @@ exports.register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Accept expertise as array or comma-separated string. Store as CSV in DB.
+    let expertiseValue = null;
+    if (Array.isArray(expertise)) {
+      expertiseValue = expertise.join(',');
+    } else if (typeof expertise === 'string' && expertise.trim() !== '') {
+      expertiseValue = expertise;
+    }
+
     const [result] = await db.execute(
-      'INSERT INTO mentors (full_name, email, password) VALUES (?, ?, ?)',
-      [full_name, email, hashedPassword]
+      'INSERT INTO mentors (full_name, email, password, expertise) VALUES (?, ?, ?, ?)',
+      [full_name, email, hashedPassword, expertiseValue]
     );
 
     const id = result.insertId;
-    console.log("[DB INSERT] mentor:", id);
+    console.log('[DB INSERT] mentor:', id);
 
     // jwt imported at top of file
     const token = jwt.sign(
@@ -67,12 +75,12 @@ exports.register = async (req, res) => {
       'INSERT INTO jwt_sessions (user_id, role, token) VALUES (?, ?, ?)',
       [id, 'mentor', token]
     );
-    console.log("[DB INSERT] jwt_session for mentor:", id);
+    console.log('[DB INSERT] jwt_session for mentor:', id);
 
     res.status(201).json({
       message: 'Registration successful',
       token,
-      mentor: { id, full_name, email }
+      mentor: { id, full_name, email, expertise: expertiseValue }
     });
   } catch (error) {
     console.error('Mentor registration error:', error);
@@ -140,9 +148,42 @@ exports.getDashboard = async (req, res) => {
   }
 };
 
+// Update mentor profile (expertise, bio, experience_years)
+exports.updateProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user && (req.user.id || req.user.userId);
+    // Only allow mentors to update their own profile
+    if (!userId || String(userId) !== String(id)) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    const { expertise, bio, experience_years } = req.body;
+    let expertiseValue = null;
+    if (Array.isArray(expertise)) expertiseValue = expertise.join(',');
+    else if (typeof expertise === 'string') expertiseValue = expertise;
+
+    await db.execute('UPDATE mentors SET expertise = ?, bio = COALESCE(?, bio), experience_years = COALESCE(?, experience_years) WHERE id = ?', [expertiseValue, bio || null, experience_years || null, id]);
+
+    const [rows] = await db.execute('SELECT id, full_name, email, expertise, experience_years, bio, created_at FROM mentors WHERE id = ?', [id]);
+    if (rows.length === 0) return res.status(404).json({ message: 'Mentor not found' });
+    res.json(rows[0]);
+  } catch (err) {
+    console.error('updateProfile error:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
+
 exports.getAllMentors = async (req, res) => {
   try {
-    const [rows] = await db.execute('SELECT id, full_name as name, email, expertise FROM mentors');
+    const { expertise } = req.query;
+    let query = 'SELECT id, full_name as name, email, expertise FROM mentors';
+    let params = [];
+    if (expertise) {
+      query += ' WHERE expertise LIKE ?';
+      params.push(`%${expertise}%`);
+    }
+    const [rows] = await db.execute(query, params);
     res.json(rows);
   } catch (error) {
     console.error(error);
@@ -189,6 +230,28 @@ exports.getMentorSessions = async (req, res) => {
     res.json(rows);
   } catch (err) {
     console.error('getMentorSessions error:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
+
+// Update session status
+exports.updateSessionStatus = async (req, res) => {
+  try {
+    const mentorId = req.user && (req.user.id || req.user.userId);
+    if (!mentorId) return res.status(401).json({ message: 'Unauthenticated' });
+    const { id } = req.params;
+    const { status } = req.body;
+    console.log('[updateSessionStatus] Received status:', status, 'type:', typeof status);
+    if (!id || !status) return res.status(400).json({ message: 'Missing id or status' });
+    const allowed = ['scheduled', 'completed', 'cancelled'];
+    if (!allowed.includes(status)) return res.status(400).json({ message: 'Invalid status' });
+    await db.execute(
+      'UPDATE mentor_sessions SET status = ? WHERE id = ? AND mentor_id = ?',
+      [status, id, mentorId]
+    );
+    res.json({ message: 'Status updated successfully' });
+  } catch (err) {
+    console.error('updateSessionStatus error:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };

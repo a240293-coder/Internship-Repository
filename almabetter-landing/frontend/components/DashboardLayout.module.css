@@ -634,13 +634,21 @@
   background-clip: text;
 }
 
+.dashboard-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+.dashboard-header-title {
+  flex: 1;
+}
+
 .dashboard-profile-menu {
   position: relative;
   z-index: 20;
-  min-width: 0;
-  max-width: 180px;
-  padding: 0.15rem 0.2rem;
-  margin: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;

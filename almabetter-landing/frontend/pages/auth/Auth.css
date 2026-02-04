@@ -172,6 +172,41 @@ body.auth-page-active .main-footer {
   pointer-events: none;
 }
 
+/* Multi-select styling for mentor expertise */
+.multi-select {
+  width: 100%;
+  padding: 12px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(99,102,241,0.35);
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+  font-size: 15px;
+  color: #0f172a;
+  outline: none;
+}
+
+.multi-select:focus {
+  border-color: rgba(59,130,246,0.9);
+  box-shadow: 0 6px 20px rgba(59,130,246,0.08);
+}
+
+/* Make options easier to scan on long lists */
+.multi-select option {
+  padding: 8px 10px;
+}
+
+/* Custom scrollbar for multi-select drop-down on WebKit */
+.multi-select::-webkit-scrollbar {
+  width: 10px;
+}
+.multi-select::-webkit-scrollbar-track {
+  background: transparent;
+}
+.multi-select::-webkit-scrollbar-thumb {
+  background: rgba(15,23,42,0.12);
+  border-radius: 10px;
+}
+
 .interest-form-card {
   background: #ffffff;
   border-radius: 20px;

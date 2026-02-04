@@ -7,6 +7,7 @@ export default function AdminKPIDashboard() {
   const [loading, setLoading] = useState(true);
   const [sessions, setSessions] = useState([]);
   const [mentors, setMentors] = useState([]);
+  const [mentorSessions, setMentorSessions] = useState([]);
   const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
@@ -50,6 +51,21 @@ export default function AdminKPIDashboard() {
 
         const mentorsData = await safeGet('/mentor/all');
 
+        // Fetch all mentor sessions to count by mentor
+        let allMentorSessions = [];
+        if (Array.isArray(mentorsData)) {
+          for (const mentor of mentorsData.slice(0, 20)) {
+            try {
+              const sessionsRes = await api.get(`/admin/mentors/${mentor.id}/sessions`);
+              if (sessionsRes?.data?.data) {
+                allMentorSessions = [...allMentorSessions, ...sessionsRes.data.data.map(s => ({ ...s, mentor_id: mentor.id }))];
+              }
+            } catch (err) {
+              console.warn(`Failed to fetch sessions for mentor ${mentor.id}`);
+            }
+          }
+        }
+
         if (!mounted) return;
 
         setStats({
@@ -62,6 +78,7 @@ export default function AdminKPIDashboard() {
 
         setSessions(Array.isArray(liveSessions) ? liveSessions : (liveSessions && liveSessions.data) ? liveSessions.data : []);
         setMentors(Array.isArray(mentorsData) ? mentorsData : (mentorsData && mentorsData.data) ? mentorsData.data : []);
+        setMentorSessions(allMentorSessions);
 
         // mark an error if any of the main calls failed
         if (!dashboardData || formsData === null || completedSessions === null || mentorsData === null) localError = true;
@@ -104,9 +121,16 @@ export default function AdminKPIDashboard() {
 
   const topMentors = useMemo(() => {
     const counts = {};
-    sessions.forEach(s => { const id = s.mentor_id || s.mentorId || s.mentor_id || 'unknown'; counts[id] = (counts[id] || 0) + 1; });
-    return mentors.slice(0,10).map(m => ({ id: m.id, name: m.name || m.full_name || m.email, sessions: counts[m.id] || 0 }));
-  }, [mentors, sessions]);
+    mentorSessions.forEach(s => { 
+      const id = s.mentor_id; 
+      if (id) counts[id] = (counts[id] || 0) + 1; 
+    });
+    return mentors.slice(0,10).map(m => ({ 
+      id: m.id, 
+      name: m.name || m.full_name || m.email, 
+      sessions: counts[m.id] || 0 
+    })).sort((a, b) => b.sessions - a.sessions);
+  }, [mentors, mentorSessions]);
 
   if (loading) return <div>Loading admin dashboard...</div>;
 

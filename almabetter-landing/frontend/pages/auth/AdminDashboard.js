@@ -82,6 +82,7 @@ const AdminDashboard = () => {
   const router = useRouter();
   const [forms, setForms] = useState([]);
   const [mentors, setMentors] = useState([]);
+  const [mentorFilter, setMentorFilter] = useState('');
   const [liveSessions, setLiveSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -457,15 +458,37 @@ const AdminDashboard = () => {
                         <div className="assign-controls">
                           <select
                             className="select-control"
+                            value={mentorFilter}
+                            onChange={(e) => setMentorFilter(e.target.value)}
+                            style={{ marginRight: 8 }}
+                          >
+                            <option value="">All domains</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Mobile Development">Mobile Development</option>
+                            <option value="Data Science">Data Science</option>
+                            <option value="Machine Learning">Machine Learning</option>
+                            <option value="Cloud Computing">Cloud Computing</option>
+                            <option value="DevOps">DevOps</option>
+                            <option value="Blockchain">Blockchain</option>
+                            <option value="Other">Other</option>
+                          </select>
+                          <select
+                            className="select-control"
                             value={assignmentValue}
                             onChange={(e) => handleSelectMentor(formId, e.target.value)}
                           >
                             <option value="">Select mentor</option>
-                            {mentors.map((mentor) => (
-                              <option key={mentor.id} value={mentor.id}>
-                                {mentor.name} ({mentor.email})
-                              </option>
-                            ))}
+                            {mentors
+                              .filter(m => {
+                                if (!mentorFilter) return true;
+                                const exp = (m.expertise || '').toString().toLowerCase();
+                                return exp.split(',').map(s=>s.trim()).some(t => t.toLowerCase() === mentorFilter.toLowerCase());
+                              })
+                              .map((mentor) => (
+                                <option key={mentor.id} value={mentor.id}>
+                                  {mentor.name} ({mentor.email}){mentor.expertise ? ` — ${mentor.expertise}` : ''}
+                                </option>
+                              ))}
                           </select>
                           <button className="btn btn-primary" onClick={() => handleAssignMentor(form)}>
                             Assign

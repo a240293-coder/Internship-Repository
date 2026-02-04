@@ -43,7 +43,7 @@ export default function AdminDashboard() {
 
 	return (
 		<RoleGuard allowedRole="admin">
-			<DashboardLayout title="Admin Dashboard" role="admin">
+			<DashboardLayout title="Super Admin Dashboard" role="admin">
 				{/* Admin KPI Dashboard */}
 				<AdminKPIDashboard />
 			</DashboardLayout>

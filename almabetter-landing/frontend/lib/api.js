@@ -163,10 +163,10 @@ const mockResponse = (method, path, data) => {
     return Promise.resolve({ data: { token: `mock-student-token-${id}`, student: { id, email, name } } });
   }
   if (method.toLowerCase() === 'post' && path === '/mentor/auth/register') {
-    const { email, password, name } = data || {};
+    const { email, password, name, expertise } = data || {};
     const id = _makeId('mentor');
-    _mockStore.mentors[email] = { id, email, password, name };
-    return Promise.resolve({ data: { token: `mock-mentor-token-${id}`, mentor: { id, email, name } } });
+    _mockStore.mentors[email] = { id, email, password, name, expertise: Array.isArray(expertise) ? expertise.join(',') : (expertise || '') };
+    return Promise.resolve({ data: { token: `mock-mentor-token-${id}`, mentor: { id, email, name, expertise: _mockStore.mentors[email].expertise } } });
   }
   if (method.toLowerCase() === 'post' && path.includes('/auth/login')) {
     const { email, password } = data || {};
@@ -198,6 +198,38 @@ const mockResponse = (method, path, data) => {
   // Mock mentor list for /mentor/all
   if (method.toLowerCase() === 'get' && path === '/mentor/all') {
     return Promise.resolve({ data: Object.values(_mockStore.mentors) });
+  }
+
+  // Mock update mentor profile endpoint: PUT /mentor/dashboard/:id
+  if (method.toLowerCase() === 'put' && path.startsWith('/mentor/dashboard/')) {
+    const parts = path.split('/');
+    const id = parts[parts.length - 1];
+    const mentorsArr = Object.values(_mockStore.mentors || {});
+    const mentor = mentorsArr.find(m => String(m.id) === String(id));
+    if (!mentor) {
+      const err = new Error('Mentor not found');
+      err.response = { status: 404, data: { message: 'Mentor not found' } };
+      return Promise.reject(err);
+    }
+    const { expertise, bio, experience_years } = data || {};
+    if (Array.isArray(expertise)) mentor.expertise = expertise.join(',');
+    else if (typeof expertise === 'string') mentor.expertise = expertise;
+    if (bio) mentor.bio = bio;
+    if (typeof experience_years !== 'undefined') mentor.experience_years = experience_years;
+    return Promise.resolve({ data: mentor });
+  }
+
+  // Mock admin mentor detail: GET /admin/mentors/:id
+  if (method.toLowerCase() === 'get' && path.startsWith('/admin/mentors/')) {
+    const parts = path.split('/');
+    const id = parts[parts.length - 1];
+    const mentor = Object.values(_mockStore.mentors || {}).find(m => String(m.id) === String(id) || m.email === id);
+    if (!mentor) {
+      const err = new Error('Mentor not found');
+      err.response = { status: 404, data: { message: 'Mentor not found' } };
+      return Promise.reject(err);
+    }
+    return Promise.resolve({ data: { data: mentor } });
   }
 
   // Mock mentor students list

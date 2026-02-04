@@ -29,6 +29,10 @@ const MentorDashboard = () => {
 
   const [overview, setOverview] = useState({ total: 0, in_progress: 0, completed: 0, need_attention: 0 });
   const [sessions, setSessions] = useState([]);
+  const [profile, setProfile] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const [editExpertise, setEditExpertise] = useState([]);
+  const [savingProfile, setSavingProfile] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -66,6 +70,25 @@ const MentorDashboard = () => {
       }
     };
     fetchSessions();
+    return () => { mounted = false; };
+  }, []);
+
+  // Fetch mentor profile (to show selected expertise)
+  useEffect(() => {
+    let mounted = true;
+    const fetchProfile = async () => {
+      try {
+        const userId = typeof window !== 'undefined' ? window.localStorage.getItem('userId') : null;
+        if (!userId) return;
+        const res = await api.get(`/mentor/dashboard/${userId}`);
+        const p = res && res.data ? res.data : null;
+        if (!mounted) return;
+        setProfile(p);
+      } catch (err) {
+        // ignore — profile not critical
+      }
+    };
+    fetchProfile();
     return () => { mounted = false; };
   }, []);
 
@@ -109,6 +132,69 @@ const MentorDashboard = () => {
         {success && <div className="alert alert-success">{success}</div>}
 
         <div>
+          {profile && (
+            <div style={{ marginBottom: 18 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+                <h3 style={{ margin: '0 0 8px 0' }}>Your expertise</h3>
+                {!editing ? (
+                  <button className="btn" onClick={() => { setEditExpertise((profile.expertise||'').toString().split(',').map(s=>s.trim()).filter(Boolean)); setEditing(true); }}>
+                    Edit
+                  </button>
+                ) : (
+                  <div>
+                    <button className="btn btn-ghost" onClick={() => { setEditing(false); setEditExpertise([]); }} style={{ marginRight: 8 }}>Cancel</button>
+                    <button className="btn btn-primary" onClick={async () => {
+                      try {
+                        setSavingProfile(true);
+                        const userId = typeof window !== 'undefined' ? window.localStorage.getItem('userId') : null;
+                        if (!userId) throw new Error('Not authenticated');
+                        const res = await api.put(`/mentor/dashboard/${userId}`, { expertise: editExpertise });
+                        setProfile(res.data);
+                        setEditing(false);
+                        setSuccess('Profile updated');
+                        setTimeout(() => setSuccess(''), 3000);
+                      } catch (err) {
+                        setError(err.response?.data?.message || err.message || 'Failed to save');
+                      } finally {
+                        setSavingProfile(false);
+                      }
+                    }}>{savingProfile ? 'Saving...' : 'Save'}</button>
+                  </div>
+                )}
+              </div>
+
+              {!editing ? (
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  {(profile.expertise || '').toString().split(',').filter(Boolean).map((e, idx) => (
+                    <span key={idx} style={{ background:'#eef6ff', color:'#0b5eea', padding: '6px 10px', borderRadius: 999, fontWeight:600, fontSize:13 }}>{e.trim()}</span>
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <select
+                    multiple
+                    className="multi-select"
+                    value={editExpertise}
+                    onChange={(e) => {
+                      const opts = Array.from(e.target.options).filter(o=>o.selected).map(o=>o.value);
+                      setEditExpertise(opts);
+                    }}
+                    style={{ minHeight: 120, width: '100%' }}
+                  >
+                    <option value="Web Development">Web Development</option>
+                    <option value="Mobile Development">Mobile Development</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Machine Learning">Machine Learning</option>
+                    <option value="Cloud Computing">Cloud Computing</option>
+                    <option value="DevOps">DevOps</option>
+                    <option value="Blockchain">Blockchain</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <small style={{ display: 'block', marginTop: 6 }}>Hold Ctrl (Windows) / Cmd (Mac) to select multiple domains.</small>
+                </div>
+              )}
+            </div>
+          )}
           <section className="student-stats-grid">
             {stats.map((stat) => (
               <article key={stat.label} className="student-stat-card">

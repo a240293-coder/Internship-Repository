@@ -25,11 +25,17 @@ router.get('/mentors/:id', apiLimiter, adminAuth, validateId, controller.getMent
 router.get('/mentors/:id/sessions', apiLimiter, adminAuth, validateId, controller.getMentorSessionsAdmin);
 router.get('/mentors/:id/students', apiLimiter, adminAuth, validateId, controller.getMentorStudentsAdmin);
 
-router.post('/auth/login', loginLimiter, validateLogin, controller.login); // Login route is public
+router.post('/auth/login', loginLimiter, validateLogin, controller.login); // Super admin login
+router.post('/auth/admin-login', loginLimiter, validateLogin, controller.adminLogin); // Regular admin login
 router.get('/dashboard', apiLimiter, adminAuth, controller.getDashboard);
 router.get('/live-sessions', apiLimiter, adminAuth, controller.getLiveSessions);
 router.put('/live-sessions/:id/status', apiLimiter, adminAuth, validateId, controller.updateLiveSessionStatus);
 router.get('/forms', apiLimiter, adminAuth, controller.getForms);
 router.put('/forms/:id/assign-mentor', apiLimiter, adminAuth, validateId, controller.assignMentorToForm);
+
+// Admin management routes (super admin only)
+router.post('/create-admin', apiLimiter, adminAuth, controller.createAdmin);
+router.get('/admins', apiLimiter, adminAuth, controller.getAllAdmins);
+router.delete('/admins/:id', apiLimiter, adminAuth, validateId, controller.deleteAdmin);
 
 module.exports = router;

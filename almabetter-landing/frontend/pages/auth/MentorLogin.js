@@ -170,7 +170,7 @@ const MentorLogin = () => {
                 />
               </div>
               <button type="submit" disabled={loading}>
-                {loading ? '🔄 Logging in...' : '✓ Login'}
+                {loading ? '🔄 Logging in...' : 'Login'}
               </button>
             </form>
             <div className="auth-link">

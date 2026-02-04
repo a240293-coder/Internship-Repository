@@ -98,6 +98,15 @@ export default function MentorActivityDetails({ mentorId }) {
           <div>
             <h2 className={styles.headerTitle}>{mentor.name}</h2>
             <div className={styles.headerEmail}>{mentor.email}</div>
+            {mentor.expertise && (
+              <div style={{ marginTop: 8, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                {mentor.expertise.toString().split(',').filter(Boolean).map((e, i) => (
+                  <span key={i} style={{ background: '#eef6ff', color: '#0b5eea', padding: '4px 8px', borderRadius: 8, fontSize: 13, fontWeight: 600 }}>
+                    {e.trim()}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
           <div style={{ textAlign: 'right', color: '#777' }}>
             <div style={{ fontSize: 12 }}>Joined</div>

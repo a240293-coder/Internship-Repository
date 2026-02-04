@@ -334,6 +334,50 @@ exports.login = async (req, res) => {
   }
 };
 
+// Regular admin login
+exports.adminLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+
+    const [rows] = await db.execute('SELECT * FROM admins WHERE email = ?', [email]);
+
+    if (rows.length === 0) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    const admin = rows[0];
+    const match = await bcrypt.compare(password, admin.password);
+
+    if (!match) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign(
+      { id: admin.id, email: admin.email, role: 'admin', name: admin.full_name },
+      process.env.JWT_SECRET || 'changeme',
+      { expiresIn: '7d' }
+    );
+
+    await db.execute(
+      'INSERT INTO jwt_sessions (user_id, role, token) VALUES (?, ?, ?)',
+      [admin.id, 'admin', token]
+    );
+
+    res.json({
+      message: 'Login successful',
+      token,
+      admin: { id: admin.id, name: admin.full_name, email: admin.email }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 exports.getDashboard = async (req, res) => {
   try {
     // Return some stats
@@ -358,7 +402,7 @@ exports.getLiveSessions = async (req, res) => {
     const [rows] = await db.execute(
       `SELECT id, studentName, studentEmail, phone, preferredDate, preferredTime, sessionTopic, adminId, status, created_at
        FROM live_session_bookings
-       ORDER BY created_at DESC`
+       ORDER BY created_at ASC`
     );
     res.json(rows);
   } catch (error) {
@@ -547,5 +591,91 @@ exports.assignMentorToForm = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Create new admin (super admin only)
+exports.createAdmin = async (req, res) => {
+  try {
+    const { full_name, email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+
+    // Check if email already exists in admins table
+    const [existing] = await db.execute('SELECT id FROM admins WHERE email = ?', [email]);
+    if (existing.length > 0) {
+      return res.status(409).json({ message: 'Admin with this email already exists' });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Get count of existing admins to determine next sequential ID
+    const [count] = await db.execute('SELECT COUNT(*) as total FROM admins');
+    const nextId = count[0].total + 1;
+
+    // Insert new admin with specific ID
+    await db.execute(
+      'INSERT INTO admins (id, full_name, email, password) VALUES (?, ?, ?, ?)',
+      [nextId, full_name, email, hashedPassword]
+    );
+
+    res.status(201).json({ message: 'Admin created successfully' });
+  } catch (error) {
+    console.error('Error in createAdmin:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Get all admins (super admin only) - excludes super_admin from list
+exports.getAllAdmins = async (req, res) => {
+  try {
+    const [rows] = await db.execute(
+      "SELECT id, full_name, email, created_at FROM admins ORDER BY id ASC"
+    );
+    res.json({ admins: rows });
+  } catch (error) {
+    console.error('Error in getAllAdmins:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Delete admin (super admin only)
+exports.deleteAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ message: 'Admin ID is required' });
+    }
+
+    // Check if admin exists
+    const [admin] = await db.execute('SELECT email FROM admins WHERE id = ?', [id]);
+    if (admin.length === 0) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    // Delete admin
+    await db.execute('DELETE FROM admins WHERE id = ?', [id]);
+
+    // Get all remaining admins
+    const [allAdmins] = await db.execute('SELECT id, full_name, email, password, created_at FROM admins ORDER BY id');
+    
+    // Delete all and reinsert with sequential IDs
+    await db.execute('DELETE FROM admins');
+    
+    for (let i = 0; i < allAdmins.length; i++) {
+      await db.execute(
+        'INSERT INTO admins (id, full_name, email, password, created_at) VALUES (?, ?, ?, ?, ?)',
+        [i + 1, allAdmins[i].full_name, allAdmins[i].email, allAdmins[i].password, allAdmins[i].created_at]
+      );
+    }
+
+    res.json({ message: 'Admin deleted successfully' });
+  } catch (error) {
+    console.error('Error in deleteAdmin:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };

@@ -14,7 +14,8 @@ const MentorRegister = () => {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    expertise: []
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -28,10 +29,13 @@ const MentorRegister = () => {
   // }, []);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value, multiple, options } = e.target;
+    if (multiple) {
+      const vals = Array.from(options).filter(o => o.selected).map(o => o.value);
+      setFormData({ ...formData, [name]: vals });
+      return;
+    }
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -50,7 +54,8 @@ const MentorRegister = () => {
       const response = await api.post('/mentor/auth/register', {
         full_name: formData.name,
         email: formData.email,
-        password: formData.password
+        password: formData.password,
+        expertise: formData.expertise
       });
 
       showPopup('Registration successful! Please log in.');
@@ -127,6 +132,29 @@ const MentorRegister = () => {
                   onChange={handleChange}
                   required
                 />
+              </div>
+              <div className="form-group">
+                <label>Domain expertise</label>
+                <select
+                  name="expertise"
+                  className="multi-select"
+                  multiple
+                  value={formData.expertise}
+                  onChange={handleChange}
+                  style={{ minHeight: 120 }}
+                >
+                  <option value="Web Development">Web Development</option>
+                  <option value="Mobile Development">Mobile Development</option>
+                  <option value="Data Science">Data Science</option>
+                  <option value="Machine Learning">Machine Learning</option>
+                  <option value="Cloud Computing">Cloud Computing</option>
+                  <option value="DevOps">DevOps</option>
+                  <option value="Blockchain">Blockchain</option>
+                  <option value="Other">Other</option>
+                </select>
+                <small style={{ display: 'block', marginTop: 6 }}>
+                  Hold Ctrl (Windows) / Cmd (Mac) to select multiple domains.
+                </small>
               </div>
               <button type="submit" disabled={loading}>
                 {loading ? 'Creating Account...' : 'Create Account'}

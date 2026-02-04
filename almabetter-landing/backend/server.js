@@ -158,12 +158,18 @@ app.get('/api', (req, res) => {
         description TEXT,
         timing DATETIME NOT NULL,
         meeting_link VARCHAR(255) NOT NULL,
+        status ENUM('scheduled', 'completed', 'cancelled') DEFAULT 'scheduled',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (mentor_id) REFERENCES mentors(id) ON DELETE SET NULL,
         FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE SET NULL
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
     console.log('Ensured mentor_sessions table exists');
+    // Add status column if it doesn't exist
+    await db.execute(`
+      ALTER TABLE mentor_sessions 
+      ADD COLUMN IF NOT EXISTS status ENUM('scheduled', 'completed', 'cancelled') DEFAULT 'scheduled' AFTER meeting_link;
+    `).catch(() => {});
   } catch (err) {
     console.warn('Failed to ensure mentor_sessions table:', err && err.message);
   }

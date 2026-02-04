@@ -81,7 +81,7 @@ const MentorSessionForm = () => {
   };
 
   return (
-    <DashboardLayout title="Schedule Session" role="mentor">
+    <DashboardLayout title="Schedule a Session" role="mentor">
       <div className="mentor-session-card">
         <h2>Schedule a Session</h2>
         <p className="mentor-subtext">Pick an assigned student, set agenda, timing and a meeting link.</p>
