@@ -1,69 +1,229 @@
-.actionBtn{
-  background: linear-gradient(90deg,#1e40af 0%, #2563eb 100%);
-  color: #ffffff;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
+.sessionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.sessionCard {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sessionCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.cardHeader {
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.agendaText {
+  font-size: 0.95rem;
   font-weight: 700;
-  font-size: 12px;
-  cursor: pointer;
-  box-shadow: 0 6px 18px rgba(37,99,235,0.12);
-  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.actionBtn:hover:enabled{
-  transform: translateY(-1px);
-  box-shadow: 0 10px 24px rgba(37,99,235,0.14);
+
+.studentLabel {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  font-weight: 500;
 }
-.actionBtn:disabled{
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+
+.cardBody {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
 }
-.completedLabel{
-  color: #16a34a;
+
+.infoRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.infoIcon {
+  color: #64748b;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.infoContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoLabel {
   font-weight: 700;
-  font-size: 12px;
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
-/* Reduce default table link color conflict on small screens */
-.linkOpen {
-  color: #0b74de;
+
+.infoValue {
+  font-size: 0.8rem;
+  color: #1e293b;
+  line-height: 1.4;
+}
+
+.statusBadge {
+  display: inline-flex;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
   font-weight: 700;
+  text-transform: capitalize;
+}
+
+.status-scheduled {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.status-completed {
+  background: #d1fae5;
+  color: #047857;
+}
+
+.status-canceled {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.actionArea {
+  padding: 0 1rem 1rem;
 }
 
 .actionSelect {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: #f1f5f9;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
-  -moz-appearance: none;
-  background: #fff; /* keep dropdown native list readable */
-  color: #0b1726;
-  border: 1px solid #d7dbe0;
-  padding: 0 30px 0 10px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  width: 120px;
-  max-width: 100%;
-  height: 32px;
-  line-height: 1;
   text-align: left;
-  box-sizing: border-box;
-  box-shadow: 0 4px 10px rgba(15,23,42,0.04);
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23222' d='M5 6L0 0h10z'/%3E%3C/svg%3E");
+  transition: all 0.2s ease;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%2364748b' d='M5 6L0 0h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 10px center;
+  background-position: right 0.75rem center;
 }
 
-.actionSelect:focus {
+.actionSelect:hover {
+  background-color: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.searchHeader {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.searchWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.5rem 1rem 0.5rem 2.25rem;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 0.875rem;
   outline: none;
-  box-shadow: 0 8px 22px rgba(15,23,42,0.07);
+  transition: all 0.2s ease;
 }
 
-.actionSelect:disabled{
+.searchInput:focus {
+  border-color: #3b82f6;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.actionSelect:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* Header Background Colors */
+.bg-0 {
+  background: #6366f1;
+}
+
+/* Blue/Indigo */
+.bg-1 {
+  background: #ef4444;
+}
+
+/* Red/Coral */
+.bg-2 {
+  background: #10b981;
+}
+
+/* Green */
+.bg-3 {
+  background: #f59e0b;
+}
+
+/* Yellow/Amber */
+.bg-4 {
+  background: #8b5cf6;
+}
+
+/* Purple */
+.bg-5 {
+  background: #0d9488;
+}
+
+/* Teal */
+.bg-6 {
+  background: #f43f5e;
+}
+
+/* Rose */
+.bg-7 {
+  background: #64748b;
+}
+
+/* Slate */
+
+@media (max-width: 640px) {
+  .sessionsGrid {
+    grid-template-columns: 1fr;
+  }
 }

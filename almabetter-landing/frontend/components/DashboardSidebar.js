@@ -5,7 +5,7 @@ import styles from './DashboardSidebar.module.css';
 
 export default function DashboardSidebar({ role }) {
   const router = useRouter();
-  
+
   const roleLinks = {
     student: [
       { href: '/student/dashboard', label: 'Dashboard' },
@@ -37,16 +37,16 @@ export default function DashboardSidebar({ role }) {
         <div className={styles['sidebar-logo']}>LearnBetter</div>
         <div className={styles['sidebar-tagline']}>{roleLabel} Portal</div>
       </div>
-      
+
       <div className={styles['sidebar-section']}>
         <p className={styles['sidebar-label']}>Navigation</p>
         <nav>
           <ul>
             {links.map((link) => {
-              const isActive = router?.pathname === link.href || 
-                              router?.pathname?.startsWith(link.href + '/');
+              const isActive = router?.pathname === link.href ||
+                router?.pathname?.startsWith(link.href + '/');
               const handleClick = (e) => {
-                try { e.preventDefault(); } catch (err) {}
+                try { e.preventDefault(); } catch (err) { }
                 // Use router.push with scroll:false to avoid browser scroll jumps
                 try {
                   router.push(link.href, undefined, { scroll: false });
@@ -54,12 +54,12 @@ export default function DashboardSidebar({ role }) {
                   // fallback: normal navigation
                   window.location.href = link.href;
                 }
-                try { if (e.currentTarget && typeof e.currentTarget.blur === 'function') e.currentTarget.blur(); } catch (err) {}
+                try { if (e.currentTarget && typeof e.currentTarget.blur === 'function') e.currentTarget.blur(); } catch (err) { }
               };
               return (
                 <li key={link.href}>
-                  <Link 
-                    href={link.href} 
+                  <Link
+                    href={link.href}
                     className={`${styles['sidebar-link']} ${isActive ? styles['active'] : ''}`}
                     aria-current={isActive ? 'page' : undefined}
                     onClick={handleClick}
@@ -77,7 +77,7 @@ export default function DashboardSidebar({ role }) {
           </ul>
         </nav>
       </div>
-      
+
     </aside>
   );
 }

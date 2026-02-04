@@ -1,236 +1,183 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { FiMenu, FiX, FiBell, FiSearch, FiLogOut, FiUser, FiSettings, FiChevronDown } from 'react-icons/fi';
 import DashboardSidebar from './DashboardSidebar';
 import styles from './DashboardLayout.module.css';
 
 export default function DashboardLayout({ children, title, role, onLogout }) {
-  // Track window width for responsive rendering
   const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 900);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userName, setUserName] = useState('Member');
+  const [scrolled, setScrolled] = useState(false);
+
   const profileRef = useRef(null);
+  const mobileMenuRef = useRef(null);
   const router = useRouter();
 
-  // Close mobile menu after route change completes (prevents blank header/content)
   useEffect(() => {
-    const handleRouteChange = () => setProfileOpen(false);
-    router.events.on('routeChangeComplete', handleRouteChange);
+    const handleResize = () => setIsMobile(window.innerWidth <= 1024);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('scroll', handleScroll);
+
     return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleScroll);
     };
+  }, []);
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setProfileOpen(false);
+      setMobileMenuOpen(false);
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => router.events.off('routeChangeComplete', handleRouteChange);
   }, [router]);
 
   const normalizedRole = role ? String(role).toLowerCase() : null;
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    // Prefer role-scoped userName to avoid overwriting names across roles
     const roleKey = normalizedRole ? `userName_${normalizedRole}` : 'userName';
-    const storedName = localStorage.getItem(roleKey) || localStorage.getItem('userName') || sessionStorage.getItem('userName') || 'Member';
+    const storedName = localStorage.getItem(roleKey) || localStorage.getItem('userName') || 'Member';
     setUserName(storedName);
+
+    const token = localStorage.getItem('token');
+    if (!token) router.replace('/auth/login');
   }, [normalizedRole]);
 
   useEffect(() => {
-    // Only check for authentication, not role. Role enforcement is handled by per-route guards.
-    if (typeof window === 'undefined') return;
-    const token = localStorage.getItem('token');
-    if (!token) {
-      router.replace('/auth/login');
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!profileOpen) {
-      document.body.classList.remove('mobile-menu-open');
-      return;
-    }
-    // Lock background scroll on mobile when menu is open
-    if (isMobile) {
-      document.body.classList.add('mobile-menu-open');
-    }
     const handleClickOutside = (event) => {
-      if (!profileRef.current) return;
-      if (!profileRef.current.contains(event.target)) {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
         setProfileOpen(false);
       }
-    };
-    const handleEscape = (event) => {
-      if (event.key === 'Escape') {
-        setProfileOpen(false);
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        // Only close if it's not the hamburger button
+        if (!event.target.closest(`.${styles['mobile-menu-trigger']}`)) {
+          setMobileMenuOpen(false);
+        }
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('keydown', handleEscape);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleEscape);
-      document.body.classList.remove('mobile-menu-open');
-    };
-  }, [profileOpen, isMobile]);
-
-  const roleLabel = normalizedRole ? normalizedRole.charAt(0).toUpperCase() + normalizedRole.slice(1) : 'Member';
-  
-  const initials = userName
-    .split(' ')
-    .filter(Boolean)
-    .map((part) => part[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase() || 'MB';
-
-  const handleProfileClick = () => {
-    setProfileOpen(false);
-    if (normalizedRole === 'mentor') {
-      router.push('/mentor/profile');
-    } else if (normalizedRole === 'admin') {
-      router.push('/admin/profile');
-    }
-  };
-
-  const handleSettingsClick = () => {
-    setProfileOpen(false);
-    const targetRole = normalizedRole || 'student';
-    router.push(`/${targetRole}/settings`);
-  };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleLogout = () => {
-    setProfileOpen(false);
     if (onLogout) {
       onLogout();
     } else {
-      // Remove generic and role-scoped keys
-      try {
-        const storedRole = localStorage.getItem('userRole');
-        const storedRoleNorm = storedRole ? String(storedRole).toLowerCase() : null;
-        if (storedRoleNorm) {
-          localStorage.removeItem(`userName_${storedRoleNorm}`);
-          localStorage.removeItem(`userEmail_${storedRoleNorm}`);
-          localStorage.removeItem(`userId_${storedRoleNorm}`);
-        }
-      } catch (e) {}
       localStorage.removeItem('token');
-      localStorage.removeItem('userName');
-      localStorage.removeItem('userEmail');
-      localStorage.removeItem('userId');
       localStorage.removeItem('userRole');
       sessionStorage.clear();
       router.push('/auth/login');
     }
   };
 
+  const initials = userName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  const roleLabel = role ? role.charAt(0).toUpperCase() + role.slice(1) : 'Member';
+
   return (
-    <div className={styles['dashboard-bg']} style={{ overflowX: 'hidden' }}>
-      <div className={styles['dashboard-shell']}>
-        {/* Sidebar hidden on mobile, navigation moved to profile menu */}
-        <DashboardSidebar role={role} />
-        <div className={styles['dashboard-main']} role="main">
-          <div className={styles['dashboard-page-header']}>
-            {/* For mobile, render hamburger at the very top left, outside the hero card */}
-            {isMobile ? (
-              <>
-                <div className={styles['mobile-hamburger-row']}>
-                  <button
-                    type="button"
-                    className={styles['hamburger-trigger']}
-                    aria-label={profileOpen ? 'Close menu' : 'Open menu'}
-                    aria-haspopup="menu"
-                    aria-expanded={profileOpen ? 'true' : 'false'}
-                    onClick={() => setProfileOpen((prev) => !prev)}
-                  >
-                    <span className={styles['hamburger-icon']} aria-hidden="true">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </span>
-                  </button>
-                </div>
-                <div className="dashboard-hero">
-                  <div className="hero-content">
-                    <p className={styles['page-eyebrow']}>Your {roleLabel} Workspace</p>
-                    {title && <h1 className={styles['dashboard-title']}>{title}</h1>}
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div className={styles['dashboard-header-row']}>
-                <div className={styles['dashboard-header-title']}>
-                  <p className={styles['page-eyebrow']}>Your {roleLabel} Workspace</p>
-                  {title && <h1 className={styles['dashboard-title']}>{title}</h1>}
-                </div>
-              </div>
+    <div className={styles['dashboard-container']}>
+      {/* Sidebar for Desktop */}
+      {!isMobile && <DashboardSidebar role={role} />}
+
+      <div className={styles['dashboard-main']}>
+        {/* Header */}
+        <header className={`${styles['header']} ${scrolled ? styles['header-scrolled'] : ''}`}>
+          <div className={styles['header-left']}>
+            {isMobile && (
+              <button
+                className={styles['mobile-menu-trigger']}
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                {mobileMenuOpen ? <FiX /> : <FiMenu />}
+              </button>
             )}
-            {/* Mobile nav menu overlay */}
-            {profileOpen && (
-              <>
-                <div className={styles['mobile-nav-backdrop']} onClick={() => setProfileOpen(false)} tabIndex={-1} aria-hidden="true" />
-                <nav className={styles['mobile-nav-menu']} role="menu" aria-label="Dashboard navigation">
-                   <div className={styles['mobile-nav-header']}>
-                     <span className={styles['mobile-nav-role']}>{roleLabel}</span>
-                     <button className={styles['mobile-nav-close']} aria-label="Close menu" onClick={() => setProfileOpen(false)}>&times;</button>
-                   </div>
-                   {/* Avatar below hamburger in drawer */}
-                   <div className={styles['mobile-nav-avatar-row']}>
-                     <span className={styles['mobile-nav-avatar']} aria-label="User avatar">{initials}</span>
-                     <span className={styles['mobile-nav-avatar-name']}>{userName}</span>
-                   </div>
-                   <div className={styles['mobile-divider-blue']} />
-                   <div className={styles['mobile-nav-links']} style={{ display: 'block' }}>
-                    {(normalizedRole === 'student' || normalizedRole === 'mentor' || normalizedRole === 'admin') && (
-                      <>
-                        {normalizedRole === 'student' && (
-                          <>
-                            <a href="/student/dashboard" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/student/dashboard', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Dashboard</a>
-                            <a href="/student/form?mode=new" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/student/form?mode=new', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Interest Form</a>
-                            <a href="/student/update_interest_form" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/student/update_interest_form', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Update interest form</a>
-                          </>
-                        )}
-                        {normalizedRole === 'mentor' && (
-                          <>
-                            <a href="/mentor/dashboard" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/mentor/dashboard', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Dashboard</a>
-                            <a href="/mentor/students" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/mentor/students', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>My Students</a>
-                            <a href="/mentor/session" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/mentor/session', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Schedule a Session</a>
-                            <a href="/mentor/sessions" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/mentor/sessions', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Scheduled Sessions</a>
-                          </>
-                        )}
-                         {normalizedRole === 'admin' && (
-                           <>
-                             <a href="/admin/dashboard" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/admin/dashboard', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Overview</a>
-                             {/* Student Forms page removed; link intentionally omitted */}
-                             <a href="/admin/live-sessions" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/admin/live-sessions', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Live Sessions</a>
-                             <a href="/admin/history" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/admin/history', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Admin History</a>
-                             <a href="/admin/mentors" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/admin/mentors', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Mentors</a>
-                             <a href="/admin/mentor-assign" className={styles['sidebar-link']} onClick={(e) => { e.preventDefault(); router.push('/admin/mentor-assign', undefined, { scroll: false }); try{ e.currentTarget.blur(); }catch{} }}>Mentor Assignment</a>
-                           </>
-                         )}
-                      </>
-                    )}
-                  </div>
-                  <div className={styles['mobile-divider']} />
-                  <button 
-                    type="button" 
-                    onClick={handleLogout}
-                    role="menuitem"
-                    className={styles['logout-button']}
-                  >
-                    Logout
-                  </button>
-                </nav>
-              </>
-            )}
+            <div className={styles['breadcrumb']}>
+              <span className={styles['breadcrumb-role']}>{roleLabel}</span>
+              <span className={styles['breadcrumb-separator']}>/</span>
+              <span className={styles['breadcrumb-page']}>{title || 'Dashboard'}</span>
+            </div>
           </div>
 
-          {/* Always render children below the header, regardless of device */}
-          <div className={styles['dashboard-content-wrapper']}>
+          <div className={styles['header-right']}>
+            <div className={styles['header-search']}>
+              <FiSearch className={styles['search-icon']} />
+              <input type="text" placeholder="Search..." className={styles['search-input']} />
+            </div>
+
+            <button className={styles['notification-btn']}>
+              <FiBell />
+              <span className={styles['notification-dot']} />
+            </button>
+
+            <div className={styles['profile-section']} ref={profileRef}>
+              <button
+                className={styles['profile-trigger']}
+                onClick={() => setProfileOpen(!profileOpen)}
+              >
+                <div className={styles['avatar']}>{initials}</div>
+                {!isMobile && (
+                  <>
+                    <div className={styles['profile-info']}>
+                      <span className={styles['profile-name']}>{userName}</span>
+                      <span className={styles['profile-role']}>{roleLabel}</span>
+                    </div>
+                    <FiChevronDown className={`${styles['chevron']} ${profileOpen ? styles['chevron-rotate'] : ''}`} />
+                  </>
+                )}
+              </button>
+
+              {profileOpen && (
+                <div className={styles['profile-dropdown']}>
+                  <Link href={`/${normalizedRole}/profile`} className={styles['dropdown-item']}>
+                    <FiUser /> Profile
+                  </Link>
+                  <Link href={`/${normalizedRole}/settings`} className={styles['dropdown-item']}>
+                    <FiSettings /> Settings
+                  </Link>
+                  <div className={styles['dropdown-divider']} />
+                  <button onClick={handleLogout} className={`${styles['dropdown-item']} ${styles['logout-item']}`}>
+                    <FiLogOut /> Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </header>
+
+        {/* Mobile Navigation Drawer */}
+        {isMobile && mobileMenuOpen && (
+          <div className={styles['mobile-drawer-overlay']} onClick={() => setMobileMenuOpen(false)}>
+            <div
+              className={styles['mobile-drawer']}
+              ref={mobileMenuRef}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={styles['drawer-header']}>
+                <div className={styles['drawer-logo']}>LearnBetter</div>
+                <button onClick={() => setMobileMenuOpen(false)}><FiX /></button>
+              </div>
+              <DashboardSidebar role={role} />
+            </div>
+          </div>
+        )}
+
+        {/* Main Content */}
+        <main className={styles['content-area']}>
+          <div className={styles['content-header']}>
+            <h1 className={styles['page-title']}>{title}</h1>
+            <p className={styles['page-subtitle']}>Welcome back, {userName}!</p>
+          </div>
+          <div className={styles['page-content']}>
             {children}
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );

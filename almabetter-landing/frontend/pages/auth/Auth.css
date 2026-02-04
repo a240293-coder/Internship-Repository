@@ -6,7 +6,9 @@
   box-sizing: border-box;
 }
 
-html, body, #__next {
+html,
+body,
+#__next {
   height: 100%;
 }
 
@@ -27,8 +29,8 @@ body.auth-page-active .main-footer {
   justify-content: center;
   align-items: stretch;
   padding: clamp(20px, 5vw, 48px);
-  background: radial-gradient(circle at 15% 20%, rgba(59,130,246,0.35), transparent 42%),
-    radial-gradient(circle at 85% 10%, rgba(14,165,233,0.25), transparent 45%),
+  background: radial-gradient(circle at 15% 20%, rgba(59, 130, 246, 0.35), transparent 42%),
+    radial-gradient(circle at 85% 10%, rgba(14, 165, 233, 0.25), transparent 45%),
     #020617;
 }
 
@@ -100,7 +102,7 @@ body.auth-page-active .main-footer {
   gap: 8px;
   padding: 8px 16px;
   border-radius: 999px;
-  background: rgba(37,99,235,0.12);
+  background: rgba(37, 99, 235, 0.12);
   color: #1D4ED8;
   font-weight: 600;
   font-size: 13px;
@@ -168,7 +170,7 @@ body.auth-page-active .main-footer {
   width: 220px;
   height: 220px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(37,99,235,0.35), rgba(37,99,235,0));
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.35), rgba(37, 99, 235, 0));
   pointer-events: none;
 }
 
@@ -251,8 +253,8 @@ body.auth-page-active .main-footer {
 
 .auth-visual {
   flex: 1.05;
-  background: radial-gradient(circle at 10% 20%, rgba(96,165,250,0.35), transparent 45%),
-    radial-gradient(circle at 80% 0%, rgba(45,212,191,0.18), transparent 50%),
+  background: radial-gradient(circle at 10% 20%, rgba(96, 165, 250, 0.35), transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(45, 212, 191, 0.18), transparent 50%),
     linear-gradient(180deg, #020817 0%, #0b1a3c 100%);
   color: #e0e7ff;
   padding: clamp(32px, 5vw, 64px);
@@ -270,7 +272,7 @@ body.auth-page-active .main-footer {
   inset: 20% -40% -40% auto;
   width: 320px;
   height: 320px;
-  background: radial-gradient(circle, rgba(14,165,233,0.35), transparent 55%);
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.35), transparent 55%);
   opacity: 0.8;
   pointer-events: none;
 }
@@ -425,8 +427,15 @@ body.auth-page-active .main-footer {
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 form {
@@ -535,7 +544,7 @@ select:focus {
   outline: none;
   border-color: #1d4ed8;
   background: #fff;
-  box-shadow: 0 6px 20px rgba(37,99,235,0.12);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.12);
 }
 
 input::placeholder,
@@ -555,7 +564,7 @@ select:focus {
   outline: none;
   border-color: #0b57d6;
   background: #fff;
-  box-shadow: 0 6px 22px rgba(11,87,214,0.15);
+  box-shadow: 0 6px 22px rgba(11, 87, 214, 0.15);
 }
 
 .auth-container button,
@@ -573,13 +582,13 @@ select:focus {
   transition: background 0.18s, box-shadow 0.12s, opacity 0.12s;
   margin-top: 28px;
   margin-bottom: 0;
-  box-shadow: 0 10px 26px rgba(37,99,235,0.16);
+  box-shadow: 0 10px 26px rgba(37, 99, 235, 0.16);
 }
 
 .auth-container button:hover:not(:disabled),
 .interest-page button:hover:not(:disabled) {
   background: #1D4ED8;
-  box-shadow: 0 12px 28px rgba(37,99,235,0.18);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.18);
 }
 
 .auth-container button:active:not(:disabled),
@@ -605,12 +614,16 @@ select:focus {
 }
 
 @keyframes shake {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
   }
+
   25% {
     transform: translateX(-5px);
   }
+
   75% {
     transform: translateX(5px);
   }
@@ -663,15 +676,27 @@ select:focus {
   border-color: transparent;
 }
 
-.back-link { display: inline-flex; align-items: center; gap: 8px; color: #0b74de; text-decoration: none; font-weight: 600; margin-bottom: 14px; }
-.back-link:hover { transform: translateX(-3px); }
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #0b74de;
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.back-link:hover {
+  transform: translateX(-3px);
+}
 
 /* Dashboard Styling */
 .dashboard-container {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(35deg, #dcf2ff 0%, #bed0f8 100%);
   min-height: 100vh;
   padding: 40px 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 1rem;
 }
 
 .dashboard-header {
@@ -805,70 +830,92 @@ select:focus {
   padding: 28px;
   background: #ffffff;
   border-radius: 12px;
-  border: 1px solid rgba(14,30,37,0.06);
-  box-shadow: 0 8px 26px rgba(15,23,42,0.06);
+  border: 1px solid rgba(14, 30, 37, 0.06);
+  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.06);
   position: relative;
   z-index: 22;
 }
+
 .mentor-session-card h2 {
   margin: 0 0 6px 0;
   font-size: 24px;
   color: #0b2b4a;
   font-weight: 800;
 }
+
 .mentor-session-card .mentor-subtext {
   margin: 6px 0 18px 0;
   color: #475569;
   font-size: 14px;
 }
+
 .mentor-session-card .form-group {
   margin-bottom: 16px;
 }
+
 .mentor-session-card label {
   color: #0f172a;
   font-weight: 700;
 }
+
 .mentor-session-card input,
 .mentor-session-card textarea,
 .mentor-session-card select {
   background: #fff;
-  border: 1px solid rgba(14,30,37,0.06);
+  border: 1px solid rgba(14, 30, 37, 0.06);
   box-shadow: none;
   padding: 12px 14px;
 }
-.mentor-session-card textarea { min-height: 110px; }
+
+.mentor-session-card textarea {
+  min-height: 110px;
+}
+
 .mentor-session-card .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
+
 .mentor-session-card .mentor-actions {
   display: flex;
   justify-content: flex-end;
   margin-top: 8px;
 }
+
 .mentor-session-card .submit-btn {
   min-width: 160px;
   padding: 10px 18px;
   background: linear-gradient(90deg, #2563eb 0%, #0ea5e9 100%);
   color: #fff;
   border-radius: 10px;
-  box-shadow: 0 10px 28px rgba(37,99,235,0.12);
+  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.12);
   font-weight: 800;
 }
+
 .mentor-session-card .submit-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 14px 36px rgba(37,99,235,0.18);
+  box-shadow: 0 14px 36px rgba(37, 99, 235, 0.18);
 }
+
 .mentor-session-card .submit-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
 @media (max-width: 900px) {
-  .mentor-session-card { padding: 16px; margin: 12px; }
-  .mentor-session-card .form-row { grid-template-columns: 1fr; }
-  .mentor-session-card h2 { font-size: 20px; }
+  .mentor-session-card {
+    padding: 16px;
+    margin: 12px;
+  }
+
+  .mentor-session-card .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .mentor-session-card h2 {
+    font-size: 20px;
+  }
 }
 
 .status-assigned {
@@ -981,13 +1028,16 @@ select:focus {
     padding: 24px;
     min-height: auto;
   }
+
   .visual-section {
     order: 2;
   }
+
   .form-section {
     order: 1;
     justify-content: center;
   }
+
   .testimonials {
     flex-direction: column;
   }
@@ -999,14 +1049,17 @@ select:focus {
     padding: 36px 24px 48px;
     min-height: auto;
   }
+
   .interest-grid {
     grid-template-columns: 1fr;
     max-width: 640px;
     margin: 0 auto;
   }
+
   .interest-form-card {
     order: 1;
   }
+
   .interest-visual {
     order: 2;
     min-height: 360px;
@@ -1017,16 +1070,19 @@ select:focus {
   .interest-page {
     padding: 20px 18px 32px;
   }
+
   .interest-grid {
     max-width: 520px;
     margin: 0 auto;
     gap: 20px;
   }
+
   .interest-form-card,
   .interest-visual {
     padding: 24px;
     border-radius: 20px;
   }
+
   .interest-metrics {
     grid-template-columns: 1fr;
   }
@@ -1037,31 +1093,55 @@ select:focus {
     padding: 0;
     align-items: stretch;
   }
+
   .interest-grid {
     gap: 12px;
   }
+
   .interest-form-card,
   .interest-visual {
     padding: 20px;
   }
+
   .interest-visual h1 {
     font-size: 26px;
   }
+
   .interest-highlights li {
     font-size: 14px;
     padding: 8px 12px;
   }
+
   .interest-metrics div {
     padding: 12px;
   }
 
   /* Make the form card occupy more horizontal space on small phones */
-  .interest-grid { max-width: 100%; margin: 0; padding: 0; }
+  .interest-grid {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
   /* edge-to-edge form: remove container gaps and let card stretch to full width */
-  .interest-form-card { max-width: 100%; width: 100%; box-shadow: none; padding: 18px 16px; border-radius: 8px; }
-  .interest-header h2 { font-size: 22px; }
+  .interest-form-card {
+    max-width: 100%;
+    width: 100%;
+    box-shadow: none;
+    padding: 18px 16px;
+    border-radius: 8px;
+  }
+
+  .interest-header h2 {
+    font-size: 22px;
+  }
+
   /* Slightly reduce textarea/input paddings to fit better */
-  .interest-form input, .interest-form textarea, .interest-form select { padding: 10px 12px; }
+  .interest-form input,
+  .interest-form textarea,
+  .interest-form select {
+    padding: 10px 12px;
+  }
 }
 
 /* Responsive Design */
@@ -1070,12 +1150,17 @@ select:focus {
     flex-direction: column;
     border-radius: 28px;
   }
+
   .auth-form-wrap,
   .auth-visual {
     flex: 1;
     min-width: 100%;
   }
-  .auth-form-wrap { order: 1; }
+
+  .auth-form-wrap {
+    order: 1;
+  }
+
   .auth-visual {
     order: 2;
     border-radius: 0 0 28px 28px;
@@ -1087,18 +1172,23 @@ select:focus {
   .auth-page {
     padding: 20px;
   }
+
   .auth-page.auth-page-with-nav {
     padding-top: 9rem !important;
   }
+
   .auth-visual {
     padding: 28px;
   }
+
   .visual-stats {
     grid-template-columns: 1fr;
   }
+
   .auth-form-wrap {
     padding: 24px 20px 32px;
   }
+
   .auth-box {
     width: 100%;
     border-radius: 22px;
@@ -1110,16 +1200,20 @@ select:focus {
   .auth-page {
     padding: 14px;
   }
+
   .auth-page.auth-page-with-nav {
     padding-top: 9rem !important;
   }
+
   .auth-visual {
     padding: 24px 20px;
     border-radius: 20px;
   }
+
   .auth-form-wrap {
     padding: 20px 16px 28px;
   }
+
   .auth-box {
     border-radius: 18px;
     padding: 24px 18px;
@@ -1127,6 +1221,7 @@ select:focus {
 }
 
 @media (max-width: 768px) {
+
   /* Reduce visual-testimonial size for mobile */
   .visual-testimonial {
     padding: 12px !important;
@@ -1170,4 +1265,3 @@ select:focus {
     height: auto !important;
   }
 }
-
