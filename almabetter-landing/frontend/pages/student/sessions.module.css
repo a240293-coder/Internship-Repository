@@ -1,0 +1,204 @@
+.container {
+    padding: 1rem 0;
+}
+
+.searchHeader {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+}
+
+.searchWrapper {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    border-radius: 14px;
+    border: 1.5px solid #e2e8f0;
+    background: #ffffff;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.searchInput:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.sessionsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.sessionCard {
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1.5px solid #f1f5f9;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sessionCard:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1);
+    border-color: #dbeafe;
+}
+
+.cardHeader {
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, #98bcf6, #eeefef);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.agendaText {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.mentorLabel {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+.cardBody {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    flex: 1;
+}
+
+.infoRow {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.infoIcon {
+    color: #3b82f6;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.infoContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.infoLabel {
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.infoValue {
+    font-size: 0.9rem;
+    color: #1e293b;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.meetingLink {
+    color: #2563eb;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.meetingLink:hover {
+    text-decoration: underline;
+}
+
+.cardFooter {
+    padding: 1rem 1.5rem;
+    border-top: 1.5px solid #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.statusLabel {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.statusBadge {
+    display: inline-flex;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.status-scheduled {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.status-completed {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.status-canceled {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 2rem;
+    background: #ffffff;
+    border-radius: 24px;
+    border: 2px dashed #e2e8f0;
+    color: #94a3b8;
+    text-align: center;
+    gap: 1.5rem;
+}
+
+.loadingWrapper {
+    display: flex;
+    justify-content: center;
+    padding: 4rem;
+    color: #3b82f6;
+}
+
+@media (max-width: 640px) {
+    .sessionsGrid {
+        grid-template-columns: 1fr;
+    }
+}

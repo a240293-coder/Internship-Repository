@@ -1,16 +1,29 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import {
+  Home,
+  FileText,
+  Calendar,
+  LogOut,
+  User,
+  ChevronLeft,
+  ChevronRight
+} from 'lucide-react';
 import styles from './DashboardSidebar.module.css';
 
-export default function DashboardSidebar({ role }) {
+export default function DashboardSidebar({ role, userName, userEmail, isCollapsed, onToggle }) {
   const router = useRouter();
+
+  // Auto-collapse on smaller desktop screens if desired, or persist to localStorage
+  // For now, simple state.
 
   const roleLinks = {
     student: [
-      { href: '/student/dashboard', label: 'Dashboard' },
-      { href: '/student/form?mode=new', label: 'Interest Form' },
-      { href: '/student/sessions', label: 'Upcoming Sessions' }
+      { href: '/student/dashboard', label: 'Dashboard', icon: Home },
+      { href: '/student/form?mode=new', label: 'Interest Form', icon: FileText },
+      { href: '/student/sessions', label: 'Upcoming Sessions', icon: Calendar },
+      { href: '/student/update_interest_form', label: 'Update Interest Form', icon: FileText }
     ],
     mentor: [
       { href: '/mentor/dashboard', label: 'Dashboard' },
@@ -31,49 +44,74 @@ export default function DashboardSidebar({ role }) {
   const links = roleLinks[role] || [];
   const roleLabel = role ? role.charAt(0).toUpperCase() + role.slice(1) : 'Member';
 
+  // Calculate initials from userName or default to 'N'
+  const initials = userName
+    ? userName.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase()
+    : 'S';
+
   return (
-    <aside className={styles['dashboard-sidebar']} aria-label={`${roleLabel} navigation`}>
+    <aside
+      className={`${styles['dashboard-sidebar']} ${isCollapsed ? styles['collapsed'] : ''}`}
+      aria-label={`${roleLabel} navigation`}
+    >
+      {/* ===== Toggle Button ===== */}
+      <button
+        className={styles['sidebar-toggle']}
+        onClick={onToggle}
+        aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+      >
+        {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+      </button>
+
+      {/* ===== User Profile (TOP) ===== */}
       <div className={styles['sidebar-header']}>
-        <div className={styles['sidebar-logo']}>LearnBetter</div>
-        <div className={styles['sidebar-tagline']}>{roleLabel} Portal</div>
+        <div className={styles['profile-avatar']}>{initials}</div>
+
+        <div className={`${styles['profile-info']} ${isCollapsed ? styles['hidden'] : ''}`}>
+          <p className={styles['profile-name']}>{userName || 'User'}</p>
+          <span className={styles['profile-email']}>
+            {userEmail || ''}
+          </span>
+        </div>
       </div>
 
       <div className={styles['sidebar-section']}>
-        <p className={styles['sidebar-label']}>Navigation</p>
+        {!isCollapsed && <p className={styles['sidebar-label']}>Navigation</p>}
+
         <nav>
           <ul>
             {links.map((link) => {
-              const isActive = router?.pathname === link.href ||
-                router?.pathname?.startsWith(link.href + '/');
+              const isActive =
+                router?.pathname === link.href.split('?')[0] ||
+                router?.pathname?.startsWith(link.href.split('?')[0] + '/');
               const handleClick = (e) => {
-                try { e.preventDefault(); } catch (err) { }
-                // Use router.push with scroll:false to avoid browser scroll jumps
+                try { e.preventDefault(); } catch { }
                 try {
                   router.push(link.href, undefined, { scroll: false });
-                } catch (err) {
-                  // fallback: normal navigation
+                } catch {
                   window.location.href = link.href;
                 }
-                try { if (e.currentTarget && typeof e.currentTarget.blur === 'function') e.currentTarget.blur(); } catch (err) { }
+                try {
+                  e.currentTarget?.blur();
+                } catch { }
               };
+
               return (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`${styles['sidebar-link']} ${isActive ? styles['active'] : ''}`}
+                    className={`${styles['sidebar-link']} ${isActive ? styles['active'] : ''
+                      }`}
                     aria-current={isActive ? 'page' : undefined}
                     onClick={handleClick}
+                    title={isCollapsed ? link.label : ''}
                   >
-                    {link.label}
+                    {link.icon ? <link.icon size={20} /> : null}
+                    {!isCollapsed && <span>{link.label}</span>}
                   </Link>
                 </li>
               );
             })}
-            {role === 'student' && (
-              <li key="update-form">
-                <Link href="/student/update_interest_form" className={styles['sidebar-link']}>Update interest form</Link>
-              </li>
-            )}
           </ul>
         </nav>
       </div>

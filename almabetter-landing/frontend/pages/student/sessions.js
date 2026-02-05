@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react';
+import {
+  FiClock,
+  FiFileText,
+  FiLink,
+  FiUser,
+  FiSearch,
+  FiCalendar
+} from 'react-icons/fi';
 import DashboardLayout from '../../components/DashboardLayout';
 import api from '../../lib/api';
-import '../auth/Dashboard.css';
+import styles from './sessions.module.css';
 
 export default function StudentSessionsPage() {
   const [sessions, setSessions] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
+      setError('');
       try {
         const res = await api.get('/student/sessions');
         const data = Array.isArray(res?.data) ? res.data : (res?.data ? [res.data] : []);
         setSessions(data);
-        setError('');
       } catch (err) {
         setError(err?.response?.data?.message || err?.message || 'Failed to load sessions');
       } finally {
@@ -25,95 +34,114 @@ export default function StudentSessionsPage() {
     fetch();
   }, []);
 
+  const formatTiming = (t) => {
+    if (!t) return '—';
+    try {
+      const d = new Date(t);
+      if (isNaN(d.getTime())) return String(t);
+
+      const dateOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+      const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
+
+      return `${d.toLocaleDateString('en-GB', dateOptions)} • ${d.toLocaleTimeString('en-US', timeOptions)}`;
+    } catch (e) {
+      return String(t);
+    }
+  };
+
+  const filteredSessions = sessions.filter(s =>
+    (s.mentor_name || s.mentorName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (s.agenda || '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <DashboardLayout title="Upcoming Sessions" role="student">
-      <div style={{ maxWidth: 1100, margin: '20px auto', padding: 12 }}>
-        
-        {loading && <div style={{ color: '#555' }}>Loading...</div>}
-        {error && <div className="alert alert-error">{error}</div>}
+      <div className={styles.container}>
 
-        {!loading && sessions.length === 0 && <div style={{ color: '#666' }}>No upcoming sessions.</div>}
+        <div className={styles.searchHeader}>
+          <div className={styles.searchWrapper}>
+            <FiSearch className={styles.searchIcon} />
+            <input
+              type="text"
+              placeholder="Search by mentor or agenda..."
+              className={styles.searchInput}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
 
-        {sessions.length > 0 && (
-          <div className="sessions-wrapper">
-            <table className="sessions-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: 15 }}>
-              <thead>
-                <tr style={{ textAlign: 'left', color: 'var(--muted)' }}>
-                  <th style={thStyle}>Sr.No</th>
-                  <th style={thStyle}>Agenda</th>
-                  <th style={thStyle}>Description</th>
-                  <th style={thStyle}>Date</th>
-                  <th style={thStyle}>Time</th>
-                  <th style={thStyle}>Mentor</th>
-                  <th style={thStyle}>Meeting Link</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sessions.map((s, idx) => (
-                  <tr key={s.id || idx} style={{ background: 'var(--card)', border: '1px solid rgba(14,30,37,0.04)' }}>
-                    <td style={tdStyle}>{idx + 1}</td>
-                    <td style={tdStyle}>{s.agenda || '—'}</td>
-                    <td style={tdStyle}>{s.description || '—'}</td>
-                    {
-                      (() => {
-                        const dt = s.timing ? new Date(s.timing) : null;
-                        if (!dt) return (<><td style={tdStyle}>—</td><td style={tdStyle}>—</td></>);
-                        const dd = String(dt.getDate()).padStart(2, '0');
-                        const mm = String(dt.getMonth() + 1).padStart(2, '0');
-                        const yyyy = dt.getFullYear();
-                        const dateStr = `${dd}/${mm}/${yyyy}`; // DD/MM/YYYY
-                        const hh = String(dt.getHours()).padStart(2, '0');
-                        const min = String(dt.getMinutes()).padStart(2, '0');
-                        const timeStr = `${hh}:${min}`; // 24-hour HH:MM
-                        return (
-                          <>
-                            <td style={tdStyle}>{dateStr}</td>
-                            <td style={tdStyle}>{timeStr}</td>
-                          </>
-                        );
-                      })()
-                    }
-                    <td style={tdStyle}>{s.mentor_name || s.mentorName || '—'}</td>
-                    <td style={{ ...tdStyle }}>
-                      {s.meeting_link || s.meetingLink ? (
-                        <a href={s.meeting_link || s.meetingLink} target="_blank" rel="noreferrer" style={{ color: 'var(--link-color)', fontWeight: 700 }}>Join</a>
-                      ) : '—'}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {loading ? (
+          <div className={styles.loadingWrapper}>
+            <p>Loading sessions...</p>
+          </div>
+        ) : error ? (
+          <div className="alert alert-error">{error}</div>
+        ) : filteredSessions.length === 0 ? (
+          <div className={styles.emptyState}>
+            <FiCalendar size={64} opacity={0.3} />
+            <p>{searchTerm ? 'No matching sessions found.' : 'You have no upcoming sessions scheduled.'}</p>
+          </div>
+        ) : (
+          <div className={styles.sessionsGrid}>
+            {filteredSessions.map((s, idx) => (
+              <div key={s.id || idx} className={styles.sessionCard}>
+                <div className={styles.cardHeader}>
+                  <h3 className={styles.agendaText}>{s.agenda || 'Regular Session'}</h3>
+                  <span className={styles.mentorLabel}>
+                    <FiUser size={12} style={{ marginRight: 6 }} />
+                    Mentor: {s.mentor_name || s.mentorName || '—'}
+                  </span>
+                </div>
+
+                <div className={styles.cardBody}>
+                  <div className={styles.infoRow}>
+                    <FiClock className={styles.infoIcon} />
+                    <div className={styles.infoContent}>
+                      <span className={styles.infoLabel}>Date & Time</span>
+                      <span className={styles.infoValue}>{formatTiming(s.timing)}</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.infoRow}>
+                    <FiFileText className={styles.infoIcon} />
+                    <div className={styles.infoContent}>
+                      <span className={styles.infoLabel}>Description</span>
+                      <span className={styles.infoValue}>{s.description || '—'}</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.infoRow}>
+                    <FiLink className={styles.infoIcon} />
+                    <div className={styles.infoContent}>
+                      <span className={styles.infoLabel}>Meeting Link</span>
+                      <span className={styles.infoValue}>
+                        {s.meeting_link || s.meetingLink ? (
+                          <a
+                            href={s.meeting_link || s.meetingLink}
+                            target="_blank"
+                            rel="noreferrer"
+                            className={styles.meetingLink}
+                          >
+                            Join Session <FiLink size={12} style={{ marginLeft: 4 }} />
+                          </a>
+                        ) : 'Not provided'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.cardFooter}>
+                  <span className={styles.statusLabel}>Current Status:</span>
+                  <span className={`${styles.statusBadge} ${styles['status-' + (s.status || 'scheduled')]}`}>
+                    {(s.status || 'scheduled').replace(/_/g, ' ')}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
-      <style jsx>{`
-        @media (max-width: 768px) {
-          .sessions-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-          .sessions-table { display: table !important; width: 100%; table-layout: auto; }
-          .sessions-table thead { display: table-header-group !important; }
-          .sessions-table th, .sessions-table td { display: table-cell !important; white-space: nowrap; }
-          .sessions-table { font-size: 0.9rem; }
-          .sessions-table th, .sessions-table td { padding: 10px 8px; }
-        }
-      `}</style>
     </DashboardLayout>
   );
 }
-
-const thStyle = {
-  padding: '14px 12px',
-  fontWeight: 700,
-  borderBottom: '2px solid rgba(14,30,37,0.06)',
-  background: '#f3f4f6',
-  textAlign: 'left',
-  color: 'var(--muted)'
-};
-
-const tdStyle = {
-  padding: '12px 10px',
-  borderBottom: '1px solid rgba(14,30,37,0.04)',
-  background: 'transparent',
-  verticalAlign: 'top',
-  fontSize: 15,
-  color: 'var(--body-color)'
-};
