@@ -182,13 +182,13 @@ exports.getMentorAssignments = async (req, res) => {
     const safePageSize = parseInt(pageSize) > 0 ? parseInt(pageSize) : 10;
     const safePage = parseInt(page) > 0 ? parseInt(page) : 1;
     const offset = (safePage - 1) * safePageSize;
-      const searchTerm = (search || '').trim();
-      // Use LIMIT/OFFSET as literals for MySQL compatibility
-      const limitClause = `LIMIT ${Number(safePageSize)} OFFSET ${Number(offset)}`;
-      let sql = '';
-      let params = [];
-      if (searchTerm.length > 0) {
-        sql = `SELECT ma.*,
+    const searchTerm = (search || '').trim();
+    // Use LIMIT/OFFSET as literals for MySQL compatibility
+    const limitClause = `LIMIT ${Number(safePageSize)} OFFSET ${Number(offset)}`;
+    let sql = '';
+    let params = [];
+    if (searchTerm.length > 0) {
+      sql = `SELECT ma.*,
              COALESCE(s.full_name,
                (SELECT student_name FROM interest_forms WHERE student_id = ma.student_id ORDER BY created_at DESC LIMIT 1),
                '') AS student_name,
@@ -203,9 +203,9 @@ exports.getMentorAssignments = async (req, res) => {
              LEFT JOIN mentors m ON ma.mentor_id = m.id
              WHERE ma.student_id IN (SELECT id FROM students WHERE full_name LIKE ? OR email LIKE ? OR phone LIKE ?)
              ORDER BY ma.assigned_at DESC ${limitClause}`;
-        params = [`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`];
-      } else {
-        sql = `SELECT ma.*,
+      params = [`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`];
+    } else {
+      sql = `SELECT ma.*,
              COALESCE(s.full_name,
                (SELECT student_name FROM interest_forms WHERE student_id = ma.student_id ORDER BY created_at DESC LIMIT 1),
                '') AS student_name,
@@ -219,44 +219,44 @@ exports.getMentorAssignments = async (req, res) => {
              LEFT JOIN students s ON ma.student_id = s.id
              LEFT JOIN mentors m ON ma.mentor_id = m.id
              ORDER BY ma.assigned_at DESC ${limitClause}`;
-        params = [];
-      }
-      // Debug: log SQL and params
-      console.log('[getMentorAssignments] SQL:', sql);
-      console.log('[getMentorAssignments] Params:', params);
-      try {
-        const [rows] = await db.execute(sql, params);
-        // If caller requested unique grouping by student email, collapse rows
-        const unique = String(req.query.unique || '').toLowerCase() === 'true';
-        if (unique) {
-          const grouped = new Map();
-          (rows || []).forEach(r => {
-            const email = (r.student_email || r.form_student_name || '').toString().trim().toLowerCase();
-            // fallback to student name if email missing
-            const key = email || `__noemail__${r.student_id || r.studentId || r.student_id || r.id}`;
-            if (!grouped.has(key)) grouped.set(key, { student_name: r.student_name || r.form_student_name || '', student_email: r.student_email || '', assignments: [] });
-            grouped.get(key).assignments.push(r);
-          });
-          const uniqueRows = Array.from(grouped.values()).map(g => ({ student_name: g.student_name, student_email: g.student_email, assignments_count: g.assignments.length }));
-          if (exportType === 'csv') {
-            const csv = [Object.keys(uniqueRows[0] || {}).join(',')].concat(uniqueRows.map(r => Object.values(r).join(','))).join('\n');
-            res.setHeader('Content-Type', 'text/csv');
-            res.setHeader('Content-Disposition', 'attachment; filename="mentor_assignments_unique.csv"');
-            return res.send(csv);
-          }
-          return res.json({ data: uniqueRows });
-        }
+      params = [];
+    }
+    // Debug: log SQL and params
+    console.log('[getMentorAssignments] SQL:', sql);
+    console.log('[getMentorAssignments] Params:', params);
+    try {
+      const [rows] = await db.execute(sql, params);
+      // If caller requested unique grouping by student email, collapse rows
+      const unique = String(req.query.unique || '').toLowerCase() === 'true';
+      if (unique) {
+        const grouped = new Map();
+        (rows || []).forEach(r => {
+          const email = (r.student_email || r.form_student_name || '').toString().trim().toLowerCase();
+          // fallback to student name if email missing
+          const key = email || `__noemail__${r.student_id || r.studentId || r.student_id || r.id}`;
+          if (!grouped.has(key)) grouped.set(key, { student_name: r.student_name || r.form_student_name || '', student_email: r.student_email || '', assignments: [] });
+          grouped.get(key).assignments.push(r);
+        });
+        const uniqueRows = Array.from(grouped.values()).map(g => ({ student_name: g.student_name, student_email: g.student_email, assignments_count: g.assignments.length }));
         if (exportType === 'csv') {
-          const csv = [Object.keys(rows[0] || {}).join(',')].concat(rows.map(r => Object.values(r).join(','))).join('\n');
+          const csv = [Object.keys(uniqueRows[0] || {}).join(',')].concat(uniqueRows.map(r => Object.values(r).join(','))).join('\n');
           res.setHeader('Content-Type', 'text/csv');
-          res.setHeader('Content-Disposition', 'attachment; filename="mentor_assignments.csv"');
+          res.setHeader('Content-Disposition', 'attachment; filename="mentor_assignments_unique.csv"');
           return res.send(csv);
         }
-        return res.json({ data: rows });
-      } catch (error) {
-        console.error('Error in getMentorAssignments (SQL/params):', sql, params, error);
-        return res.status(500).json({ message: 'Server error', error: error.message });
+        return res.json({ data: uniqueRows });
       }
+      if (exportType === 'csv') {
+        const csv = [Object.keys(rows[0] || {}).join(',')].concat(rows.map(r => Object.values(r).join(','))).join('\n');
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename="mentor_assignments.csv"');
+        return res.send(csv);
+      }
+      return res.json({ data: rows });
+    } catch (error) {
+      console.error('Error in getMentorAssignments (SQL/params):', sql, params, error);
+      return res.status(500).json({ message: 'Server error', error: error.message });
+    }
     if (exportType === 'csv') {
       const csv = [Object.keys(rows[0] || {}).join(',')].concat(rows.map(r => Object.values(r).join(','))).join('\n');
       res.setHeader('Content-Type', 'text/csv');
@@ -531,7 +531,7 @@ exports.getForms = async (req, res) => {
       forms_count: g.forms_count,
       domains: Array.from(g.domains),
       latest: g.latest
-    })).sort((a,b)=> new Date(b.latest) - new Date(a.latest));
+    })).sort((a, b) => new Date(b.latest) - new Date(a.latest));
     return res.json(result);
   } catch (error) {
     console.error(error);
@@ -602,6 +602,23 @@ exports.assignMentorToForm = async (req, res) => {
     res.json({ message: 'Mentor assigned successfully' });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.getProfile = async (req, res) => {
+  try {
+    const adminId = req.user && (req.user.id || req.user.userId);
+    if (!adminId) return res.status(401).json({ message: 'Unauthenticated' });
+
+    const [rows] = await db.execute('SELECT full_name FROM admins WHERE id = ?', [adminId]);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    res.json({ name: rows[0].full_name });
+  } catch (error) {
+    console.error('getProfile admin error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };

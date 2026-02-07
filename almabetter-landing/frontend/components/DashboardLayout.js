@@ -7,15 +7,11 @@ import styles from './DashboardLayout.module.css';
 
 export default function DashboardLayout({ children, title, role, onLogout }) {
   const [isMobile, setIsMobile] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userName, setUserName] = useState('Member');
   const [userEmail, setUserEmail] = useState('');
   const [scrolled, setScrolled] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  const profileRef = useRef(null);
-  const mobileMenuRef = useRef(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -32,14 +28,6 @@ export default function DashboardLayout({ children, title, role, onLogout }) {
     };
   }, []);
 
-  useEffect(() => {
-    const handleRouteChange = () => {
-      setProfileOpen(false);
-      setMobileMenuOpen(false);
-    };
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => router.events.off('routeChangeComplete', handleRouteChange);
-  }, [router]);
 
   const normalizedRole = role ? String(role).toLowerCase() : null;
 
@@ -61,30 +49,15 @@ export default function DashboardLayout({ children, title, role, onLogout }) {
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape') {
-        setProfileOpen(false);
-        setMobileMenuOpen(false);
       }
     };
 
-    const handleClickOutside = (event) => {
-      if (profileRef.current && !profileRef.current.contains(event.target)) {
-        setProfileOpen(false);
-      }
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
-        if (!event.target.closest(`.${styles['mobile-menu-trigger']}`)) {
-          setMobileMenuOpen(false);
-        }
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('keydown', handleEscape);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscape);
-      document.body.classList.remove('mobile-menu-open');
     };
-  }, [profileOpen, isMobile]);
+  }, [isMobile]);
 
   const roleLabel = normalizedRole ? normalizedRole.charAt(0).toUpperCase() + normalizedRole.slice(1) : 'Member';
 
@@ -136,71 +109,7 @@ export default function DashboardLayout({ children, title, role, onLogout }) {
           transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
-        {/* Header */}
-        <header className={`${styles['header']} ${scrolled ? styles['header-scrolled'] : ''}`}>
-          <div className={styles['header-left']}>
-            {isMobile && (
-              <button
-                className={styles['mobile-menu-trigger']}
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label="Toggle Menu"
-              >
-                {mobileMenuOpen ? <FiX /> : <FiMenu />}
-              </button>
-            )}
-            <div className={styles['breadcrumb']}>
-              <span className={styles['breadcrumb-role']}>{roleLabel}</span>
-              <span className={styles['breadcrumb-separator']}>/</span>
-              <span className={styles['breadcrumb-page']}>{title || 'Dashboard'}</span>
-            </div>
-          </div>
 
-          <div className={styles['header-right']}>
-            <div className={styles['header-search']}>
-              <FiSearch className={styles['search-icon']} />
-              <input type="text" placeholder="Search..." className={styles['search-input']} />
-            </div>
-
-            <button className={styles['notification-btn']} aria-label="Notifications">
-              <FiBell />
-              <span className={styles['notification-dot']} />
-            </button>
-
-            <div className={styles['profile-section']} ref={profileRef}>
-              <button
-                className={styles['profile-trigger']}
-                onClick={() => setProfileOpen(!profileOpen)}
-                aria-expanded={profileOpen}
-              >
-                <div className={styles['avatar']}>{initials}</div>
-                {!isMobile && (
-                  <>
-                    <div className={styles['profile-meta']}>
-                      <span className={styles['profile-name']}>{userName}</span>
-                      <span className={styles['profile-role']}>{roleLabel}</span>
-                    </div>
-                    <FiChevronDown className={`${styles['chevron']} ${profileOpen ? styles['chevron-rotate'] : ''}`} />
-                  </>
-                )}
-              </button>
-
-              {profileOpen && (
-                <div className={styles['profile-dropdown']} role="menu">
-                  <Link href={`/${normalizedRole}/profile`} className={styles['dropdown-item']} role="menuitem">
-                    <FiUser /> Profile
-                  </Link>
-                  <Link href={`/${normalizedRole}/settings`} className={styles['dropdown-item']} role="menuitem">
-                    <FiSettings /> Settings
-                  </Link>
-                  <div className={styles['dropdown-divider']} />
-                  <button onClick={handleLogout} className={`${styles['dropdown-item']} ${styles['logout-item']}`} role="menuitem">
-                    <FiLogOut /> Logout
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </header>
 
         {/* Mobile Navigation Drawer */}
         {isMobile && (
@@ -256,27 +165,10 @@ export default function DashboardLayout({ children, title, role, onLogout }) {
           {/* Welcome Banner - Top of content area */}
           <div className={styles['welcome-banner']}>
             <div className={styles['welcome-text']}>
-              <h1 className={styles['welcome-title']}>Welcome, {userName || 'User'} 👋</h1>
+              <h1 className={styles['welcome-title']}>Welcome, {userName || 'User'}</h1>
               <p className={styles['welcome-subtitle']}>Here's an overview of your progress and upcoming tasks.</p>
             </div>
-            <div className={styles['welcome-avatar']}>
-              <div style={{
-                width: isMobile ? '48px' : '64px',
-                height: isMobile ? '48px' : '64px',
-                borderRadius: '50%',
-                background: '#fff',
-                color: '#2563eb',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 'bold',
-                fontSize: isMobile ? '1.2rem' : '1.5rem',
-                border: isMobile ? 'none' : '4px solid rgba(255,255,255,0.3)'
-              }}>
-                {userName
-                  ? userName.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'S'}
-              </div>
-            </div>
+
           </div>
 
           <div className={styles['dashboard-content-wrapper']}>

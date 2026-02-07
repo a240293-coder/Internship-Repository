@@ -258,7 +258,7 @@ exports.markSessionComplete = async (req, res) => {
       `INSERT INTO student_progress (assignment_id, status, completion_date)
        VALUES (?, ?, NOW()) ON DUPLICATE KEY UPDATE status = VALUES(status), completion_date = VALUES(completion_date)`,
       [sessionId, 'completed']
-    ).catch(() => {});
+    ).catch(() => { });
 
     res.json({ message: 'Session marked completed' });
   } catch (err) {
@@ -297,12 +297,29 @@ exports.updateSessionStatus = async (req, res) => {
         `INSERT INTO student_progress (assignment_id, status, completion_date)
          VALUES (?, ?, NOW()) ON DUPLICATE KEY UPDATE status = VALUES(status), completion_date = VALUES(completion_date)`,
         [sessionId, 'completed']
-      ).catch(() => {});
+      ).catch(() => { });
     }
 
     res.json({ message: 'Session status updated', status: normalized });
   } catch (err) {
     console.error('updateSessionStatus error:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
+
+exports.getProfile = async (req, res) => {
+  try {
+    const mentorId = req.user && (req.user.id || req.user.userId);
+    if (!mentorId) return res.status(401).json({ message: 'Unauthenticated' });
+
+    const [rows] = await db.execute('SELECT full_name FROM mentors WHERE id = ?', [mentorId]);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Mentor not found' });
+    }
+
+    res.json({ name: rows[0].full_name });
+  } catch (error) {
+    console.error('getProfile mentor error:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };

@@ -53,13 +53,13 @@ const StudentInterestForm = () => {
           const res = await api.get(`/forms/my-forms${params}`);
           const data = Array.isArray(res?.data) ? res.data : (res?.data ? [res.data] : []);
           return data;
-        } catch (e) {}
+        } catch (e) { }
         // try single form endpoint
         try {
           const res = await api.get(`/forms/my-form${params}`);
           const d = res?.data;
           return d ? (Array.isArray(d) ? d : [d]) : [];
-        } catch (e) {}
+        } catch (e) { }
         // fallback to mentor/students and filter
         try {
           const res = await api.get('/mentor/students');
@@ -68,7 +68,7 @@ const StudentInterestForm = () => {
             if (id && f.studentId) return String(f.studentId) === String(id);
             if (email && f.studentEmail) return String(f.studentEmail) === String(email);
             return false;
-          }).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+          }).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           return filtered;
         } catch (e) {
           return [];
@@ -99,12 +99,12 @@ const StudentInterestForm = () => {
 
     try {
       const formDataToSend = new FormData();
-      
+
       // Append text fields
       formDataToSend.append('interests', JSON.stringify(formData.interests.split(',').map(i => i.trim())));
       formDataToSend.append('desiredDomain', formData.desiredDomain);
       formDataToSend.append('goals', formData.goals);
-      
+
       // Append user info
       // If user explicitly opened the form as `?mode=new`, skip attaching student identifiers
       // so the backend can treat it as a fresh submission.
@@ -355,7 +355,7 @@ const StudentInterestForm = () => {
             const params = id ? `?userId=${encodeURIComponent(id)}` : email ? `?email=${encodeURIComponent(email)}` : '';
             const res = await api.get(`/forms/my-forms${params}`);
             const data = Array.isArray(res?.data) ? res.data : (res?.data ? [res.data] : []);
-            setSubmissions(data.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            setSubmissions(data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
           } catch (e) {
             console.warn('Could not fetch submissions for update mode', e);
           }
@@ -394,7 +394,7 @@ const StudentInterestForm = () => {
       const params = id ? `?userId=${encodeURIComponent(id)}` : email ? `?email=${encodeURIComponent(email)}` : '';
       const res = await api.get(`/forms/my-forms${params}`);
       const data = Array.isArray(res?.data) ? res.data : (res?.data ? [res.data] : []);
-      setSubmissions(data.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
+      setSubmissions(data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
     } catch (e) {
       console.warn('Failed to reload submissions', e);
     }
@@ -404,7 +404,7 @@ const StudentInterestForm = () => {
     const f = submissions.find(s => String(s.id) === String(id));
     if (!f) return;
     setFormData({
-      interests: Array.isArray(f.interests) ? f.interests.join(', ') : (typeof f.interests === 'string' ? (JSON.parse(f.interests||'[]')||[]).join(', ') : ''),
+      interests: Array.isArray(f.interests) ? f.interests.join(', ') : (typeof f.interests === 'string' ? (JSON.parse(f.interests || '[]') || []).join(', ') : ''),
       desiredDomain: f.desiredDomain || f.desired_domain || '',
       goals: f.goals || '',
       resume: null
@@ -438,80 +438,80 @@ const StudentInterestForm = () => {
   return (
     <DashboardLayout title="Student Interest Form" role="student">
       <div className="interest-page">
-      <PopupMessage message={popup} />
-      <div className="interest-grid">
-        {/* Visual section removed per request; show only the form centered */}
-        <section className="interest-form-card" aria-labelledby="interest-form-heading">
-          <header className="interest-header">
-            <p className="interest-eyebrow">Interest form</p>
-            <h2 id="interest-form-heading">Student Interest Form</h2>
-            <p className="interest-subtext">Tell us about your interests and career goals</p>
-          </header>
+        <PopupMessage message={popup} />
+        <div className="interest-grid">
+          {/* Visual section removed per request; show only the form centered */}
+          <section className="interest-form-card" aria-labelledby="interest-form-heading">
+            <header className="interest-header">
+              <p className="interest-eyebrow">Interest form</p>
+              <h2 id="interest-form-heading">Student Interest Form</h2>
+              <p className="interest-subtext">Tell us about your interests and career goals</p>
+            </header>
 
-          {error && <div className="error-message">{error}</div>}
-          {success && <div className="success-message">{success}</div>}
+            {error && <div className="error-message">{error}</div>}
+            {success && <div className="success-message">{success}</div>}
 
-          <form onSubmit={handleSubmit} className="interest-form">
-            <div className="form-group">
-              <label>Interests (comma-separated)</label>
-              <textarea
-                name="interests"
-                placeholder="e.g., Web Development, AI, Data Science"
-                value={formData.interests}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <form onSubmit={handleSubmit} className="interest-form">
+              <div className="form-group">
+                <label>Interests (comma-separated)</label>
+                <textarea
+                  name="interests"
+                  placeholder="e.g., Web Development, AI, Data Science"
+                  value={formData.interests}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              {/* Previous Experience field removed */}
 
-            <div className="form-group">
-              <label>Domain You Want to Grow In</label>
-              <select
-                name="desiredDomain"
-                value={formData.desiredDomain}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select a domain</option>
-                <option value="Web Development">Web Development</option>
-                <option value="Mobile Development">Mobile Development</option>
-                <option value="Data Science">Data Science</option>
-                <option value="Machine Learning">Machine Learning</option>
-                <option value="Cloud Computing">Cloud Computing</option>
-                <option value="DevOps">DevOps</option>
-                <option value="Blockchain">Blockchain</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
+              <div className="form-group">
+                <label>Career Goals</label>
+                <textarea
+                  name="goals"
+                  placeholder="What are your career goals and expectations?"
+                  value={formData.goals}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-            {/* Previous Experience field removed */}
+              <div className="form-group">
+                <label>Domain You Want to Grow In</label>
+                <select
+                  name="desiredDomain"
+                  value={formData.desiredDomain}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select a domain</option>
+                  <option value="Web Development">Web Development</option>
+                  <option value="Mobile Development">Mobile Development</option>
+                  <option value="Data Science">Data Science</option>
+                  <option value="Machine Learning">Machine Learning</option>
+                  <option value="Cloud Computing">Cloud Computing</option>
+                  <option value="DevOps">DevOps</option>
+                  <option value="Blockchain">Blockchain</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
 
-            <div className="form-group">
-              <label>Career Goals</label>
-              <textarea
-                name="goals"
-                placeholder="What are your career goals and expectations?"
-                value={formData.goals}
-                onChange={handleChange}
-                required
-              />
-            </div>
 
-            <div className="form-group">
-              <label>Upload Resume (PDF)</label>
-              <input
-                type="file"
-                name="resume"
-                accept=".pdf"
-                onChange={handleChange}
-              />
-            </div>
+              <div className="form-group">
+                <label>Upload Resume (PDF)</label>
+                <input
+                  type="file"
+                  name="resume"
+                  accept=".pdf"
+                  onChange={handleChange}
+                />
+              </div>
 
-            <button type="submit" disabled={loading} className="submit-btn">
-              {loading ? 'Submitting...' : 'Submit Form'}
-            </button>
-          </form>
-        </section>
-      </div>
+              <button type="submit" disabled={loading} className="submit-btn">
+                {loading ? 'Submitting...' : 'Submit Form'}
+              </button>
+            </form>
+          </section>
+        </div>
       </div>
     </DashboardLayout>
   );

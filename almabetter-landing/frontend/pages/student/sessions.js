@@ -16,6 +16,7 @@ export default function StudentSessionsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [activeTab, setActiveTab] = useState('upcoming'); // 'upcoming', 'completed', 'canceled'
 
   useEffect(() => {
     const fetch = async () => {
@@ -49,10 +50,23 @@ export default function StudentSessionsPage() {
     }
   };
 
-  const filteredSessions = sessions.filter(s =>
-    (s.mentor_name || s.mentorName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (s.agenda || '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredSessions = sessions.filter(s => {
+    const matchesSearch = (s.mentor_name || s.mentorName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (s.agenda || '').toLowerCase().includes(searchTerm.toLowerCase());
+
+    const status = (s.status || 'scheduled').toLowerCase();
+    let matchesTab = false;
+
+    if (activeTab === 'upcoming') {
+      matchesTab = status === 'scheduled';
+    } else if (activeTab === 'completed') {
+      matchesTab = status === 'completed';
+    } else if (activeTab === 'canceled') {
+      matchesTab = status === 'canceled';
+    }
+
+    return matchesSearch && matchesTab;
+  });
 
   return (
     <DashboardLayout title="Upcoming Sessions" role="student">
@@ -69,6 +83,27 @@ export default function StudentSessionsPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+
+          <div className={styles.filterTabs}>
+            <button
+              className={`${styles.filterTab} ${activeTab === 'upcoming' ? styles.activeTab : ''}`}
+              onClick={() => setActiveTab('upcoming')}
+            >
+              Upcoming
+            </button>
+            <button
+              className={`${styles.filterTab} ${activeTab === 'completed' ? styles.activeTab : ''}`}
+              onClick={() => setActiveTab('completed')}
+            >
+              Completed Sessions
+            </button>
+            <button
+              className={`${styles.filterTab} ${activeTab === 'canceled' ? styles.activeTab : ''}`}
+              onClick={() => setActiveTab('canceled')}
+            >
+              Canceled
+            </button>
+          </div>
         </div>
 
         {loading ? (
@@ -80,7 +115,16 @@ export default function StudentSessionsPage() {
         ) : filteredSessions.length === 0 ? (
           <div className={styles.emptyState}>
             <FiCalendar size={64} opacity={0.3} />
-            <p>{searchTerm ? 'No matching sessions found.' : 'You have no upcoming sessions scheduled.'}</p>
+            <p>
+              {searchTerm
+                ? 'No matching sessions found.'
+                : activeTab === 'upcoming'
+                  ? 'You have no upcoming sessions scheduled.'
+                  : activeTab === 'completed'
+                    ? 'No completed sessions found.'
+                    : 'No canceled sessions found.'
+              }
+            </p>
           </div>
         ) : (
           <div className={styles.sessionsGrid}>

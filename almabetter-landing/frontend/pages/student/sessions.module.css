@@ -4,14 +4,65 @@
 
 .searchHeader {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
 }
 
 .searchWrapper {
     position: relative;
     width: 100%;
-    max-width: 350px;
+    max-width: 320px;
+}
+
+.filterTabs {
+    display: flex;
+    gap: 0.5rem;
+    background: #f1f5f9;
+    padding: 5px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+}
+
+.filterTab {
+    padding: 0.7rem 1.4rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #64748b;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+}
+
+.filterTab:hover {
+    color: #016297;
+}
+
+.activeTab {
+    background: #ffffff;
+    color: #0077B6;
+    box-shadow: 0 4px 15px #9ebee50f;
+}
+
+@media (max-width: 900px) {
+    .searchHeader {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .searchWrapper {
+        max-width: none;
+    }
+
+    .filterTabs {
+        overflow-x: auto;
+        padding: 4px;
+    }
 }
 
 .searchIcon {
@@ -65,23 +116,25 @@
 
 .cardHeader {
     padding: 1.25rem 1.5rem;
-    background: linear-gradient(135deg, #98bcf6, #eeefef);
-    color: white;
+    background: #ADE8F4;
+    color: rgb(11, 7, 7);
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
 }
 
 .agendaText {
-    font-size: 1.1rem;
+    font-size: 1.35rem;
     font-weight: 700;
     margin: 0;
+    color: #0A2472;
 }
 
 .mentorLabel {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     opacity: 0.9;
-    font-weight: 500;
+    color: #334155;
+    margin-top: 0.2rem;
 }
 
 .cardBody {
@@ -163,7 +216,7 @@
 
 .status-scheduled {
     background: #eff6ff;
-    color: #2563eb;
+    color: #0A2472;
 }
 
 .status-completed {

@@ -5,6 +5,7 @@ const { verifyToken } = require('../middleware/auth');
 
 router.post('/auth/register', controller.register);
 router.post('/auth/login', controller.login);
+router.get('/profile', verifyToken, controller.getProfile);
 router.post('/interest', verifyToken, controller.submitInterest);
 router.get('/dashboard/:id', verifyToken, controller.getDashboard);
 // Student: get sessions (mentor meetings) created for the logged-in student

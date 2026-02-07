@@ -149,3 +149,20 @@ exports.submitInterest = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+exports.getProfile = async (req, res) => {
+  try {
+    const userId = req.user && (req.user.id || req.user.userId);
+    if (!userId) return res.status(401).json({ message: 'Unauthenticated' });
+
+    const [rows] = await db.execute('SELECT full_name FROM students WHERE id = ?', [userId]);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    res.json({ name: rows[0].full_name });
+  } catch (error) {
+    console.error('getProfile student error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

@@ -520,7 +520,7 @@
 
 /* Header */
 .overview-card-header {
-  background: linear-gradient(135deg, #93c5fd, #dbeafe);
+  background: #ADE8F4;
   padding: 0.5rem 1.5rem;
   padding-top: 20px;
   padding-bottom: 5px;
@@ -531,7 +531,7 @@
   font-size: 1.35rem;
   font-weight: 700;
   margin: 0;
-  color: #264e99;
+  color: #0A2472;
 }
 
 .overview-subtitle {
@@ -596,7 +596,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #6fa8ff, #4f8dfd);
+  background: #0A2472;
   color: #ffffff;
   padding: 0.3rem 0.85rem;
   border-radius: 999px;

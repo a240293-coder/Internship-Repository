@@ -1,0 +1,161 @@
+.container {
+    padding: 0.5rem 0;
+}
+
+.tableWrapper {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    overflow-x: auto;
+    margin-top: 0.5rem;
+}
+
+.formsTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 800px;
+}
+
+.formsTable thead th {
+    background: #ADE8F4;
+    color: #0A2472;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+}
+
+.formsTable tbody td {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #f1f5f9;
+    vertical-align: middle;
+    color: #334155;
+    line-height: 1.4;
+}
+
+.formsTable tbody tr:hover {
+    background: #f8fbff;
+}
+
+.domainCell {
+    font-weight: 700;
+    color: #0A2472;
+}
+
+.actionsCell {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.editBtn {
+    background: #0E6BA8;
+    color: #ffffff;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+}
+
+.editBtn:hover {
+    background: #0a5687;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(14, 107, 168, 0.2);
+}
+
+.deleteBtn {
+    background: #DC2626;
+    color: #ffffff;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+}
+
+.deleteBtn:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+
+.loading,
+.emptyState {
+    padding: 4rem;
+    text-align: center;
+    color: #64748b;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+}
+
+@media (max-width: 900px) {
+
+    .formsTable,
+    .formsTable thead,
+    .formsTable tbody,
+    .formsTable tr,
+    .formsTable td {
+        display: block;
+        width: 100%;
+    }
+
+    .formsTable thead {
+        display: none;
+    }
+
+    .formsTable tr {
+        margin-bottom: 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        background: #fff;
+    }
+
+    .formsTable td {
+        padding: 0.75rem 1rem;
+        padding-left: 45%;
+        position: relative;
+        text-align: right;
+        border-top: 1px solid #f1f5f9;
+        min-height: 2.5rem;
+    }
+
+    .formsTable td:first-child {
+        border-top: none;
+        background: #f8fbff;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .formsTable td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        width: 40%;
+        text-align: left;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+    }
+
+    .actionsCell {
+        justify-content: flex-end;
+    }
+}

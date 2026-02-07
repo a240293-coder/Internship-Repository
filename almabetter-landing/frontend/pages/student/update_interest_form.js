@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import api from '../../lib/api';
-import '../auth/Dashboard.css';
 import DashboardLayout from '../../components/DashboardLayout';
+import styles from './interest_form_update.module.css';
+import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
 export default function UpdateInterestFormPage() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function UpdateInterestFormPage() {
       const params = userId ? `?userId=${encodeURIComponent(userId)}` : userEmail ? `?email=${encodeURIComponent(userEmail)}` : '';
       const res = await api.get(`/forms/my-forms${params}`).catch(() => null) || await api.get(`/forms/my-form${params}`).catch(() => null);
       const data = res && res.data ? (Array.isArray(res.data) ? res.data : [res.data]) : [];
-      setForms(data.sort((a,b) => new Date(b.createdAt || b.created_at) - new Date(a.createdAt || a.created_at)));
+      setForms(data.sort((a, b) => new Date(b.createdAt || b.created_at) - new Date(a.createdAt || a.created_at)));
       setError('');
     } catch (e) {
       setError('Failed to load submissions');
@@ -46,58 +47,75 @@ export default function UpdateInterestFormPage() {
     }
   };
 
-  const fmt = (v) => { if (!v) return '--'; try { return new Date(v).toLocaleDateString(); } catch { return '--'; } };
+  const fmt = (v) => { if (!v) return '--'; try { return new Date(v).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); } catch { return '--'; } };
 
   return (
     <DashboardLayout title="Update Interest Form" role="student">
-      {error && <div className="alert alert-error">{error}</div>}
-      <section className="student-submissions">
-        {loading ? (
-          <div className="loading">Loading...</div>
-        ) : forms.length === 0 ? (
-          <div>No submissions yet.</div>
-        ) : (
-          <div className="simple-table-wrapper" style={{ overflowX: 'auto' }}>
-            <table className="forms-table" role="table">
-              <thead>
-                <tr>
-                  <th>Domain</th>
-                  <th>Interests</th>
-                  <th>Goals</th>
-                  <th>Mentor</th>
-                  <th>Submitted</th>
-                  <th style={{ textAlign: 'center' }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {forms.map((f) => (
-                  <tr key={f.id || f.form_id || Math.random()}>
-                    <td className="td-domain" data-label="Domain">
-                      <div style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{f.desiredDomain || f.desired_domain || '—'}</div>
-                    </td>
-                    <td className="td-interests" data-label="Interests">
-                      <div style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{Array.isArray(f.interests) ? f.interests.join(', ') : (typeof f.interests === 'string' ? f.interests : '')}</div>
-                    </td>
-                    <td className="td-goals" data-label="Goals">
-                      <div style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{f.goals || '—'}</div>
-                    </td>
-                    <td className="td-mentor" data-label="Mentor">
-                      <div style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{f.mentorName || f.mentor_name || 'Pending'}</div>
-                    </td>
-                    <td className="td-submitted" data-label="Submitted">
-                      {fmt(f.createdAt || f.created_at)}
-                    </td>
-                    <td className="td-actions" data-label="Actions" style={{ textAlign: 'center' }}>
-                      <button type="button" className="assign-btn" onClick={() => handleEdit(f.id || f.form_id)} style={{ marginRight: 8 }}>Edit</button>
-                      <button type="button" className="danger-btn" onClick={() => handleDelete(f.id || f.form_id)}>Delete</button>
-                    </td>
+      <div className={styles.container}>
+        {error && <div className="alert alert-error">{error}</div>}
+
+        <section className={styles.studentSubmissions}>
+          {loading ? (
+            <div className={styles.loading}>Loading submissions...</div>
+          ) : forms.length === 0 ? (
+            <div className={styles.emptyState}>No submissions found yet.</div>
+          ) : (
+            <div className={styles.tableWrapper}>
+              <table className={styles.formsTable}>
+                <thead>
+                  <tr>
+                    <th>Domain</th>
+                    <th>Interests</th>
+                    <th>Goals</th>
+                    <th>Mentor</th>
+                    <th>Submitted</th>
+                    <th style={{ textAlign: 'center' }}>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </section>
+                </thead>
+                <tbody>
+                  {forms.map((f) => (
+                    <tr key={f.id || f.form_id}>
+                      <td className={styles.domainCell} data-label="Domain">
+                        {f.desiredDomain || f.desired_domain || '—'}
+                      </td>
+                      <td data-label="Interests">
+                        {Array.isArray(f.interests) ? f.interests.join(', ') : (typeof f.interests === 'string' ? f.interests : '') || '—'}
+                      </td>
+                      <td data-label="Goals">
+                        {f.goals || '—'}
+                      </td>
+                      <td data-label="Mentor">
+                        {f.mentorName || f.mentor_name || 'Pending'}
+                      </td>
+                      <td data-label="Submitted">
+                        {fmt(f.createdAt || f.created_at)}
+                      </td>
+                      <td data-label="Actions">
+                        <div className={styles.actionsCell}>
+                          <button
+                            type="button"
+                            className={styles.editBtn}
+                            onClick={() => handleEdit(f.id || f.form_id)}
+                          >
+                            <FiEdit2 size={14} /> Edit
+                          </button>
+                          <button
+                            type="button"
+                            className={styles.deleteBtn}
+                            onClick={() => handleDelete(f.id || f.form_id)}
+                          >
+                            <FiTrash2 size={14} /> Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+      </div>
     </DashboardLayout>
   );
 }

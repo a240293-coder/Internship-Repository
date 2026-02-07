@@ -26,6 +26,7 @@ router.get('/mentors/:id/sessions', apiLimiter, adminAuth, validateId, controlle
 router.get('/mentors/:id/students', apiLimiter, adminAuth, validateId, controller.getMentorStudentsAdmin);
 
 router.post('/auth/login', loginLimiter, validateLogin, controller.login); // Login route is public
+router.get('/profile', verifyToken, controller.getProfile);
 router.get('/dashboard', apiLimiter, adminAuth, controller.getDashboard);
 router.get('/live-sessions', apiLimiter, adminAuth, controller.getLiveSessions);
 router.put('/live-sessions/:id/status', apiLimiter, adminAuth, validateId, controller.updateLiveSessionStatus);

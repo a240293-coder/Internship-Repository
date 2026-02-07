@@ -10,6 +10,7 @@ const controller = require('../controllers/mentor.controller');
 
 router.post('/auth/register', controller.register);
 router.post('/auth/login', controller.login);
+router.get('/profile', verifyToken, controller.getProfile);
 router.get('/dashboard/:id', verifyToken, controller.getDashboard);
 router.get('/all', verifyToken, controller.getAllMentors);
 // Mentor sessions: create and list

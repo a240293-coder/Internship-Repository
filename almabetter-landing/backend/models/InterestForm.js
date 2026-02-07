@@ -16,9 +16,9 @@ const InterestForm = {
 			// add more mappings as needed
 		};
 		Object.keys(where).forEach((key) => {
-				const dbCol = columnMap[key] || key;
-				conditions.push(`${dbCol} = ?`);
-				params.push(where[key]);
+			const dbCol = columnMap[key] || key;
+			conditions.push(`${dbCol} = ?`);
+			params.push(where[key]);
 		});
 		if (conditions.length) {
 			sql += ' WHERE ' + conditions.join(' AND ');
@@ -64,7 +64,11 @@ const InterestForm = {
 		Object.keys(data).forEach((k) => {
 			if (columnMap[k]) {
 				cols.push(columnMap[k]);
-				vals.push(data[k]);
+				let val = data[k];
+				if (k === 'interests' && Array.isArray(val)) {
+					val = JSON.stringify(val);
+				}
+				vals.push(val);
 			}
 		});
 		if (!cols.length) throw new Error('No data provided for InterestForm.create');
@@ -91,6 +95,6 @@ const InterestForm = {
 		return rows[0] || null;
 	},
 	// Add more helper functions as needed (findById, update, etc.)
-	
+
 };
 module.exports = InterestForm;
