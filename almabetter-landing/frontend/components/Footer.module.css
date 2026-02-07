@@ -1,7 +1,7 @@
 .footer {
-  background: linear-gradient(135deg, #B4D6E3 0%, #D1E9F6 50%, #cee6f8 100%);
-  color: #0f172a;
-  padding: 1.5rem 0;
+  background: #00072D;
+  color: #fff;
+  padding: 1rem 0;
   position: relative;
   overflow: hidden;
   font-family: Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -31,7 +31,7 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 3rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .footerBrand {
@@ -43,14 +43,14 @@
   font-size: 1.25rem;
   font-weight: 800;
   margin-bottom: 0.5rem;
-  color: #1E3A8A;
+  color: #fff;
   letter-spacing: -0.5px;
   font-family: Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 .brandLogo {
   position: relative;
-  color: #1E3A8A;
+  color: #fff;
   display: inline-flex;
   align-items: center;
   line-height: 1.1;
@@ -60,12 +60,12 @@
 .brandLogoHighlight {
   position: relative;
   margin-left: 2px;
-  color: #1E3A8A;
+  color: #fff;
 }
 
 .brandTagline {
   font-size: 0.8rem;
-  color: #0f172a;
+  color: #fff;
   line-height: 1.4;
   margin: 0;
 }
@@ -79,7 +79,8 @@
   font-size: 0.95rem;
   font-weight: 700;
   margin-bottom: 0.75rem;
-  color: #0f172a;
+  color: #fff;
+  text-align: center;
   letter-spacing: -0.3px;
 }
 
@@ -87,14 +88,17 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem 2.5rem;
 }
 
 .linkList li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
 }
 
 .linkList a {
-  color: #0f172a;
+  color: #fff;
   text-decoration: none;
   transition: all 0.18s ease;
   font-size: 0.85rem;
@@ -103,7 +107,7 @@
 }
 
 .linkList a:hover {
-  color: #1E3A8A;
+  color: #60a5fa;
   transform: translateX(4px);
 }
 
@@ -119,7 +123,7 @@
 }
 
 .contactInfo p {
-  color: #0f172a;
+  color: #fff;
   font-size: 0.85rem;
   margin: 0;
 }
@@ -171,13 +175,13 @@
 }
 
 .footerBottom {
-  padding-top: 1rem;
-  border-top: 1px solid rgba(30, 64, 175, 0.12);
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
 }
 
 .copyright {
-  color: #0f172a;
+  color: #fff;
   font-size: 0.8rem;
   margin: 0;
 }

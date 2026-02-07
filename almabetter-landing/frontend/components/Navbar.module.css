@@ -3105,6 +3105,22 @@
   transition: transform 0.2s ease;
 }
 
+.dbChevronBtn {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.dbChevronBtn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
 .dbChevronRotate {
   transform: rotate(180deg);
 }

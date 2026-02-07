@@ -365,8 +365,8 @@ export default function MainNavbar() {
 
                 {showProfileDropdown && (
                   <div className={styles.dbProfileDropdown} role="menu">
-                    <Link href={`/${userRole}/profile`} className={styles.dbDropdownItem} role="menuitem">
-                      <FiUser /> Profile
+                    <Link href={`/${userRole}/account`} className={styles.dbDropdownItem} role="menuitem">
+                      <FiUser /> My Account
                     </Link>
                     <div className={styles.dbDropdownDivider} />
                     <button onClick={handleLogout} className={`${styles.dbDropdownItem} ${styles.dbLogoutItem}`} role="menuitem">

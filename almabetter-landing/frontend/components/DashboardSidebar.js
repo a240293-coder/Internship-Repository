@@ -64,7 +64,7 @@ export default function DashboardSidebar({ role, userName, userEmail, isCollapse
       </button>
 
       {/* ===== User Profile (TOP) ===== */}
-      <div className={styles['sidebar-header']}>
+      <Link href={`/${role}/account`} className={styles['sidebar-header']}>
         <div className={styles['profile-avatar']}>{initials}</div>
 
         <div className={`${styles['profile-info']} ${isCollapsed ? styles['hidden'] : ''}`}>
@@ -73,7 +73,7 @@ export default function DashboardSidebar({ role, userName, userEmail, isCollapse
             {userEmail || ''}
           </span>
         </div>
-      </div>
+      </Link>
 
       <div className={styles['sidebar-section']}>
         {!isCollapsed && <p className={styles['sidebar-label']}>Navigation</p>}
